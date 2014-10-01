@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <title>My App</title>
+    <!-- Path to Framework7 Library CSS-->
+    <link rel="stylesheet" href="css/framework7.min.css">
+    <link rel="stylesheet" href="css/framework7.themes.css">
+    <link rel="stylesheet" href="css/zocial.css">
+    <!-- Path to your custom app styles-->
+    <link rel="stylesheet" href="css/theme-jsconf.css">
+    <link rel="stylesheet" href="css/my-app.css">
+    <!-- Path to google maps js -->
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+
+    <script type="text/javascript" src="cordova.js"></script>
+
+  </head>
+  <body class="layout-jsconf theme-jsconf">
+    <!-- Status bar and panel overlay for fullscreen mode-->
+    <div class="statusbar-overlay"></div>
+    <div class="panel-overlay"></div>
+    
+    <!-- logIn modal start-->
+    <div class="login-screen modal-in">
+      <div class="view">
+        <div class="page">
+          <div class="page-content login-screen-content">
+            <h1 class="sprite logo"></h1>
+            <div class="login-buttons">
+              <!-- aqui se incluye el boton de login de facebook. Se le agrega la funcion loginStart en el click -->
+            <!--div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="false" onlogin="loginStart();"  data-auto-logout-link="false"></div>
+          <div id="status"></div-->
+          <button class="zocial twitter" id='login' onclick="hello.login('twitter');">Login with Twitter</button>
+          <button class="zocial facebook" id='login' onclick="hello.login('facebook');">Login with Facebook</button>
+          <button class="zocial googleplus" id='login' onclick="hello.login('google');">Login with Google</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--PANEL IZQUIERDO-->
+<div class="panel panel-left panel-reveal">
+  <!-- place panel title if you want -->
+  <div class="content-block-title"></div>
+  <div class="list-block">
+    <ul>
+      <!-- each list item is a link to a tab or an external page -->
+      <li><a href="#view-tweets" class="close-panel item-link tab-link">
+        <div class="item-content">
+          <div class="item-media"><i class="icon icon-f72"></i></div>
+          <div class="item-inner">
+            <div class="item-title">Recent Tweets</div>
+          </div>
+        </div>
+      </a>
+    </li>
+    <li><a href="https://www.facebook.com/JsConf" class="close-panel item-link external">
+      <div class="item-content">
+        <div class="item-media"><i class="icon icon-f72"></i></div>
+        <div class="item-inner">
+          <div class="item-title">Facebook</div>
+        </div>
+      </div>
+    </a>
+  </li>
+  <li><a href="https://twitter.com/jsconfar" class="close-panel item-link external">
+    <div class="item-content">
+      <div class="item-media"><i class="icon icon-f72"></i></div>
+      <div class="item-inner">
+        <div class="item-title">twitter</div>
+      </div>
+    </div>
+  </a>
+</li>
+<li><a href="#view-about" class="close-panel item-link tab-link">
+  <div class="item-content">
+    <div class="item-media"><i class="icon icon-f72"></i></div>
+    <div class="item-inner">
+      <div class="item-title">About</div>
+    </div>
+  </div>
+</a>
+</li>
+<li><a href="#" id="logout" class="close-panel item-link">
+  <div class="item-content">
+    <div class="item-media"><i class="icon icon-f72"></i></div>
+    <div class="item-inner">
+      <div class="item-title">LogOut</div>
+    </div>
+  </div>
+</a>
+</li>
+</ul>
+</div>
+</div>
+<!-- Views, and they are tabs-->
+<!-- We need to set "toolbar-through" class on it to keep space for our tab bar-->
+<div class="views tabs toolbar-through">
+<!-- Your first view, it is also a .tab and should have "active" class to make it visible by default-->
+<!-- VISTAS DESDE EL TABBAR -->
+<div id="view-home" class="view view-main tab active">
+<!-- Pages-->
+<div class="navbar">
+<div class="navbar-inner">
+<div class="left">
+  <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+</div>
+<div class="center">Home</div>
+</div>
+</div>
+<div class="pages navbar-through">
+<!-- Page, data-page contains page name-->
+<div data-page="home" class="page">
+<!-- Scrollable page content-->
+<div class="page-content">
+  <div class="content-block">
+    <!-- contenedor de bloque de texto de la pagina about -->
+    <div class="content-block-title">Welcome to JSConfAR</div>
+    <div class="content-block-inner">
+      <p>Home page text</p>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+<div id="view-agenda" class="view tab">
+<div class="navbar">
+<div class="navbar-inner">
+<div class="left">
+  <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+</div>
+<div class="center">Agenda</div>
+</div>
+</div>
+<div class="pages navbar-through">
+<div data-page="index-5" class="page">
+<div class="page-content">
+  <div class="list-block media-list contacts-list">
+    <div class="list-group">
+      <!-- list with every item in the agenda json file -->
+      <ul class="listaAgenda">
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+<div id="view-mapa" class="view tab">
+<div class="navbar">
+<div class="navbar-inner">
+<div class="left">
+  <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+</div>
+<div class="center">Mapa</div>
+</div>
+</div>
+<div class="pages navbar-through">
+<div data-page="index-2" class="page">
+<div class="page-content">
+  <div class="content-block">
+    <div class="content-block-inner">
+      <!-- container for the google maps instance -->
+      <div id="map_canvas"></div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+<div id="view-speakers" class="view tab">
+<div class="navbar">
+<div class="navbar-inner">
+<div class="left">
+  <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+</div>
+<div class="center">Speakers</div>
+</div>
+</div>
+<div class="pages navbar-through">
+<div data-page="index-3" class="page">
+<div class="page-content">
+  <div class="list-block media-list contacts-list searchbar-found">
+    <div class="list-group">
+      <!-- list with every item in the speakers json file -->
+      <ul class="listaSpeakers">
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+<div id="view-chat" class="view tab">
+<div class="navbar">
+<div class="navbar-inner">
+<div class="left">
+  <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+</div>
+<div class="center">Messages</div>
+</div>
+</div>
+<!-- Pages-->
+<div class="pages">
+<!-- Page, data-page contains page name-->
+<div data-page="messages" class="page no-toolbar toolbar-fixed">
+<!-- message bar -->
+<div class="toolbar messagebar">
+  <div class="toolbar-inner"><a href="#" id="sendPhoto" class="link icon-only"><i class="icon icon-camera"></i></a>
+  <textarea placeholder="Message"></textarea><a href="#" class="link">Send</a>
+</div>
+</div>
+<!-- messages container -->
+<div class="page-content messages-content">
+<div class="messages"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- VISTAS DESDE EL LEFT PANEL -->
+<div id="view-tweets" class="view tab">
+<!-- Pages-->
+<div class="navbar">
+<div class="navbar-inner">
+<div class="left">
+<a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+</div>
+<div class="center">Recent Tweets</div>
+</div>
+</div>
+<div class="pages navbar-through">
+<div data-page="index-1" class="page">
+<div class="page-content">
+<!-- Contenedor del tweetfeed-->
+<div class="content-block tweetContainer">
+  <a id="tweetContainer-inner" class="twitter-timeline" height="380" data-dnt="true" ><span class="preloader"></span></a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="view-about" class="view tab">
+<!-- Pages-->
+<div class="navbar">
+<div class="navbar-inner">
+<div class="left">
+<a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+</div>
+<div class="center">About</div>
+</div>
+</div>
+<div class="pages navbar-through">
+<!-- Page, data-page contains page name-->
+<div data-page="about" class="page">
+<!-- Scrollable page content-->
+<div class="page-content">
+<div class="content-block">
+  <!-- contenedor de bloque de texto de la pagina about -->
+  <div class="content-block-inner">
+    <p>JSConf AR event mobile app</p>
+    <p>Made from scratch with Shovel apps mobile apps builder</p>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Tabbar-->
+<div class="toolbar tabbar tabbar-labels">
+<div class="toolbar-inner">
+<!-- a link for every page i want to link from my tabbar toolbar -->
+<a href="#view-home" class="tab-link active"><i class="icon icon-form-tel"></i><span class="tabbar-label">Home</span></a>
+<a href="#view-agenda" class="tab-link"><i class="icon icon-form-calendar"></i><span class="tabbar-label">Agenda</span></a>
+<a href="#view-mapa" class="tab-link"><i class="icon icon-form-email"></i><span class="tabbar-label">Mapa</span></a>
+<a href="#view-speakers" class="tab-link"><i class="icon icon-form-name"></i><span class="tabbar-label">Speakers</span></a>
+<a href="#view-chat" class="tab-link"><i class="icon icon-form-comment"></i><span class="tabbar-label">Chat</span></a>
+</div>
+</div>
+</div>
+<!-- Path to Framework7 Library JS-->
+<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="js/framework7.min.js"></script>
+<!-- Path to jquery JS-->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<!-- Path to firebase JS (used in chat plugin)-->
+<script src="https://cdn.firebase.com/js/client/1.0.19/firebase.js"></script>
+<!-- Path to hello.js and witter auth -->
+<script type="text/javascript" src="js/hello.js"></script>
+<script type="text/javascript" src="js/twitter.js"></script>
+<!-- Path to your app js-->
+<script type="text/javascript" src="js/app.js"></script>
+</body>
+</html>
