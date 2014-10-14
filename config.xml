@@ -3,17 +3,17 @@
 <!-- config.xml reference: https://build.phonegap.com/docs/config-xml -->
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
-        id        = "com.phonegap.hellojs"
+        id        = "com.phonegap.shovelapps"
         version   = "1.0.0">
 
-    <name>JSConfApp</name>
+    <name>JSConf.AR</name>
 
     <description>
-        JSConfApp using HelloJS demo implenting thirdparty SDK's into phonegap
+        JSConfApp using HelloJS demo implementing thirdparty SDK's into phonegap
     </description>
 
-    <author href="#" email="tomas.marcote@gmail.com">
-        Andrew Dodson
+    <author href="https://github.com/tmarcote" email="tomas.marcote@gmail.com">
+        Tomas Marcote
     </author>
 
     <!--
@@ -33,7 +33,8 @@
     <!-- <preference name="phonegap-version"      value="3.4.0" /> -->      <!-- all: current version of PhoneGap -->
     <preference name="orientation"                value="default" />        <!-- all: default means both landscape and portrait are enabled -->
     <preference name="target-device"              value="universal" />      <!-- all: possible values handset, tablet, or universal -->
-    <preference name="fullscreen"                 value="true" />           <!-- all: hides the status bar at the top of the screen -->
+    <!-- fullscreen en false para que al querer ingresar texto el tecclado no me aarezca por sobre la app-->
+    <preference name="fullscreen"                 value="false" />           <!-- all: hides the status bar at the top of the screen -->
     <preference name="webviewbounce"              value="true" />           <!-- ios: control whether the screen 'bounces' when scrolled beyond the top -->
     <preference name="prerendered-icon"           value="true" />           <!-- ios: if icon is prerendered, iOS will not apply it's gloss to the app's icon on the user's home screen -->
     <preference name="stay-in-webview"            value="false" />          <!-- ios: external links should open in the default browser, 'true' would use the webview the app lives in -->
@@ -56,7 +57,11 @@
 
     <!-- Define app icon for each platform. -->
     <icon src="icon.png" />
-
+    <icon src="icon.png" gap:platform="android" gap:density="ldpi" />
+    <icon src="icon.png" gap:platform="android" gap:density="mdpi" />
+    <icon src="icon.png" gap:platform="android" gap:density="hdpi" />
+    <icon src="icon.png" gap:platform="android" gap:density="xhdpi" />
+    <icon src="icon.png" gap:platform="android" gap:density="xxhdpi" />
 
     <!--
         Define access to external domains.
