@@ -33,6 +33,7 @@
     <!-- <preference name="phonegap-version"      value="3.4.0" /> -->      <!-- all: current version of PhoneGap -->
     <preference name="orientation"                value="default" />        <!-- all: default means both landscape and portrait are enabled -->
     <preference name="target-device"              value="universal" />      <!-- all: possible values handset, tablet, or universal -->
+    
     <!-- fullscreen en false para que al querer ingresar texto el tecclado no me aarezca por sobre la app-->
     <preference name="fullscreen"                 value="false" />           <!-- all: hides the status bar at the top of the screen -->
     <preference name="webviewbounce"              value="true" />           <!-- ios: control whether the screen 'bounces' when scrolled beyond the top -->
@@ -58,15 +59,15 @@
         A list of available plugins are available at https://build.phonegap.com/docs/plugins
     -->
 
-
+<!--<icon src="res/icon/android/icon.png" /> -->
     <!-- Define app icon for each platform. -->
-    <icon src="icon.png" />
-    <icon src="icon.png" gap:platform="android" gap:density="ldpi" />
-    <icon src="icon.png" gap:platform="android" gap:density="mdpi" />
-    <icon src="icon.png" gap:platform="android" gap:density="hdpi" />
-    <icon src="icon.png" gap:platform="android" gap:density="xhdpi" />
-    <icon src="icon.png" gap:platform="android" gap:density="xxhdpi" />
-
+    <platform name="android">
+        <icon src="icon/android/ldpi.png" gap:density="ldpi" />
+        <icon src="icon/android/mdpi.png" gap:density="mdpi" />
+        <icon src="icon/android/hdpi.png" gap:density="hdpi" />
+        <icon src="icon/android/xhdpi.png" gap:density="xhdpi" />
+        <icon src="icon/android/xxhdpi.png" gap:density="xxhdpi" />
+    </platform>
 
     <!--
         Define access to external domains.
