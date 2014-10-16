@@ -1,0 +1,67 @@
+[{
+  "Id": "1",
+  "Name": "Alex Sexton",
+  "Company": "Stripe",
+  "ProfilePic": "img/speakers/alex-sexton.jpg",
+  "Bio": "Comming soon."
+}, {
+  "Id": "2",
+  "Name": "Álvaro Videla",
+  "Company": "RabbitMQ",
+  "ProfilePic": "img/speakers/alvaro-videla.jpg",
+  "Bio": "Comming soon."
+}, {
+  "Id": "3",
+  "Name": "Angel \"Java\" Lopez",
+  "Company": "Southworks",
+  "ProfilePic": "img/speakers/angel-java-lopez.jpg",
+  "Bio": "Comming soon."
+}, {
+  "Id": "4",
+  "Name": "Jason Chen",
+  "Company": "Quilljs",
+  "ProfilePic": "img/speakers/jason-chen.jpg",
+  "Bio": "Comming soon."
+}, {
+  "Id": "5",
+  "Name": "Jennifer Dewalt",
+  "Company": "180days, Wit.AI",
+  "ProfilePic": "img/speakers/jennifer-dewalt.jpg",
+  "Bio": "Comming soon."
+}, {
+  "Id": "6",
+  "Name": "Juan Ignacio Dopazo",
+  "Company": "Yahoo",
+  "ProfilePic": "img/speakers/juan-ignacio-dopazo.jpg",
+  "Bio": "Comming soon."
+}, {
+  "Id": "7",
+  "Name": "María Evangelina Ferreira",
+  "Company": "UTN",
+  "ProfilePic": "img/speakers/maria-evangelina-ferreira.jpg",
+  "Bio": "Comming soon."
+}, {
+  "Id": "8",
+  "Name": "Nicolás Belmonte",
+  "Company": "Twitter",
+  "ProfilePic": "img/speakers/nicolas-garcia.jpg",
+  "Bio": "Comming soon."
+}, {
+  "Id": "9",
+  "Name": "Ricardo Cabello",
+  "Company": "Three.JS",
+  "ProfilePic": "img/speakers/ricardo-cabello.jpg",
+  "Bio": "Comming soon."
+}, {
+  "Id": "10",
+  "Name": "Sara Chipps",
+  "Company": "GirlDevelopIt, Jewliebots",
+  "ProfilePic": "img/speakers/sara-chipps.jpg",
+  "Bio": "Comming soon."
+}, {
+  "Id": "11",
+  "Name": "Seb Markbage",
+  "Company": "Facebook, React.JS",
+  "ProfilePic": "img/speakers/sebastian-markbage.jpg",
+  "Bio": "Comming soon."
+}]
