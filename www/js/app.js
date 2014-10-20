@@ -11,7 +11,8 @@ var myApp = new Framework7({
 
 //Esta variable es usada tanto por el plugin de login como por el plugin de chat
 var username, avatar = false,
-  social = "";
+  social = "",
+  initialLoad = 0;
 
 initLogin();
 initViews();
@@ -44,6 +45,8 @@ function initViews() {
   //vista homepage
   var view7 = myApp.addView('#view-home');
 
+  var view8 = myApp.addView('#view-chatRooms');
+
   initChat();
   initAgenda(view5);
   initSpeakers(view3);
@@ -55,8 +58,11 @@ function initChat() {
   /*JS CHAT*/
 
   //instancio la base de datos de mensajes
-  var chats = new Firebase("https://shovelChat.firebaseio.com/Chats");
-  var lastDate, messagesLoaded = false;
+  var currentRoomDB;
+  var roomsDB = new Firebase("https://shovelChat.firebaseio.com/Rooms");
+  var lastDate,
+    roomsList, roomsLoaded = false,
+    currentRoom;
 
   // Format date
   function formatDay(d) {
@@ -91,8 +97,9 @@ function initChat() {
 
   // Receive message
   function receiveMessage(snapshot) {
+
     var message = snapshot.val();
-    if (message.name === username) return;
+
     var date = new Date();
     var offset = date.getTimezoneOffset() * 60 * 1000;
     date = date.getTime() + offset;
@@ -104,26 +111,30 @@ function initChat() {
       time = formatTime(date);
       lastDate = date;
     }
-    myApp.addMessage({
-      text: stripMessage(message.message),
-      type: 'received',
-      name: message.name,
-      avatar: message.avatar,
-      day: day,
-      time: time
-    });
+    if (message.name === username) {
+      if (initialLoad >= 10) return;
+      myApp.addMessage({
+        text: stripMessage(message.message),
+        type: 'sent',
+        name: message.name,
+        avatar: message.avatar,
+        day: day,
+        time: time
+      });
+    } else {
+      myApp.addMessage({
+        text: stripMessage(message.message),
+        type: 'received',
+        name: message.name,
+        avatar: message.avatar,
+        day: day,
+        time: time
+      });
+    }
+    initialLoad++;
   }
 
-  chats.on("value", function(snapshot) {
-    if (messagesLoaded) return;
-    messagesLoaded = true;
-  });
 
-  //cada vez que se agrega un mensaje lo parsea (si aun no realizo la carga inicial no)
-  chats.on("child_added", function(snapshot) {
-    if (!messagesLoaded) return;
-    receiveMessage(snapshot);
-  });
 
   // Send message
   $$('.messagebar a.link').on('click', function() {
@@ -140,7 +151,7 @@ function initChat() {
       time = formatTime(date);
       lastDate = date;
     }
-    chats.push({
+    currentRoomDB.push({
       name: username,
       message: messageText,
       avatar: avatar,
@@ -172,7 +183,7 @@ function initChat() {
         time = formatTime(date);
         lastDate = date;
       }
-      chats.push({
+      currentRoomDB.push({
         name: username,
         message: messageText,
         avatar: avatar,
@@ -197,12 +208,62 @@ function initChat() {
       myApp.alert('please log in');
     } else {
       myApp.alert('you are logged in as ' + username);
+      var messagesLoaded = false;
+      if (currentRoomDB) {
+        currentRoomDB.off();
+      }
+      //establesco la sala actual
+      currentRoomDB = new Firebase("https://shovelChat.firebaseio.com/Rooms/" + currentRoom);
+
+      var queryLimited = currentRoomDB.limit(10);
+      //cada vez que se agrega un mensaje lo parsea (si aun no realizo la carga inicial no)
+      queryLimited.on("child_added", function(snapshot) {
+        receiveMessage(snapshot);
+      });
+
+
       return;
     }
     myApp.loginScreen();
   });
 
+
+  //Armado de listado de salas
+
+  roomsDB.on("value", function(snapshot) {
+    //solo lo realizo una vez (carga desde la base)
+    if (!roomsLoaded) {
+      roomsList = Object.keys(snapshot.val());
+      for (var index in roomsList) {
+        var li =
+          '<li>' +
+          '   <a href="#view-chat" data-src=' + roomsList[index] + ' class="item-link tab-link chatRoomItem">' +
+          '       <div class="item-content">' +
+          '           <div class="item-inner">' +
+          '                   <div class="item-title">' + roomsList[index] + '</div>' +
+          '           </div>' +
+          '        </div>' +
+          '    </a>' +
+          '</li>';
+        $$('.roomsList').append(li);
+      }
+      $$('.chatRoomItem').on('click', function() {
+        if (currentRoom !== this.getAttribute("data-src")) {
+          currentRoom = (this.getAttribute("data-src"));
+          $$('.messages').html("");
+          $$('.roomTitle').html(currentRoom);
+        }
+      });
+      roomsLoaded = true;
+    }
+
+  });
+
+
 }
+
+
+
 
 function initSpeakers(view) {
   /*JS SPEAKERS*/
@@ -475,10 +536,8 @@ function initLogout() {
 //CONNECTION STATUS (necesita el plugin org.apache.cordova.network-information)
 
 function onDeviceReady() {
-  navigator.splashscreen.hide();
   document.addEventListener("online", onOnline, false);
   document.addEventListener("offline", onOffline, false);
-
 }
 
 // Handle the online event
