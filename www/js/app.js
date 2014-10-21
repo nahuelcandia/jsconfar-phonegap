@@ -11,8 +11,7 @@ var myApp = new Framework7({
 
 //Esta variable es usada tanto por el plugin de login como por el plugin de chat
 var username, avatar = false,
-  social = "",
-  initialLoad = 0;
+  social = "";
 
 initLogin();
 initViews();
@@ -99,7 +98,7 @@ function initChat() {
   function receiveMessage(snapshot) {
 
     var message = snapshot.val();
-
+    if (message.name === username) return;
     var date = new Date();
     var offset = date.getTimezoneOffset() * 60 * 1000;
     date = date.getTime() + offset;
@@ -111,29 +110,41 @@ function initChat() {
       time = formatTime(date);
       lastDate = date;
     }
-    if (message.name === username) {
-      if (initialLoad >= 10) return;
-      myApp.addMessage({
-        text: stripMessage(message.message),
-        type: 'sent',
-        name: message.name,
-        avatar: message.avatar,
-        day: day,
-        time: time
-      });
-    } else {
-      myApp.addMessage({
-        text: stripMessage(message.message),
-        type: 'received',
-        name: message.name,
-        avatar: message.avatar,
-        day: day,
-        time: time
-      });
-    }
-    initialLoad++;
+
+    myApp.addMessage({
+      text: stripMessage(message.message),
+      type: 'received',
+      name: message.name,
+      avatar: message.avatar,
+      day: day,
+      time: time
+    });
+
   }
 
+  //Load message
+  function loadMessages(snapshot) {
+    var messages = snapshot.val();
+    var html = '',
+      messageId, message;
+    for (messageId in messages) {
+      message = messages[messageId];
+      if (message.date && lastDate) {
+        if (message.date - lastDate > 1000 * 60 * 5) {
+          html += '<div class="messages-date">' + formatDate(message.date) + '</div>';
+        }
+      }
+      var messageText = stripMessage(message.message);
+      if (message.name === username) {
+        html += '<div class="message message-sent"><div class="message-name">' + message.name + '</div><div class="message-text">' + messageText + '</div>' + (message.avatar ? '<div class="message-avatar" style="background-image:url(' + (message.avatar) + ')"></div>' : '') + '</div>';
+      } else {
+        html += '<div class="message message-received"><div class="message-name">' + message.name + '</div><div class="message-text">' + messageText + '</div>' + (message.avatar ? '<div class="message-avatar" style="background-image:url(' + (message.avatar) + ')"></div>' : '') + '</div>';
+      }
+      if (message.date) lastDate = message.date;
+    }
+    $('.messages-content .messages').html(html);
+    myApp.initMessages('.page[data-page="messages"]');
+  }
 
 
   // Send message
@@ -202,26 +213,34 @@ function initChat() {
   });
 
 
-  /*En el evento show de la vista 4 muestro un alert con los datos del usuario*/
+  /*En el evento show de la pantalla de chat muestro un alert con los datos del usuario*/
   $$('#view-chat').on('show', function() {
     if (username === undefined) {
       myApp.alert('please log in');
     } else {
       myApp.alert('you are logged in as ' + username);
-      var messagesLoaded = false;
+      var messagesLoaded = false; //controlo con esta variable por que funcion paso el msj (carga inicial vs carga individual)
       if (currentRoomDB) {
+        //limpio los listeners para que no se me acumulen cada vez que muestro la pantalla
         currentRoomDB.off();
       }
       //establesco la sala actual
       currentRoomDB = new Firebase("https://shovelChat.firebaseio.com/Rooms/" + currentRoom);
-
+      //limito los mensajes que traigo a 10
       var queryLimited = currentRoomDB.limit(10);
-      //cada vez que se agrega un mensaje lo parsea (si aun no realizo la carga inicial no)
+      //por cada msj que traiga despues de la carga inicial 
       queryLimited.on("child_added", function(snapshot) {
+        if (!messagesLoaded) return;
         receiveMessage(snapshot);
       });
-
-
+      //realizo el render de los msj traidos al inicio
+      queryLimited.on("value", function(snapshot) {
+        if (messagesLoaded) return;
+        loadMessages(snapshot);
+        messagesLoaded = true;
+      });
+      //scrolleo hasta el ultimo msj
+      myApp.scrollMessagesContainer();
       return;
     }
     myApp.loginScreen();
