@@ -44,6 +44,8 @@ function initViews() {
   //vista homepage
   var view7 = myApp.addView('#view-home');
 
+  var view8 = myApp.addView('#view-chatRooms');
+
   initChat();
   initAgenda(view5);
   initSpeakers(view3);
@@ -55,8 +57,11 @@ function initChat() {
   /*JS CHAT*/
 
   //instancio la base de datos de mensajes
-  var chats = new Firebase("https://shovelChat.firebaseio.com/Chats");
-  var lastDate, messagesLoaded = false;
+  var currentRoomDB;
+  var roomsDB = new Firebase("https://shovelChat.firebaseio.com/Rooms");
+  var lastDate,
+    roomsList, roomsLoaded = false,
+    currentRoom;
 
   // Format date
   function formatDay(d) {
@@ -91,6 +96,7 @@ function initChat() {
 
   // Receive message
   function receiveMessage(snapshot) {
+
     var message = snapshot.val();
     if (message.name === username) return;
     var date = new Date();
@@ -104,6 +110,7 @@ function initChat() {
       time = formatTime(date);
       lastDate = date;
     }
+
     myApp.addMessage({
       text: stripMessage(message.message),
       type: 'received',
@@ -112,18 +119,33 @@ function initChat() {
       day: day,
       time: time
     });
+
   }
 
-  chats.on("value", function(snapshot) {
-    if (messagesLoaded) return;
-    messagesLoaded = true;
-  });
+  //Load message
+  function loadMessages(snapshot) {
+    var messages = snapshot.val();
+    var html = '',
+      messageId, message;
+    for (messageId in messages) {
+      message = messages[messageId];
+      if (message.date && lastDate) {
+        if (message.date - lastDate > 1000 * 60 * 5) {
+          html += '<div class="messages-date">' + formatDate(message.date) + '</div>';
+        }
+      }
+      var messageText = stripMessage(message.message);
+      if (message.name === username) {
+        html += '<div class="message message-sent"><div class="message-name">' + message.name + '</div><div class="message-text">' + messageText + '</div>' + (message.avatar ? '<div class="message-avatar" style="background-image:url(' + (message.avatar) + ')"></div>' : '') + '</div>';
+      } else {
+        html += '<div class="message message-received"><div class="message-name">' + message.name + '</div><div class="message-text">' + messageText + '</div>' + (message.avatar ? '<div class="message-avatar" style="background-image:url(' + (message.avatar) + ')"></div>' : '') + '</div>';
+      }
+      if (message.date) lastDate = message.date;
+    }
+    $('.messages-content .messages').html(html);
+    myApp.initMessages('.page[data-page="messages"]');
+  }
 
-  //cada vez que se agrega un mensaje lo parsea (si aun no realizo la carga inicial no)
-  chats.on("child_added", function(snapshot) {
-    if (!messagesLoaded) return;
-    receiveMessage(snapshot);
-  });
 
   // Send message
   $$('.messagebar a.link').on('click', function() {
@@ -140,7 +162,7 @@ function initChat() {
       time = formatTime(date);
       lastDate = date;
     }
-    chats.push({
+    currentRoomDB.push({
       name: username,
       message: messageText,
       avatar: avatar,
@@ -172,7 +194,7 @@ function initChat() {
         time = formatTime(date);
         lastDate = date;
       }
-      chats.push({
+      currentRoomDB.push({
         name: username,
         message: messageText,
         avatar: avatar,
@@ -191,18 +213,76 @@ function initChat() {
   });
 
 
-  /*En el evento show de la vista 4 muestro un alert con los datos del usuario*/
+  /*En el evento show de la pantalla de chat muestro un alert con los datos del usuario*/
   $$('#view-chat').on('show', function() {
     if (username === undefined) {
       myApp.alert('please log in');
     } else {
       myApp.alert('you are logged in as ' + username);
+      var messagesLoaded = false; //controlo con esta variable por que funcion paso el msj (carga inicial vs carga individual)
+      if (currentRoomDB) {
+        //limpio los listeners para que no se me acumulen cada vez que muestro la pantalla
+        currentRoomDB.off();
+      }
+      //establesco la sala actual
+      currentRoomDB = new Firebase("https://shovelChat.firebaseio.com/Rooms/" + currentRoom);
+      //limito los mensajes que traigo a 10
+      var queryLimited = currentRoomDB.limit(10);
+      //por cada msj que traiga despues de la carga inicial 
+      queryLimited.on("child_added", function(snapshot) {
+        if (!messagesLoaded) return;
+        receiveMessage(snapshot);
+      });
+      //realizo el render de los msj traidos al inicio
+      queryLimited.on("value", function(snapshot) {
+        if (messagesLoaded) return;
+        loadMessages(snapshot);
+        messagesLoaded = true;
+      });
+      //scrolleo hasta el ultimo msj
+      myApp.scrollMessagesContainer();
       return;
     }
     myApp.loginScreen();
   });
 
+
+  //Armado de listado de salas
+
+  roomsDB.on("value", function(snapshot) {
+    //solo lo realizo una vez (carga desde la base)
+    if (!roomsLoaded) {
+      roomsList = Object.keys(snapshot.val());
+      for (var index in roomsList) {
+        var li =
+          '<li>' +
+          '   <a href="#view-chat" data-src=' + roomsList[index] + ' class="item-link tab-link chatRoomItem">' +
+          '       <div class="item-content">' +
+          '           <div class="item-inner">' +
+          '                   <div class="item-title">' + roomsList[index] + '</div>' +
+          '           </div>' +
+          '        </div>' +
+          '    </a>' +
+          '</li>';
+        $$('.roomsList').append(li);
+      }
+      $$('.chatRoomItem').on('click', function() {
+        if (currentRoom !== this.getAttribute("data-src")) {
+          currentRoom = (this.getAttribute("data-src"));
+          $$('.messages').html("");
+          $$('.roomTitle').html(currentRoom);
+        }
+      });
+      roomsLoaded = true;
+    }
+
+  });
+
+
 }
+
+
+
 
 function initSpeakers(view) {
   /*JS SPEAKERS*/
@@ -366,24 +446,48 @@ function initAgenda(view) {
 
 
   function armarListaAgenda() {
+
+
+
+
     for (var index in agenda) {
-      var li =
-        '<li class="contact-item">' +
-        '   <a href="#" data-src=' + agenda[index].Id + ' class="item-link create-page-agenda">' +
-        '       <div class="item-content">' +
-        '            <div class="item-media">' +
-        '                <div class="item-time">' + agenda[index].Time + '</div>' +
-        '           </div>' +
-        '           <div class="item-inner">' +
-        '                <div class="item-title-row">' +
-        '                   <div class="item-title">' + agenda[index].Title + '</div>' +
-        '                </div>' +
-        '                <div class="item-subtitle">' + agenda[index].Speaker + '</div>' +
-        '            </div>' +
+      var div =
+
+        '<div class="content-block-agenda">' +
+        ' <div class="content-block-title">' + agenda[index].Title + '</div>' +
+        '  <div class="content-block-inner">' +
+        '    <div class="content-block-agenda-alt">' +
+        '      <div class="row no-gutter">' +
+        '        <div class="col-33">' +
+        '          <img src=' + agenda[index].SpeakerProfilePic + ' style="width:100%"/>' +
         '        </div>' +
-        '    </a>' +
-        '</li>';
-      $$('.listaAgenda').append(li);
+        '        <div class="col-66">' +
+        '          <div>' + agenda[index].Speaker + '</div>' +
+        '          </br>' +
+        '          <div>' + agenda[index].Company + '</div>' +
+        '        </div>' +
+        '      </div>' +
+        '    </div>' +
+        '    <div class="content-block-title-alt">' + agenda[index].Time + '-' + agenda[index].Place + '</div>' +
+        '  </div>' +
+        '</div>';
+
+      // '<li class="contact-item">' +
+      //  '   <a href="#" data-src=' + agenda[index].Id + ' class="item-link create-page-agenda">' +
+      // '       <div class="item-content">' +
+      // '            <div class="item-media">' +
+      // '                <div class="item-time">' + agenda[index].Time + '</div>' +
+      // '           </div>' +
+      // '           <div class="item-inner">' +
+      // '                <div class="item-title-row">' +
+      // '                   <div class="item-title">' + agenda[index].Title + '</div>' +
+      // '                </div>' +
+      // '                <div class="item-subtitle">' + agenda[index].Speaker + '</div>' +
+      // '            </div>' +
+      // '        </div>' +
+      // '    </a>' +
+      // '</li>';
+      $$('.listaAgenda').append(div);
     }
     //Agrego la funcion de crear la página con el detalle del speaker al clickear en el mismo
     $$('.create-page-agenda').on('click', function() {
@@ -438,13 +542,16 @@ function initLogin() {
   var facebook_app_id = '281748475355273';
   var google_app_id = '153292884918-o0ejmc2dq5aa8hppl49u633ulgih9flu.apps.googleusercontent.com';
   var app_login_url = 'http://shovelapps.com/redirect/redirect.html';
+  // var app_login_url = 'http://shovelapps.com/redirect/redirect.html';
 
   hello.on('auth.login', function(response) {
     // Get Profile
 
     hello.api(response.network + ':/me', function(profile) {
       username = profile.name;
+      $$('.userName').html('<b>' + username + '</b>');
       avatar = profile.thumbnail;
+      $$('.userPic').attr('src', avatar);
       social = response.network;
       myApp.closeModal();
     });
@@ -475,10 +582,8 @@ function initLogout() {
 //CONNECTION STATUS (necesita el plugin org.apache.cordova.network-information)
 
 function onDeviceReady() {
-  navigator.splashscreen.hide();
   document.addEventListener("online", onOnline, false);
   document.addEventListener("offline", onOffline, false);
-
 }
 
 // Handle the online event

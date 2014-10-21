@@ -446,24 +446,48 @@ function initAgenda(view) {
 
 
   function armarListaAgenda() {
+
+
+
+
     for (var index in agenda) {
-      var li =
-        '<li class="contact-item">' +
-        '   <a href="#" data-src=' + agenda[index].Id + ' class="item-link create-page-agenda">' +
-        '       <div class="item-content">' +
-        '            <div class="item-media">' +
-        '                <div class="item-time">' + agenda[index].Time + '</div>' +
-        '           </div>' +
-        '           <div class="item-inner">' +
-        '                <div class="item-title-row">' +
-        '                   <div class="item-title">' + agenda[index].Title + '</div>' +
-        '                </div>' +
-        '                <div class="item-subtitle">' + agenda[index].Speaker + '</div>' +
-        '            </div>' +
+      var div =
+
+        '<div class="content-block-agenda">' +
+        ' <div class="content-block-title">' + agenda[index].Title + '</div>' +
+        '  <div class="content-block-inner">' +
+        '    <div class="content-block-agenda-alt">' +
+        '      <div class="row no-gutter">' +
+        '        <div class="col-33">' +
+        '          <img src=' + agenda[index].SpeakerProfilePic + ' style="width:100%"/>' +
         '        </div>' +
-        '    </a>' +
-        '</li>';
-      $$('.listaAgenda').append(li);
+        '        <div class="col-66">' +
+        '          <div>' + agenda[index].Speaker + '</div>' +
+        '          </br>' +
+        '          <div>' + agenda[index].Company + '</div>' +
+        '        </div>' +
+        '      </div>' +
+        '    </div>' +
+        '    <div class="content-block-title-alt">' + agenda[index].Time + '-' + agenda[index].Place + '</div>' +
+        '  </div>' +
+        '</div>';
+
+      // '<li class="contact-item">' +
+      //  '   <a href="#" data-src=' + agenda[index].Id + ' class="item-link create-page-agenda">' +
+      // '       <div class="item-content">' +
+      // '            <div class="item-media">' +
+      // '                <div class="item-time">' + agenda[index].Time + '</div>' +
+      // '           </div>' +
+      // '           <div class="item-inner">' +
+      // '                <div class="item-title-row">' +
+      // '                   <div class="item-title">' + agenda[index].Title + '</div>' +
+      // '                </div>' +
+      // '                <div class="item-subtitle">' + agenda[index].Speaker + '</div>' +
+      // '            </div>' +
+      // '        </div>' +
+      // '    </a>' +
+      // '</li>';
+      $$('.listaAgenda').append(div);
     }
     //Agrego la funcion de crear la página con el detalle del speaker al clickear en el mismo
     $$('.create-page-agenda').on('click', function() {
@@ -518,13 +542,16 @@ function initLogin() {
   var facebook_app_id = '281748475355273';
   var google_app_id = '153292884918-o0ejmc2dq5aa8hppl49u633ulgih9flu.apps.googleusercontent.com';
   var app_login_url = 'http://shovelapps.com/redirect/redirect.html';
+  // var app_login_url = 'http://shovelapps.com/redirect/redirect.html';
 
   hello.on('auth.login', function(response) {
     // Get Profile
 
     hello.api(response.network + ':/me', function(profile) {
       username = profile.name;
+      $$('.userName').html('<b>' + username + '</b>');
       avatar = profile.thumbnail;
+      $$('.userPic').attr('src', avatar);
       social = response.network;
       myApp.closeModal();
     });
