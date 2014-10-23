@@ -14,6 +14,9 @@
     <feature name="SplashScreen">
         <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
     </feature>
+    <feature name="SocialSharing">
+        <param name="android-package" value="nl.xservices.plugins.SocialSharing" />
+    </feature>
     <icon gap:density="ldpi" src="icon/android/ldpi.png" />
     <icon gap:density="mdpi" src="icon/android/mdpi.png" />
     <icon gap:density="hdpi" src="icon/android/hdpi.png" />

@@ -387,9 +387,7 @@ function initMapa() {
         scaledSize: new google.maps.Size(500, 250)
       }
     });
-
   }
-
 
   $$('#view-mapa').on('show', function() {
     if ($$('#map_canvas').html() === "") {
@@ -410,7 +408,7 @@ function initTweetFeed() {
   $$('#tweetContainer-inner').attr('href', "https://twitter.com/search?q=" + query);
   $$('#tweetContainer-inner').attr('data-widget-id', widgetId);
 
-  //incluye asincronicamente el widgets.js
+
   function initTwitter(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0],
       p = /^http:/.test(d.location) ? 'http' : 'https';
@@ -421,8 +419,8 @@ function initTweetFeed() {
       fjs.parentNode.insertBefore(js, fjs);
     }
   }
+  // inicializo el script de twitter al cargar la vista por primera vez para evitar problemas de resize.
 
-  //inicializo el script de twitter al cargar la vista por primera vez para evitar problemas de resize.
   $$('#view-tweets').on('show', function() {
     if (window.twttr) {
       return;
@@ -430,8 +428,9 @@ function initTweetFeed() {
     initTwitter(document, "script", "twitter-wjs");
   });
 
-
 }
+//incluye asincronicamente el widgets.js
+
 
 function initAgenda(view) {
   //JS agenda
@@ -447,46 +446,28 @@ function initAgenda(view) {
 
   function armarListaAgenda() {
 
-
-
-
     for (var index in agenda) {
       var div =
 
         '<div class="content-block-agenda">' +
-        ' <div class="content-block-title">' + agenda[index].Title + '</div>' +
+        ' <div class="content-block-title"><b>' + agenda[index].Title + '</b></div>' +
         '  <div class="content-block-inner">' +
         '    <div class="content-block-agenda-alt">' +
         '      <div class="row no-gutter">' +
         '        <div class="col-33">' +
-        '          <img src=' + agenda[index].SpeakerProfilePic + ' style="width:100%"/>' +
+        '          <img class="speakerPic" src=' + agenda[index].SpeakerProfilePic + ' />' +
         '        </div>' +
-        '        <div class="col-66">' +
+        '        <div class="col-66 speakerInfo" >' +
         '          <div>' + agenda[index].Speaker + '</div>' +
         '          </br>' +
         '          <div>' + agenda[index].Company + '</div>' +
         '        </div>' +
         '      </div>' +
         '    </div>' +
-        '    <div class="content-block-title-alt">' + agenda[index].Time + '-' + agenda[index].Place + '</div>' +
+        '    <div class="content-block-title-alt"><b>' + agenda[index].Time + '-' + agenda[index].Place + '</b></div>' +
         '  </div>' +
         '</div>';
 
-      // '<li class="contact-item">' +
-      //  '   <a href="#" data-src=' + agenda[index].Id + ' class="item-link create-page-agenda">' +
-      // '       <div class="item-content">' +
-      // '            <div class="item-media">' +
-      // '                <div class="item-time">' + agenda[index].Time + '</div>' +
-      // '           </div>' +
-      // '           <div class="item-inner">' +
-      // '                <div class="item-title-row">' +
-      // '                   <div class="item-title">' + agenda[index].Title + '</div>' +
-      // '                </div>' +
-      // '                <div class="item-subtitle">' + agenda[index].Speaker + '</div>' +
-      // '            </div>' +
-      // '        </div>' +
-      // '    </a>' +
-      // '</li>';
       $$('.listaAgenda').append(div);
     }
     //Agrego la funcion de crear la página con el detalle del speaker al clickear en el mismo

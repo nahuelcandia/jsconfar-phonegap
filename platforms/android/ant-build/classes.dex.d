@@ -16,6 +16,12 @@
 /home/tomas/test/platforms/android/ant-build/classes/org/apache/cordova/splashscreen/SplashScreen.class \
 /home/tomas/test/platforms/android/ant-build/classes/org/apache/cordova/networkinformation/NetworkManager.class \
 /home/tomas/test/platforms/android/ant-build/classes/org/apache/cordova/networkinformation/NetworkManager$1.class \
+/home/tomas/test/platforms/android/ant-build/classes/nl/xservices/plugins/SocialSharing$2.class \
+/home/tomas/test/platforms/android/ant-build/classes/nl/xservices/plugins/SocialSharing.class \
+/home/tomas/test/platforms/android/ant-build/classes/nl/xservices/plugins/SocialSharing$SocialSharingRunnable.class \
+/home/tomas/test/platforms/android/ant-build/classes/nl/xservices/plugins/SocialSharing$2$1.class \
+/home/tomas/test/platforms/android/ant-build/classes/nl/xservices/plugins/SocialSharing$1.class \
+/home/tomas/test/platforms/android/ant-build/classes/nl/xservices/plugins/SocialSharing$2$1$1.class \
 /home/tomas/test/platforms/android/ant-build/classes/com/phonegap/hellojs/TestApp.class \
 /home/tomas/test/platforms/android/ant-build/classes/com/phonegap/hellojs/BuildConfig.class \
 /home/tomas/test/platforms/android/ant-build/classes/com/phonegap/hellojs/R.class \
