@@ -666,40 +666,34 @@ function onNotification(e) {
       // if this flag is set, this notification happened while we were in the foreground.
       // you might want to play a sound to get the user's attention, throw up a dialog, etc.
       // alert(e.data);
-      if (!e.foreground) {
-        // $("#app-status-ul").append('<li>--INLINE NOTIFICATION--' + '</li>');
+      // if (e.foreground) {
+      // $("#app-status-ul").append('<li>--INLINE NOTIFICATION--' + '</li>');
 
-        // on Android soundname is outside the payload. 
-        // On Amazon FireOS all custom attributes are contained within payload
-        var soundfile = e.payload.sound;
+      // on Android soundname is outside the payload. 
+      // On Amazon FireOS all custom attributes are contained within payload
+      var soundfile = e.payload.sound;
 
-        var path = window.location.pathname;
-        //-10 porque remueve index.html
-        path = path.substr(path, path.length - 10);
-        path = 'file://' + path;
-        // if the notification contains a soundname, play it.
-        // playing a sound also requires the org.apache.cordova.media plugin
-        var my_media = new Media(path + 'sounds/' + soundfile);
-        my_media.play();
+      var path = window.location.pathname;
+      //-10 porque remueve index.html
+      path = path.substr(path, path.length - 10);
+      path = 'file://' + path;
+      // if the notification contains a soundname, play it.
+      // playing a sound also requires the org.apache.cordova.media plugin
+      var my_media = new Media(path + 'sounds/' + soundfile);
+      my_media.play();
 
-      }
-
-      myApp.addNotification({
-        title: e.payload.title,
-        message: e.payload.message
-      });
-      // } else { // otherwise we were launched because the user touched a notification in the notification tray.
+      // }
+      // else { // otherwise we were launched because the user touched a notification in the notification tray.
       //   if (e.coldstart)
       //     $("#app-status-ul").append('<li>--COLDSTART NOTIFICATION--' + '</li>');
       //   else
       //     $("#app-status-ul").append('<li>--BACKGROUND NOTIFICATION--' + '</li>');
       // }
 
-      // $("#app-status-ul").append('<li>MESSAGE -> MSG: ' + e.payload.message + '</li>');
-      // //android only
-      // $("#app-status-ul").append('<li>MESSAGE -> MSGCNT: ' + e.payload.msgcnt + '</li>');
-      // //amazon-fireos only
-      // $("#app-status-ul").append('<li>MESSAGE -> TIMESTAMP: ' + e.payload.timeStamp + '</li>');
+      myApp.addNotification({
+        title: e.payload.title,
+        message: e.payload.message
+      });
       break;
 
     case 'error':
