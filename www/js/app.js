@@ -20,8 +20,6 @@ initViews();
 initLogout();
 
 
-
-
 function initViews() {
   //vista latest tweets
   var view1 = myApp.addView('#view-tweets');
@@ -280,11 +278,7 @@ function initChat() {
 
   });
 
-
 }
-
-
-
 
 function initSpeakers(view) {
   /*JS SPEAKERS*/
@@ -559,6 +553,11 @@ function initLogout() {
     myApp.loginScreen();
     return false;
   });
+
+  //EXIT
+  $$('#exit').on('click', function() {
+    navigator.app.exitApp();
+  });
 }
 
 
@@ -568,6 +567,10 @@ function onDeviceReady() {
 
   document.addEventListener("online", onOnline, false);
   document.addEventListener("offline", onOffline, false);
+
+  //agrego el listener del evento del back button para android
+  document.addEventListener("backbutton", weNeedToGoBack, false);
+
 
   //oculto la splashscreen 
   navigator.splashscreen.hide();
@@ -579,6 +582,7 @@ function onDeviceReady() {
     // $("#app-status-ul").append('<li>registering ' + device.platform + '</li>');
     if (device.platform == 'android' || device.platform == 'Android' ||
       device.platform == 'amazon-fireos') {
+
       pushNotification.register(successHandler, errorHandler, {
         "senderID": "153292884918", //id de mi proyecto en Google developer console
         "ecb": "onNotification" //funcion a ejecutar si estoy en android
@@ -611,7 +615,9 @@ function onOffline() {
   $$('.needs-conn').addClass('disabled');
 }
 
+function weNeedToGoBack() {
 
+}
 
 //FUNCIONES DE PUSH NOTIFICATION
 
