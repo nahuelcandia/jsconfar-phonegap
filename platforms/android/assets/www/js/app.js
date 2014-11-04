@@ -405,23 +405,45 @@ function initTweetFeed() {
   $$('#tweetContainer-inner').attr('data-widget-id', widgetId);
 
 
+  //le modifico el funcionamiento a los links del feed para que los abra en inappbrowser
+  window.onTwitterRender = function() {
+    $('#tweetContainer-inner').contents().find("a").on('click', function(e) {
+      e.preventDefault();
+      console.log(e);
+
+      var $this = $(this);
+      var target = $this.data('inAppBrowser') || '_blank';
+
+      window.open($this.attr('href'), target, 'location=yes');
+
+      e.stopPropagation();
+      return false;
+    });
+  }
+
   function initTwitter(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0],
       p = /^http:/.test(d.location) ? 'http' : 'https';
     if (!d.getElementById(id)) {
+
       js = d.createElement(s);
       js.id = id;
       js.src = p + "://platform.twitter.com/widgets.js";
+      js.setAttribute('onload', 'twttr.events.bind("rendered", window.onTwitterRender);');
       fjs.parentNode.insertBefore(js, fjs);
     }
   }
   // inicializo el script de twitter al cargar la vista por primera vez para evitar problemas de resize.
 
+
+
   $$('#view-tweets').on('show', function() {
     if (window.twttr) {
+      window.onTwitterRender();
       return;
     }
     initTwitter(document, "script", "twitter-wjs");
+
   });
 
 }
@@ -564,6 +586,10 @@ function initLogout() {
 //CONNECTION STATUS (necesita el plugin org.apache.cordova.network-information)
 
 function onDeviceReady() {
+
+
+
+
 
   document.addEventListener("online", onOnline, false);
   document.addEventListener("offline", onOffline, false);
