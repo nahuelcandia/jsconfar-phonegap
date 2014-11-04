@@ -48,8 +48,13 @@ text-transform: none;
 }
 
 
-.about img{
+.about img {
   width: 100%;
+}
+
+.imgLogin {
+  width: 100%;
+  background-color: #1b3f57;
 }
 
 .listWhite {
@@ -270,7 +275,7 @@ h1.logo {
 }
 
 .sprite.logo {
-  margin-top: 100px;
+  margin-top: 25px;
   width: 207px;
   height: 100px;
 

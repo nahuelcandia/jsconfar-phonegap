@@ -3,8 +3,8 @@
 <!-- config.xml reference: https://build.phonegap.com/docs/config-xml -->
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
-        id        = "com.phonegap.shovelapps"
-        version   = "1.0.0">
+        id        = "com.shovelapps.jsconfar"
+        version   = "0.0.1">
 
     <name>JSConf.AR</name>
 

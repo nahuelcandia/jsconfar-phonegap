@@ -74,6 +74,15 @@
 /home/tomas/test/platforms/android/ant-build/classes/com/plugin/gcm/GCMIntentService.class \
 /home/tomas/test/platforms/android/ant-build/classes/com/plugin/gcm/CordovaGCMBroadcastReceiver.class \
 /home/tomas/test/platforms/android/ant-build/classes/com/plugin/gcm/PushHandlerActivity.class \
+/home/tomas/test/platforms/android/ant-build/classes/com/shovelapps/jsconfar/TestApp.class \
+/home/tomas/test/platforms/android/ant-build/classes/com/shovelapps/jsconfar/BuildConfig.class \
+/home/tomas/test/platforms/android/ant-build/classes/com/shovelapps/jsconfar/Manifest$permission.class \
+/home/tomas/test/platforms/android/ant-build/classes/com/shovelapps/jsconfar/R.class \
+/home/tomas/test/platforms/android/ant-build/classes/com/shovelapps/jsconfar/R$drawable.class \
+/home/tomas/test/platforms/android/ant-build/classes/com/shovelapps/jsconfar/R$xml.class \
+/home/tomas/test/platforms/android/ant-build/classes/com/shovelapps/jsconfar/R$attr.class \
+/home/tomas/test/platforms/android/ant-build/classes/com/shovelapps/jsconfar/R$string.class \
+/home/tomas/test/platforms/android/ant-build/classes/com/shovelapps/jsconfar/Manifest.class \
 /home/tomas/test/platforms/android/ant-build/classes/com/phonegap/hellojs/TestApp.class \
 /home/tomas/test/platforms/android/ant-build/classes/com/phonegap/hellojs/BuildConfig.class \
 /home/tomas/test/platforms/android/ant-build/classes/com/phonegap/hellojs/R.class \

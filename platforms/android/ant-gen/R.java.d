@@ -1,4 +1,4 @@
-/home/tomas/test/platforms/android/ant-gen/com/phonegap/shovelapps/R.java \
+/home/tomas/test/platforms/android/ant-gen/com/shovelapps/jsconfar/R.java \
  : /home/tomas/test/platforms/android/res/drawable-port-hdpi/screen.png \
 /home/tomas/test/platforms/android/res/drawable-port-ldpi/screen.png \
 /home/tomas/test/platforms/android/res/drawable-land-xhdpi/screen.png \
