@@ -33,6 +33,7 @@ margin-top: 20px;
 margin-left: -15px;
 margin-bottom:0px;
 text-transform: none;
+white-space: normal;
 }
 
 
@@ -117,7 +118,7 @@ text-align: center;
 }
 
 .speakerInfo{
-  margin-top: 6px;
+  margin-top: 20px;
   text-align: center;
 }
 
@@ -239,10 +240,9 @@ background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w
 .header-text {
 /*
 removido, causa inconvenientes con como se muestra la cabecera de las paginas dinamicas
-
 display: inline-block;
 vertical-align: top;*/
-  padding-bottom: 30px;
+  padding-bottom: 10px;
 }
 
 .header-text img{
@@ -254,6 +254,7 @@ vertical-align: top;*/
   -webkit-flex-shrink: 0;
   -ms-flex: 0 0 auto;
   flex-shrink: 0;
+  margin-bottom: 40px;
 }
 
 

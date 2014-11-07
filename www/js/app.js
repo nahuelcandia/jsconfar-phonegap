@@ -340,11 +340,12 @@ function initSpeakers(view) {
       '          <img src="' + speakers[index].ProfilePic + '">' +
       '          <h3>' + speakers[index].Name + '</h3>' +
       '          <p>' + speakers[index].Company + '</p>' +
+      '          <p>' + speakers[index].Twitter + '</p>' +
       '        </div>' +
       '      </div>' +
       '      <div class="content-block">' +
       '        <div class="content-block-inner">' +
-      '          <p>' + speakers[index].Bio + '</p>' +
+      '          <p>' + speakers[index].Charla + '</p>' +
       '        </div>' +
       '      </div>' +
       '    </div>' +
@@ -407,16 +408,17 @@ function initTweetFeed() {
 
   //le modifico el funcionamiento a los links del feed para que los abra en inappbrowser
   window.onTwitterRender = function() {
-    $('#tweetContainer-inner').contents().find("a").on('click', function(e) {
-      e.preventDefault();
-      console.log(e);
+    var $iframe = $('#tweetContainer-inner').contents();
 
+    $iframe.find("a:not(.expand)").on('tap click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
       var $this = $(this);
       var target = $this.data('inAppBrowser') || '_blank';
 
       window.open($this.attr('href'), target, 'location=yes');
 
-      e.stopPropagation();
+
       return false;
     });
   }
@@ -439,15 +441,16 @@ function initTweetFeed() {
 
   $$('#view-tweets').on('show', function() {
     if (window.twttr) {
-      window.onTwitterRender();
+
       return;
     }
+    //incluye asincronicamente el widgets.js
     initTwitter(document, "script", "twitter-wjs");
 
   });
 
 }
-//incluye asincronicamente el widgets.js
+
 
 
 function initAgenda(view) {
@@ -466,26 +469,24 @@ function initAgenda(view) {
 
     for (var index in agenda) {
       var div =
-
-        '<div class="content-block-agenda">' +
-        ' <div class="content-block-title"><b>' + agenda[index].Title + '</b></div>' +
-        '  <div class="content-block-inner">' +
+        '<a href="#" data-src=' + agenda[index].Id + ' class="item-link create-page-agenda">' +
+        ' <div class="content-block-agenda">' +
+        '  <div class="content-block-title"><b>' + agenda[index].Title + '</b></div>' +
+        '   <div class="content-block-inner">' +
         '    <div class="content-block-agenda-alt">' +
-        '      <div class="row no-gutter">' +
-        '        <div class="col-33">' +
-        '          <img class="speakerPic" src=' + agenda[index].SpeakerProfilePic + ' />' +
-        '        </div>' +
-        '        <div class="col-66 speakerInfo" >' +
-        '          <div>' + agenda[index].Speaker + '</div>' +
-        '          </br>' +
-        '          <div>' + agenda[index].Company + '</div>' +
-        '        </div>' +
+        '     <div class="row no-gutter">' +
+        '      <div class="col-33">' +
+        '        <img class="speakerPic" src=' + agenda[index].SpeakerProfilePic + ' />' +
         '      </div>' +
+        '      <div class="col-66 speakerInfo" >' +
+        '       <div><b>' + agenda[index].Speaker + '</b></div>' +
+        '      </div>' +
+        '     </div>' +
         '    </div>' +
-        '    <div class="content-block-title-alt"><b>' + agenda[index].Time + '-' + agenda[index].Place + '</b></div>' +
+        '   <div class="content-block-title-alt"><b>' + agenda[index].Time + '</b></div>' +
         '  </div>' +
-        '</div>';
-
+        ' </div>' +
+        '</a>';
       $$('.listaAgenda').append(div);
     }
     //Agrego la funcion de crear la página con el detalle del speaker al clickear en el mismo
@@ -516,8 +517,8 @@ function initAgenda(view) {
       '        <div class="header-text">' +
       '          <img src="' + agenda[index].SpeakerProfilePic + '">' +
       '          <h3>' + agenda[index].Title + '</h3>' +
-      '          <h3>' + agenda[index].Time + '</h3>' +
-      '          <p>' + agenda[index].Speaker + '</p>' +
+      '          <h3>' + agenda[index].Speaker + '</h3>' +
+      '          <p>' + agenda[index].Time + '</p>' +
       '        </div>' +
       '      </div>' +
       '      <div class="content-block">' +
@@ -642,7 +643,7 @@ function onOffline() {
 }
 
 function weNeedToGoBack() {
-
+  myApp.showTab('#view-home');
 }
 
 //FUNCIONES DE PUSH NOTIFICATION
