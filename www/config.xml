@@ -19,8 +19,8 @@
     <!--
         Enable individual API permissions here.
         The "device" permission is required for the 'deviceready' event.
-    -->
     <feature name="http://api.phonegap.com/1.0/device" />
+    -->
 
     <!--
         If you do not want any permissions to be added to your app, add the
@@ -52,8 +52,6 @@
     <!-- el value es el nombre del archivo de la splash screen-->
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="10000" />
-    <!-- Plugins can also be added here. -->
-    <gap:plugin name="org.apache.cordova.inappbrowser" />
     <!--
         <gap:plugin name="Example" />
         A list of available plugins are available at https://build.phonegap.com/docs/plugins
@@ -62,11 +60,19 @@
     <icon src="icon/android/icon.png" /> 
     <!-- Define app icon for each platform. -->
     <platform name="android">
-        <icon src="icon/android/ldpi.png" gap:density="ldpi" />
-        <icon src="icon/android/mdpi.png" gap:density="mdpi" />
-        <icon src="icon/android/hdpi.png" gap:density="hdpi" />
-        <icon src="icon/android/xhdpi.png" gap:density="xhdpi" />
-        <icon src="icon/android/xxhdpi.png" gap:density="xxhdpi" />
+        <icon src="icon/android/ldpi.png" density="ldpi" />
+        <icon src="icon/android/mdpi.png" density="mdpi" />
+        <icon src="icon/android/hdpi.png" density="hdpi" />
+        <icon src="icon/android/xhdpi.png" density="xhdpi" />
+        <icon src="icon/android/xxhdpi.png" density="xxhdpi" />
+        <splash src="screens/android/screen-ldpi-portrait.png" density="port-ldpi" />
+        <splash src="screens/android/screen-ldpi-landscape.png" density="land-ldpi" />
+        <splash src="screens/android/screen-mdpi-portrait.png" density="port-mdpi" />
+        <splash src="screens/android/screen-mdpi-landscape.png" density="land-mdpi" />
+        <splash src="screens/android/screen-hdpi-portrait.png" density="port-hdpi" />
+        <splash src="screens/android/screen-hdpi-landscape.png" density="land-hdpi" />
+        <splash src="screens/android/screen-xhdpi-portrait.png" density="port-xhdpi" />
+        <splash src="screens/android/screen-xhdpi-landscape.png" density="land-xhdpi" />
     </platform>
 
     <!--
