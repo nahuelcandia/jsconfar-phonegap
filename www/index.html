@@ -35,9 +35,9 @@
           <div class="page-content login-screen-content">
             <h1 class="sprite logo"></h1>
             <div class="login-buttons">
-              <button class="zocial twitter" id='login' onclick="hello.login('twitter');">Login with Twitter</button>
-              <button class="zocial facebook" id='login' onclick="hello.login('facebook');">Login with Facebook</button>
-              <button class="zocial googleplus" id='login' onclick="hello.login('google');">Login with Google</button>
+              <button class="botonTwitter botonLogin" id='login' onclick="hello.login('twitter');"><i class="icon iconTwitter"> </i>     Entrar con Twitter</button>
+
+              <button class="botonFacebook botonLogin" id='login' onclick="hello.login('facebook');"><i class="icon iconFacebook"> </i>     Entrar con Facebook</button>
             </div>
             <img class="imgLogin" src="img/fondoAbout.png"/>
           </div>
@@ -66,7 +66,7 @@
           <li>
             <a class="close-panel item-link needs-conn" onclick="window.plugins.socialsharing.share(null, null, null, 'http://www.jsconfar.com')">
               <div class="item-content">
-                <div class="item-media"><i class="icon ion-share"></i></div>
+                <div class="item-media"><i class="icon ion-ios7-redo-outline"></i></div>
                 <div class="item-inner">
                   <div class="item-title"> Share this event</div>
                 </div>
@@ -74,9 +74,29 @@
             </a>
           </li>
           <li>
-            <a href="#view-mapa" class="close-panel item-link tab-link needs-conn">
+            <a href="#view-speakers" class="close-panel item-link tab-link">
               <div class="item-content">
-                <div class="item-media"><i class="icon ion-ios7-location"></i></div>
+                <div class="item-media"><i class="icon iconSpeakers"></i></div>
+                <div class="item-inner">
+                  <div class="item-title">Speakers</div>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#view-agenda" class="close-panel item-link tab-link">
+              <div class="item-content">
+                <div class="item-media"><i class="icon iconAgenda"></i></div>
+                <div class="item-inner">
+                  <div class="item-title">Agenda</div>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#view-mapaInterno" class="close-panel item-link tab-link needs-conn">
+              <div class="item-content">
+                <div class="item-media"><i class="icon iconMapa"></i></div>
                 <div class="item-inner">
                   <div class="item-title">Map</div>
                 </div>
@@ -84,9 +104,20 @@
             </a>
           </li>
           <li>
+          <li>
+            <a href="#view-help" class="close-panel item-link tab-link needs-conn">
+              <div class="item-content">
+                <div class="item-media"><i class="icon iconHelp"></i></div>
+                <div class="item-inner">
+                  <div class="item-title">Help</div>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
             <a href="#view-about" class="close-panel item-link tab-link">
               <div class="item-content">
-                <div class="item-media"><i class="icon ion-ios7-information"></i></div>
+                <div class="item-media"><i class="icon iconAbout"></i></div>
                 <div class="item-inner">
                   <div class="item-title">About Us</div>
                 </div>
@@ -96,24 +127,13 @@
           <li>
             <a href="#" id="logout" class="close-panel item-link">
               <div class="item-content">
-                <div class="item-media"><i class="icon ion-log-out"></i></div>
+                <div class="item-media"><i class="icon iconLogout"></i></div>
                 <div class="item-inner">
-                  <div class="item-title">LogOut and Exit</div>
-                </div>
-              </div>
-            </a>
-          </li>          
-          <li>
-            <a href="#" id="exit" class="close-panel item-link">
-              <div class="item-content">
-                <div class="item-media"><i class="icon ion-ios7-close"></i></div>
-                <div class="item-inner">
-                  <div class="item-title">Exit</div>
+                  <div class="item-title textLogout">LogOut</div>
                 </div>
               </div>
             </a>
           </li>
-
         </ul>
       </div>
     </div>
@@ -273,9 +293,183 @@
         <div class="pages navbar-through">
           <div data-page="tweets" class="page">
             <div class="page-content">
+              <div id="contenedorTwitter">
               <!-- Contenedor del tweetfeed-->
-              <div class="tweetContainer">
-                <a id="tweetContainer-inner" class="twitter-timeline" data-theme="light" data-link-color="#ffc313" data-dnt="true" ><span style="width:60px; height:60px; margin-top:50px;" class="preloader"></span></a>
+              <!--  <div class="tweetContainer">
+               <a id="tweetContainer-inner" class="twitter-timeline" data-theme="light" data-link-color="#ffc313" data-dnt="true" ><span style="width:60px; height:60px; margin-top:50px;" class="preloader"></span></a>
+
+              </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="view-help" class="view tab">
+        <!-- Pages-->
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left">
+              <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+            </div>
+            <div class="center">Help</div>
+          </div>
+        </div>
+        <div class="pages navbar-through">
+          <div data-page="help" class="page">
+            <div class="page-content">
+              <div class="list-block">
+                <ul class="listWhite">
+                   <li>
+                    <a href="#view-mapa" class="item-link tab-link">
+                      <div class="item-content">
+                        <div class="item-media"><i class="icon iconLocation"></i></div>
+                        <div class="item-inner">
+                          <div class="item-title">Buenos Aires City Map</div>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#view-wifi" class="item-link tab-link">
+                      <div class="item-content">
+                        <div class="item-media"><i class="icon iconWifi"></i></div>
+                        <div class="item-inner">
+                          <div class="item-title">Wifi Passwords</div>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#view-hospitals" class="item-link tab-link">
+                      <div class="item-content">
+                        <div class="item-media"><i class="icon iconHospital"></i></div>
+                        <div class="item-inner">
+                          <div class="item-title">Hospitals</div>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#view-police" class="item-link tab-link">
+                      <div class="item-content">
+                        <div class="item-media"><i class="icon iconPolice"></i></div>
+                        <div class="item-inner">
+                          <div class="item-title">Police Stations</div>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="view-wifi" class="view tab">
+        <!-- Pages-->
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left">
+              <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+            </div>
+            <div class="center">WifiPasswords</div>
+          </div>
+        </div>
+        <div class="pages navbar-through">
+          <div data-page="wifi" class="page">
+            <div class="page-content">
+              <div class="list-block">
+                <ul class="listWhite wifiList">   
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="view-mapaPH" class="view tab">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left">
+              <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+            </div>
+            <div class="center">Location</div>
+          </div>
+        </div>
+        <div class="pages navbar-through">
+          <div data-page="location" class="page">
+            <div class="page-content">
+              <!-- container for the google maps instance -->
+              <div id="map_canvasPH"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="view-hospitals" class="view tab">
+        <!-- Pages-->
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left">
+              <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+            </div>
+            <div class="center">Hospitals</div>
+          </div>
+        </div>
+        <div class="pages navbar-through">
+          <div data-page="hospitals" class="page">
+            <div class="page-content">
+              <div class="list-block media-list contacts-list searchbar-found">
+                <div class="list-group">
+                  <!-- list with every item in the speakers json file -->
+                  <ul class="listWhite listHospitals">
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="view-police" class="view tab">
+        <!-- Pages-->
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left">
+              <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+            </div>
+            <div class="center">Police Stations</div>
+          </div>
+        </div>
+        <div class="pages navbar-through">
+          <div data-page="police" class="page">
+            <div class="page-content">
+              <div class="list-block">
+                <ul class="listWhite listPolice">   
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="view-mapaInterno" class="view tab">
+        <!-- Pages-->
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left">
+              <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+            </div>
+            <div class="center">Map</div>
+          </div>
+        </div>
+        <div class="pages navbar-through">
+          <!-- Page, data-page contains page name-->
+          <div data-page="mapaInterno" class="page mapaI">
+            <!-- Scrollable page content-->
+            <div class="page-content mapaI">
+              <div class="content-block">
+                <!-- contenedor de bloque de texto de la pagina about -->
+                <div class="content-block-inner">
+                  <img class="imgMapaI" src="img/mapa.png"/>
+
+                </div>
               </div>
             </div>
           </div>
@@ -311,11 +505,9 @@
       <div class="toolbar tabbar tabbar-labels">
         <div class="toolbar-inner">
           <!-- a link for every page i want to link from my tabbar toolbar -->
-          <a href="#view-home" class="tab-link active"><i class="icon ion-ios7-home"></i><span class="tabbar-label">Home</span></a>
-          <a href="#view-agenda" class="tab-link"><i class="icon ion-ios7-paper"></i><span class="tabbar-label">Schedule</span></a>
-          <a href="#view-tweets" class="tab-link needs-conn"><i class="icon ion-social-twitter"></i><span class="tabbar-label">Tweets</span></a>
-          <a href="#view-speakers" class="tab-link"><i class="icon ion-ios7-people"></i><span class="tabbar-label">Speakers</span></a>
-          <a href="#view-chatRooms" class="tab-link needs-conn"><i class="icon ion-ios7-chatboxes"></i><span class="tabbar-label">Chat</span></a>
+          <a href="#view-home" class="tab-link active"><i class="icon ion-ios7-home-outline"></i><span class="tabbar-label">Home</span></a>
+          <a href="#view-tweets" class="tab-link needs-conn"><i class="icon iconTweets"></i><span class="tabbar-label">Tweets</span></a>
+          <a href="#view-chatRooms" class="tab-link needs-conn"><i class="icon iconChat"></i><span class="tabbar-label">Chat</span></a>
         </div>
       </div>
     </div>
@@ -324,6 +516,8 @@
     <!-- Path to jquery JS-->
     <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
     <!-- Path to firebase JS (used in chat plugin)-->
+    <script type="text/javascript" src="js/moment.min.js"></script>
+    <script type="text/javascript" src="js/twitterFetcher.js"></script>
     <script type="text/javascript" src="js/firebase.js"></script>
     <!-- Path to hello.js and witter auth -->
     <script type="text/javascript" src="js/hello.js"></script>

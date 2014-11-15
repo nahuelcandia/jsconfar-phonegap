@@ -1,0 +1,29 @@
+[{
+  "Id": "1",
+  "Nombre": "Hospital Britanico de Buenos Aires",
+  "Direccion": "Av Alvear 1573",
+  "Telefono": "011 4309-6400",
+  "lat": -34.589925,
+  "lng": -58.385587
+}, {
+  "Id": "2",
+  "Nombre": "Sanatorio Anchorena",
+  "Direccion": "Dr. Tomas de Anchorena 1872",
+  "Telefono": "011 4808-5400",
+  "lat": -34.589253,
+  "lng": -58.400285
+}, {
+  "Id": "3",
+  "Nombre": "Hospital Alemán",
+  "Direccion": "Av Pueyrredón 1640",
+  "Telefono": "011 4827-7000",
+  "lat": -34.592097,
+  "lng": -58.401573
+}, {
+  "Id": "4",
+  "Nombre": "Hospital Fernández",
+  "Direccion": "Av Cerviño 3356",
+  "Telefono": "011 4808-2600",
+  "lat": -34.581427,
+  "lng": -58.406894
+}]

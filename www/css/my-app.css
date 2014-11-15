@@ -122,6 +122,15 @@ text-align: center;
   text-align: center;
 }
 
+
+.mapaI{
+  background-color: #FFC313;
+}
+
+.imgMapaI{
+  width:100%;
+}
+
 /*por errores con navegador default de android en messages*/
 
 
@@ -158,7 +167,7 @@ text-align: center;
 /*CSS ICONS*/
 
 i.icon{
-  font-size: 24px;
+  font-size: 30px;
 }
 
 .panel  i.icon {
@@ -212,18 +221,12 @@ background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w
   height: 100%;
 
 }
-/*CSS TWEETFEED*/
 
-.tweetContainer{
-  width: 100%;
+#map_canvasPH {
   height: 100%;
-  text-align: center;
+
 }
 
-.twitter-timeline-rendered { 
-  width: 100% !important; 
-  height: 95% !important;
-}
 
 /*CSS AGENDA Y SPEAKERS*/
 
@@ -291,7 +294,143 @@ h1.logo {
   text-align: center;
 }
 
-body .zocial {
-margin: 8px 4px;
-font-size: 17px;
+.botonLogin {
+  color: #ffffff;
+  font-size: 12px;
+  border: none;
+  font-family: inherit;
+  margin-bottom: 15px;
+}
+
+.botonLogin.botonTwitter{
+  background-color: #5EA9DD;  
+}
+
+.botonLogin.botonFacebook{
+  background-color: #3B5A9A;  
+}
+
+.botonLogin i{
+  color: #ffffff !important;
+
+}
+
+/*CSS TWEETFEED*/
+
+
+.tweetContainer{
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+div.content-block-title.tweet-feed{
+ background-color: #5EA9DD;
+ border-color:#5EA9DD;
+}
+
+div.content-block-inner.tweet-feed{
+  background-color: #A8D5F0;
+  border-color:#5EA9DD;
+  word-wrap: break-word;
+}
+
+div.content-block-title-alt.tweet-feed{
+  background-color: #5EA9DD;
+  border-color:#5EA9DD;
+}
+
+div.content-block-inner.tweet-feed img{
+  max-width: 100%;
+  margin-bottom: -6px;
+}
+
+/*CSS ICONS*/
+
+i.iconChat{
+  width: 30px;
+  background-image: url("../img/icons/Chat.png");
+}
+
+i.iconTweets{
+  width: 30px;
+  background-image: url("../img/icons/Tweets.png");
+}
+
+
+i.iconAbout{
+  width: 30px;
+  height: 30px;
+  background-image: url("../img/icons/About.png");
+}
+
+i.iconHelp{
+  width: 30px;
+  height: 30px;
+  background-image: url("../img/icons/Help.png");
+}
+
+i.iconMapa{
+  width: 30px;
+  height: 30px;
+  background-image: url("../img/icons/Mapa1.png");
+}
+
+i.iconLocation{
+  width: 20px;
+  height: 30px;
+  background-image: url("../img/icons/location.png");
+}
+
+i.iconWifi{
+  width: 30px;
+  height: 30px;
+  background-image: url("../img/icons/wifi.png");
+}
+
+i.iconPolice{
+  width: 30px;
+  height: 30px;
+  background-image: url("../img/icons/police.png");
+}
+
+i.iconHospital{
+  width: 30px;
+  height: 30px;
+  background-image: url("../img/icons/hospital.png");
+}
+
+i.iconLogout{
+  width: 28px;
+  height: 30px;
+  background-image: url("../img/icons/logout.png");
+}
+
+i.iconSpeakers{
+  width: 30px;
+  height: 30px;
+  background-image: url("../img/icons/Speakers.png");
+}
+
+i.iconAgenda{
+  width: 25px;
+  height: 30px;
+  background-image: url("../img/icons/Agenda.png");
+}
+
+i.iconTwitter{
+  width: 25px;
+  height: 30px;
+  background-image: url("../img/icons/Twitter.png");
+}
+
+i.iconFacebook{
+  width: 25px;
+  height: 30px;
+  background-image: url("../img/icons/Facebook.png");
+}
+
+
+.textLogout{
+  color: #245874;
 }

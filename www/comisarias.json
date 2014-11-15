@@ -1,0 +1,29 @@
+[{
+  "Id": "1",
+  "Nombre": "Comisaría 17",
+  "Direccion": "Av.Las Heras 1861",
+  "Telefono": "011 4801-3333",
+  "lat": -34.591180,
+  "lng": -58.392220
+}, {
+  "Id": "2",
+  "Nombre": "Comisaría 19",
+  "Direccion": "Charcas 2844",
+  "Telefono": "011 4822-3333",
+  "lat": -34.594165,
+  "lng": -58.406682
+}, {
+  "Id": "3",
+  "Nombre": "Comisaría 23",
+  "Direccion": "Av Santa Fe 4000",
+  "Telefono": "4831-3333",
+  "lat": -34.582474,
+  "lng": -58.420408
+}, {
+  "Id": "4",
+  "Nombre": "Comisaría 21",
+  "Direccion": "Jualian Alvarez 2373",
+  "Telefono": "4823-0142",
+  "lat": -34.587756,
+  "lng": -58.415516
+}]

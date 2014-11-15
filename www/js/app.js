@@ -15,6 +15,9 @@ var username, avatar = false,
   social = "",
   pushNotification;
 
+var passwords = [];
+var lat, lng, mapPH, markerPH;
+
 initLogin();
 initViews();
 initLogout();
@@ -46,11 +49,164 @@ function initViews() {
 
   var view8 = myApp.addView('#view-chatRooms');
 
+  var view9 = myApp.addView('#view-help');
+  var view10 = myApp.addView('#view-mapaPH');
+  var view11 = myApp.addView('#view-wifi');
+  var view12 = myApp.addView('#view-hospitals');
+  var view13 = myApp.addView('#view-police');
+
+
+  var view14 = myApp.addView('#view-mapaInterno');
+
+
+
   initChat();
   initAgenda(view5);
   initSpeakers(view3);
   initMapa();
+  initMapaPH();
   initTweetFeed();
+  initWifi();
+  initPolice();
+  initHospitals();
+}
+
+
+
+function initWifi() {
+  var wifiDB = new Firebase("https://shovelChat.firebaseio.com/wifi");
+  wifiDB.once("value", function(snapshot) {
+    var array = snapshot.val();
+    for (var key in array) {
+      var li =
+        '<li>' +
+        '       <div class="item-content">' +
+        '         <div class="item-media"><i class="icon ion-wifi"></i></div>' +
+        '           <div class="item-inner">' +
+        '                   <div class="item-title">' + array[key] + '</div>' +
+        '           </div>' +
+        '        </div>' +
+        '</li>';
+      $$('.wifiList').append(li);
+    }
+
+  });
+
+}
+
+function initMapaPH() {
+  //JS MAPA
+
+  function initializeMapPH() {
+    var myLatlng = new google.maps.LatLng(-34.585667, -58.393478);
+    var mapCanvasPH = document.getElementById('map_canvasPH');
+    var mapOptions = {
+      center: myLatlng,
+      zoom: 16,
+      disableDefaultUI: true,
+      zoomControl: true,
+      mapTypeControl: true,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    mapPH = new google.maps.Map(mapCanvasPH, mapOptions);
+
+    markerPH = new google.maps.Marker({
+      position: myLatlng,
+      map: mapPH
+    });
+  }
+
+  $$('#view-mapaPH').on('show', function() {
+
+    if ($$('#map_canvasPH').html() === "") {
+      initializeMapPH();
+    }
+    markerPH.setPosition(new google.maps.LatLng(lat, lng));
+    mapPH.setCenter(new google.maps.LatLng(lat, lng));
+  });
+
+}
+
+function initPolice() {
+  /*JS POLICE MAP*/
+
+  //Cargo el listado de police
+  var police = [];
+  $.getJSON("./comisarias.json", function(data) {
+    police = data;
+
+    armarListaPolice();
+  });
+
+  //Armo la lista de police
+  function armarListaPolice() {
+    for (var index in police) {
+      var li =
+        '<li class="contact-item">' +
+        '   <a href="#view-mapaPH" data-lat=' + police[index].lat + ' data-lng=' + police[index].lng + ' class="item-link tab-link itemPH1">' +
+        '       <div class="item-content">' +
+        '           <div class="item-inner">' +
+        '               <div class="item-title-row">' +
+        '                   <div class="item-title">' + police[index].Nombre + '</div>' +
+        '                </div>' +
+        '                <div class="item-subtitle">' + police[index].Direccion + '</div>' +
+        '                <div class="item-subtitle">' + police[index].Telefono + '</div>' +
+        '            </div>' +
+        '        </div>' +
+        '    </a>' +
+        '</li>';
+      $$('.listPolice').append(li);
+    }
+
+    $$('.itemPH1').on('click', function() {
+      lat = this.getAttribute("data-lat");
+      lng = this.getAttribute("data-lng");
+    });
+  }
+}
+
+function initHospitals() {
+  /*JS POLICE MAP*/
+
+  //Cargo el listado de police
+  var hospitals = [];
+  $.getJSON("./hospitales.json", function(data) {
+    hospitals = data;
+
+    armarListaHospitals();
+  });
+
+  //Armo la lista de police
+  function armarListaHospitals() {
+    for (var index in hospitals) {
+      var li =
+        '<li class="contact-item">' +
+        '   <a href="#view-mapaPH" data-lat=' + hospitals[index].lat + ' data-lng=' + hospitals[index].lng + ' class="item-link tab-link itemPH">' +
+        '       <div class="item-content">' +
+        '           <div class="item-inner">' +
+        '               <div class="item-title-row">' +
+        '                   <div class="item-title">' + hospitals[index].Nombre + '</div>' +
+        '                </div>' +
+        '                <div class="item-subtitle">' + hospitals[index].Direccion + '</div>' +
+        '                <div class="item-subtitle">' + hospitals[index].Telefono + '</div>' +
+        '            </div>' +
+        '        </div>' +
+        '    </a>' +
+        '</li>';
+      $$('.listHospitals').append(li);
+    }
+
+
+
+
+
+
+
+    $$('.itemPH').on('click', function() {
+      lat = this.getAttribute("data-lat");
+      lng = this.getAttribute("data-lng");
+    });
+  }
 }
 
 function initChat() {
@@ -396,58 +552,60 @@ function initMapa() {
 }
 
 function initTweetFeed() {
-  // JS TWITTER FEED
+  var config3 = {
+    "id": '514153581134360576',
+    "domId": '',
+    "maxTweets": 60,
+    "enableLinks": true,
+    "showImages": true,
+    "customCallback": handleTweets2
+  };
 
-  //paso los parametros
-  var hashtag = "jsconfar";
-  var query = encodeURIComponent("#" + hashtag + "OR" + "from:" + hashtag + "OR" + "@" + hashtag);
-  var widgetId = "514153581134360576";
-  $$('#tweetContainer-inner').attr('href', "https://twitter.com/search?q=" + query);
-  $$('#tweetContainer-inner').attr('data-widget-id', widgetId);
+  //USO UNA CALLBACK A MEDIDA PARA DAR LA ESTRUCTURA NECESARIA PARA F7
+  function handleTweets2(data) {
+    var element = document.getElementById('contenedorTwitter');
+    var div = document.createElement('div');
+    div.innerHTML = data;
 
+    var tweets = div.getElementsByClassName('tweet');
 
-  //le modifico el funcionamiento a los links del feed para que los abra en inappbrowser
-  window.onTwitterRender = function() {
-    var $iframe = $('#tweetContainer-inner').contents();
+    var authors = div.getElementsByClassName('user');
+    var times = div.getElementsByClassName('timePosted');
+    var images = div.getElementsByClassName('media');
+    // var tids = div.getElementsByClassName('user');
 
-    $iframe.find("a:not(.expand)").on('tap click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      var $this = $(this);
-      var target = $this.data('inAppBrowser') || '_blank';
+    var x = tweets.length;
+    var n = 0;
+    //CARGO LA LISTA CON EL CONTENIDO DE LOS ARRAYS
+    var html = '<div>';
+    while (n < x) {
+      if (images[n]) {
+        html += '<div class="content-block-agenda">' +
+          '  <div class="content-block-title tweet-feed"><b>' + authors[n].innerHTML + '</b></div>' +
+          '   <div class="content-block-inner tweet-feed">' +
+          tweets[n].innerHTML + '<br>' + images[n].innerHTML +
+          '   <div class="content-block-title-alt tweet-feed">' + times[n].innerHTML + '</div>' +
+          '  </div>' +
+          '</div>';
+        n++;
+      } else {
+        html += '<div class="content-block-agenda">' +
+          '  <div class="content-block-title tweet-feed"><b>' + authors[n].innerHTML + '</b></div>' +
+          '   <div class="content-block-inner tweet-feed">' +
+          tweets[n].innerHTML + '<br>' +
+          '   <div class="content-block-title-alt tweet-feed">' + times[n].innerHTML + '</div>' +
+          '  </div>' +
+          '</div>';
+        n++;
+      }
 
-      window.open($this.attr('href'), target, 'location=yes');
-
-
-      return false;
-    });
+    }
+    html += '</div>';
+    element.innerHTML = html;
   }
 
-  function initTwitter(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0],
-      p = /^http:/.test(d.location) ? 'http' : 'https';
-    if (!d.getElementById(id)) {
 
-      js = d.createElement(s);
-      js.id = id;
-      js.src = p + "://platform.twitter.com/widgets.js";
-      js.setAttribute('onload', 'twttr.events.bind("rendered", window.onTwitterRender);');
-      fjs.parentNode.insertBefore(js, fjs);
-    }
-  }
-  // inicializo el script de twitter al cargar la vista por primera vez para evitar problemas de resize.
-
-
-
-  $$('#view-tweets').on('show', function() {
-    if (window.twttr) {
-
-      return;
-    }
-    //incluye asincronicamente el widgets.js
-    initTwitter(document, "script", "twitter-wjs");
-
-  });
+  twitterFetcher.fetch(config3);
 
 }
 
@@ -549,7 +707,7 @@ function initLogin() {
 
     hello.api(response.network + ':/me', function(profile) {
       username = profile.name;
-      $$('.userName').html('<b>' + username + '</b>');
+      $$('.userName').html('<b>' + username + '</b><br><br>@' + profile.screen_name);
       avatar = profile.thumbnail;
       $$('.userPic').attr('src', avatar);
       social = response.network;
@@ -681,9 +839,9 @@ function onNotification(e) {
 
         //checkeo si esta instancia de la app ya esta dada de alta para las push notif.
         registerDB.once('value', function(snapshot) {
-          if (!snapshot.hasChild(e.regid)) {
-            registerDB.child(e.regid).set({
-              name: e.regid
+          if (!snapshot.hasChild(device.uuid)) {
+            registerDB.child(device.uuid).set({
+              gcmId: e.regid
             });
           }
         });
