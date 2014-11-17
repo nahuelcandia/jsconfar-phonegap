@@ -58,7 +58,7 @@ function initViews() {
 
   var view14 = myApp.addView('#view-mapaInterno');
 
-
+  var view15 = myApp.addView('#view-mensajes');
 
   initChat();
   initAgenda(view5);
@@ -69,9 +69,44 @@ function initViews() {
   initWifi();
   initPolice();
   initHospitals();
+  initMensajes();
 }
 
+function initMensajes() {
+  var mensajesDB = new Firebase("https://shovelChat.firebaseio.com/mensajes");
 
+  //carga inicial
+  mensajesDB.on("child_added", function(snapshot) {
+    console.log(snapshot.val());
+    var mensaje = snapshot.val();
+    var time = new Date(mensaje.date);
+    if (mensaje.tipo == 1) {
+      var div =
+        '       <div class="content-block-inner blockMensajes">' +
+        '         <p>' + mensaje.mensaje + '</p>' +
+        '           <div class="content-block-title timeMensajes">' +
+        '             <i class="icon iconTimey"></i>' + moment(time).fromNow(); +
+        '           </div>' +
+        '       </div>';
+    } else if (mensaje.tipo == 2) {
+      var div =
+        '       <div class="content-block-inner blockMensajesBis">' +
+        '         <p>' + mensaje.mensaje + '</p>' +
+        '           <div class="content-block-title timeMensajesBis">' +
+        '             <i class="icon iconTimeg"></i>' + moment(time).fromNow(); +
+        '           </div>' +
+        '       </div>';
+    }
+
+    $$('.listaMensajes').prepend(div);
+
+
+
+  });
+
+
+
+}
 
 function initWifi() {
   var wifiDB = new Firebase("https://shovelChat.firebaseio.com/wifi");
@@ -491,17 +526,78 @@ function initSpeakers(view) {
       '<div class="pages">' +
       '  <div data-page="dynamic-pages" class="page contact-page">' +
       '    <div class="page-content">' +
-      '      <div class="contact-header">' +
-      '        <div class="header-text">' +
-      '          <img src="' + speakers[index].ProfilePic + '">' +
-      '          <h3>' + speakers[index].Name + '</h3>' +
-      '          <p>' + speakers[index].Company + '</p>' +
-      '          <p>' + speakers[index].Twitter + '</p>' +
+      '      <div class="contact-header speakersHead">' +
+      '       <div class="speakerInfo">' +
+      '         <div class="row">' +
+      '           <div class="col-33">' +
+      '            <img src="' + speakers[index].ProfilePic + '">' +
+      '           </div>' +
+      '           <div class="col-66">' +
+      '            <h3>' + speakers[index].Name + '</h3>' +
+      '            <p>' + speakers[index].Company + '</p>' +
+      '           </div>' +
+      '          </div>' +
       '        </div>' +
       '      </div>' +
-      '      <div class="content-block">' +
-      '        <div class="content-block-inner">' +
+      '      <div class="content-block contentSpeaker">' +
+      '      <div class="row">' +
+      '        <div class="col-50"><i class="icon iconBio"></i><b>    About</b></div>' +
+      '      </div> ' +
+      '        <div class="content-block-inner contentSpeaker">' +
       '          <p>' + speakers[index].Charla + '</p>' +
+      '        </div>' +
+      '      <div class="row">' +
+      '        <div class="col-100">Proyectos en los que ha trabajado</div>' +
+      '      </div> ' +
+      '      <div class="list-block listCompany">' +
+      '        <div class="list-group">' +
+      '          <ul class="listaSpeakers listWhite">' +
+      '            <li class="contact-item">' +
+      '              <div class="item-content">' +
+      '                <div class="item-media">' +
+      '                  <img src=' + speakers[index].CompanyImg + ' width="44">' +
+      '                </div>' +
+      '                <div class="item-inner">' +
+      '                  <div class="item-title-row">' +
+      '                    <div class="item-title">' + speakers[index].Company + '</div>' +
+      '                  </div>' +
+      '                </div>' +
+      '              </div>' +
+      '            </li>' +
+      '          </ul>' +
+      '        </div>' +
+      '      </div>' +
+      '      <div class="row" style="margin-top:40px">' +
+      '        <div class="col-100">Enlaces</div>' +
+      '      </div> ' +
+      '      <div class="list-block listCompany">' +
+      '        <div class="list-group">' +
+      '          <ul class="listaSpeakers listWhite">' +
+      '            <li class="contact-item">' +
+      '              <div class="item-content">' +
+      '                <div class="item-media">' +
+      '                  <img src="img/icons/Github.png" width="15">' +
+      '                </div>' +
+      '                <div class="item-inner">' +
+      '                  <div class="item-title-row">' +
+      '                    <a class="external" href="' + speakers[index].GithubUrl + '"><div class="item-title">' + speakers[index].Github + '</div></a>' +
+      '                  </div>' +
+      '                </div>' +
+      '              </div>' +
+      '            </li>' +
+      '            <li class="contact-item">' +
+      '              <div class="item-content">' +
+      '                <div class="item-media">' +
+      '                  <img src="img/icons/Twittermini.png" width="15">' +
+      '                </div>' +
+      '                <div class="item-inner">' +
+      '                  <div class="item-title-row">' +
+      '                    <a class="external" href="' + speakers[index].TwitterUrl + '"><div class="item-title">' + speakers[index].Twitter + '</div></a>' +
+      '                  </div>' +
+      '                </div>' +
+      '              </div>' +
+      '            </li>' +
+      '          </ul>' +
       '        </div>' +
       '      </div>' +
       '    </div>' +
@@ -511,6 +607,7 @@ function initSpeakers(view) {
     return;
   }
 }
+
 
 function initMapa() {
   //JS MAPA
@@ -627,7 +724,6 @@ function initAgenda(view) {
 
     for (var index in agenda) {
       var div =
-        '<a href="#" data-src=' + agenda[index].Id + ' class="item-link create-page-agenda">' +
         ' <div class="content-block-agenda">' +
         '  <div class="content-block-title"><b>' + agenda[index].Title + '</b></div>' +
         '   <div class="content-block-inner">' +
@@ -636,7 +732,7 @@ function initAgenda(view) {
         '      <div class="col-33">' +
         '        <img class="speakerPic" src=' + agenda[index].SpeakerProfilePic + ' />' +
         '      </div>' +
-        '      <div class="col-66 speakerInfo" >' +
+        '      <div class="col-66 agendaInfo" >' +
         '       <div><b>' + agenda[index].Speaker + '</b></div>' +
         '      </div>' +
         '     </div>' +
@@ -648,48 +744,45 @@ function initAgenda(view) {
       $$('.listaAgenda').append(div);
     }
     //Agrego la funcion de crear la página con el detalle del speaker al clickear en el mismo
-    $$('.create-page-agenda').on('click', function() {
-      createContentPageAgenda(this.getAttribute("data-src"));
-    });
   }
 
 
   // GENERO LA PAGINA CON EL DETALLE DE LA CHARLA DINAMICAMENTE
-  function createContentPageAgenda(id) {
-    //index-1 porque en el json arranco los id desde el 1
-    var index = id - 1;
-    //Cargo la página dinamica en la vista correspondiente 
-    view.loadContent(
-      //le agrego un nuevo navbar que contenga boton back.
-      '<!-- Top Navbar-->' +
-      '<div class="navbar">' +
-      '  <div class="navbar-inner">' +
-      '    <div class="left"><a href="#" class="back link"><i class="icon icon-back"></i><span>Back</span></a></div>' +
-      '    <div class="center">Agenda</div>' +
-      '  </div>' +
-      '</div>' +
-      '<div class="pages">' +
-      '  <div data-page="dynamic-pages" class="page contact-page">' +
-      '    <div class="page-content">' +
-      '      <div class="contact-header">' +
-      '        <div class="header-text">' +
-      '          <img src="' + agenda[index].SpeakerProfilePic + '">' +
-      '          <h3>' + agenda[index].Title + '</h3>' +
-      '          <h3>' + agenda[index].Speaker + '</h3>' +
-      '          <p>' + agenda[index].Time + '</p>' +
-      '        </div>' +
-      '      </div>' +
-      '      <div class="content-block">' +
-      '        <div class="content-block-inner">' +
-      '          <p>' + agenda[index].Resumen + '</p>' +
-      '        </div>' +
-      '      </div>' +
-      '    </div>' +
-      '  </div>' +
-      '</div>'
-    );
-    return;
-  }
+  // function createContentPageAgenda(id) {
+  //   //index-1 porque en el json arranco los id desde el 1
+  //   var index = id - 1;
+  //   //Cargo la página dinamica en la vista correspondiente 
+  //   view.loadContent(
+  //     //le agrego un nuevo navbar que contenga boton back.
+  //     '<!-- Top Navbar-->' +
+  //     '<div class="navbar">' +
+  //     '  <div class="navbar-inner">' +
+  //     '    <div class="left"><a href="#" class="back link"><i class="icon icon-back"></i><span>Back</span></a></div>' +
+  //     '    <div class="center">Agenda</div>' +
+  //     '  </div>' +
+  //     '</div>' +
+  //     '<div class="pages">' +
+  //     '  <div data-page="dynamic-pages" class="page contact-page">' +
+  //     '    <div class="page-content">' +
+  //     '      <div class="contact-header">' +
+  //     '        <div class="header-text">' +
+  //     '          <img src="' + agenda[index].SpeakerProfilePic + '">' +
+  //     '          <h3>' + agenda[index].Title + '</h3>' +
+  //     '          <h3>' + agenda[index].Speaker + '</h3>' +
+  //     '          <p>' + agenda[index].Time + '</p>' +
+  //     '        </div>' +
+  //     '      </div>' +
+  //     '      <div class="content-block">' +
+  //     '        <div class="content-block-inner">' +
+  //     '          <p>' + agenda[index].Resumen + '</p>' +
+  //     '        </div>' +
+  //     '      </div>' +
+  //     '    </div>' +
+  //     '  </div>' +
+  //     '</div>'
+  //   );
+  //   return;
+  // }
 
 }
 

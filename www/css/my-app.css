@@ -117,7 +117,7 @@ text-align: center;
   margin-bottom: -6px;
 }
 
-.speakerInfo{
+.agendaInfo{
   margin-top: 20px;
   text-align: center;
 }
@@ -237,7 +237,8 @@ background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;*/
-  padding-bottom: 30px;
+/*  padding-bottom: 30px;*/
+  height: 50%;
 }
 
 .header-text {
@@ -290,11 +291,17 @@ h1.logo {
 }
 
 .login-buttons {
+  max-width: 200px;
+  min-width: 50%;
+  margin:0 auto;
   padding-top: 30px;
-  text-align: center;
+  padding-bottom: 20px;
 }
 
 .botonLogin {
+  height: 40px;
+  line-height: 40px;
+  width: 100%;
   color: #ffffff;
   font-size: 12px;
   border: none;
@@ -350,6 +357,16 @@ div.content-block-inner.tweet-feed img{
 i.iconChat{
   width: 30px;
   background-image: url("../img/icons/Chat.png");
+}
+
+i.iconHome{
+  width: 30px;
+  background-image: url("../img/icons/Home1.png");
+}
+
+i.iconMensajes{
+  width: 30px;
+  background-image: url("../img/icons/Mensajes.png");
 }
 
 i.iconTweets{
@@ -419,18 +436,113 @@ i.iconAgenda{
 }
 
 i.iconTwitter{
-  width: 25px;
-  height: 30px;
+  width: 15px;
+  height: 25px;
   background-image: url("../img/icons/Twitter.png");
 }
 
 i.iconFacebook{
-  width: 25px;
-  height: 30px;
+  width: 15px;
+  height: 25px;
   background-image: url("../img/icons/Facebook.png");
 }
 
+i.iconBio{
+  width: 28px;
+  height: 30px;
+  background-image: url("../img/icons/Biografia.png");
+}
 
 .textLogout{
   color: #245874;
+}
+
+
+
+.speakersPage{
+  background-color: #1B3F57;
+}
+
+.speakersHead{
+  background-image: url("../img/bg-JSConf.png");
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+
+.speakerInfo{
+  padding: 45px;
+}
+
+.speakerInfo img{
+  width: 75px;
+}
+
+.speakerInfo h3{
+  margin:0px 0px 0px 10px;
+  color: #ffc313;
+}
+
+.speakerInfo p{
+  margin:0px 0px 0px 10px;
+  color: #ffffff;
+}
+
+
+.list-block.listCompany{
+  margin: 0px;
+}
+
+.layout-jsconf .content-block-inner.contentSpeaker{
+  background: #ffffff;
+  color: #1b3f57;
+  border-color:  #ffffff;
+}
+
+.layout-jsconf .content-block.contentSpeaker{
+  margin:0px;
+}
+
+.icon-bars{
+  height: 30px !important;
+  width: 16px !important;
+  background-image: url("../img/icons/Menu.png") !important;
+}
+
+
+.blockMensajes{
+  padding: 10px 15px 0px 15px;
+  margin-bottom: 20px;
+}
+
+.timeMensajes{
+  padding: 0px 15px;
+  color: #D79B20 !important;
+  font-size: 11px;
+}
+
+.blockMensajesBis{
+  background-color: #2DBDA8 !important;
+  padding: 10px 15px 0px 15px;
+  margin-bottom: 20px;
+}
+
+.timeMensajesBis{
+  padding: 0px 15px;
+  background-color: #31A68F;
+  color: #1A7A67 !important;
+  font-size: 11px;
+}
+
+.iconTimeg{
+  width: 12px;
+  height: 24px;
+  background-image: url("../img/icons/timeg.png");
+  margin-right: 5px;
+}
+
+.iconTimey{
+  width: 12px;
+  height: 24px;
+  background-image: url("../img/icons/timey.png");
+  margin-right: 5px;
 }

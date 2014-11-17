@@ -35,9 +35,16 @@
           <div class="page-content login-screen-content">
             <h1 class="sprite logo"></h1>
             <div class="login-buttons">
-              <button class="botonTwitter botonLogin" id='login' onclick="hello.login('twitter');"><i class="icon iconTwitter"> </i>     Entrar con Twitter</button>
-
-              <button class="botonFacebook botonLogin" id='login' onclick="hello.login('facebook');"><i class="icon iconFacebook"> </i>     Entrar con Facebook</button>
+              <div class="row">
+                <div class="col-100">
+                  <button class="botonTwitter botonLogin" id='login' onclick="hello.login('twitter');"><i class="icon iconTwitter"></i>    Entrar con Twitter</button>
+                </div>
+              </div>   
+              <div class="row">
+                <div class="col-100">
+                  <button class="botonFacebook botonLogin" id='login' onclick="hello.login('facebook');"><i class="icon iconFacebook"> </i>    Entrar con Facebook</button>
+                </div>
+              </div> 
             </div>
             <img class="imgLogin" src="img/fondoAbout.png"/>
           </div>
@@ -165,6 +172,28 @@
                   <div class="content-block-title">The Venue:</div>
                   <p>Auditorio Bs As </br>Buenos Aires Design </br>Av. Pueyrredon 2501</p>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="view-mensajes" class="view tab">
+        <!-- Pages-->
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left">
+              <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+            </div>
+              <div class="center">Mensajes</div>
+          </div>
+        </div>
+        <div class="pages navbar-through">
+          <!-- Page, data-page contains page name-->
+          <div data-page="home" class="page">
+            <!-- Scrollable page content-->
+            <div class="page-content">
+              <div class="content-block inset listaMensajes">
+                <!-- contenedor de bloque de texto de la pagina about -->
               </div>
             </div>
           </div>
@@ -505,7 +534,8 @@
       <div class="toolbar tabbar tabbar-labels">
         <div class="toolbar-inner">
           <!-- a link for every page i want to link from my tabbar toolbar -->
-          <a href="#view-home" class="tab-link active"><i class="icon ion-ios7-home-outline"></i><span class="tabbar-label">Home</span></a>
+          <a href="#view-home" class="tab-link active"><i class="icon iconHome"></i><span class="tabbar-label">Home</span></a>
+          <a href="#view-mensajes" class="tab-link needs-conn"><i class="icon iconMensajes"></i><span class="tabbar-label">Mensajes</span></a>
           <a href="#view-tweets" class="tab-link needs-conn"><i class="icon iconTweets"></i><span class="tabbar-label">Tweets</span></a>
           <a href="#view-chatRooms" class="tab-link needs-conn"><i class="icon iconChat"></i><span class="tabbar-label">Chat</span></a>
         </div>
