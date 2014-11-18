@@ -810,7 +810,11 @@ function initLogin() {
 
     hello.api(response.network + ':/me', function(profile) {
       username = profile.name;
-      $$('.userName').html('<b>' + username + '</b><br><br>@' + profile.screen_name);
+      if (response.network !== 'facebook') {
+        $$('.userName').html('<b>' + username + '</b><br><br>@' + profile.screen_name);
+      } else {
+        $$('.userName').html('<b>' + username + '</b><br><br>');
+      }
       avatar = profile.thumbnail;
       $$('.userPic').attr('src', avatar);
       social = response.network;
