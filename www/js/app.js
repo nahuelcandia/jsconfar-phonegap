@@ -673,22 +673,32 @@ function initTweetFeed() {
     var element = document.getElementById('contenedorTwitter');
     var div = document.createElement('div');
     div.innerHTML = data;
-
     var tweets = div.getElementsByClassName('tweet');
 
     var authors = div.getElementsByClassName('user');
+    var pics = $(authors).find("a").children("img");
+    var users = $(authors).find("a").children().find('span');
+    var screenNames = $(authors).find("a").find('span:last');
+
     var times = div.getElementsByClassName('timePosted');
     var images = div.getElementsByClassName('media');
     // var tids = div.getElementsByClassName('user');
-
     var x = tweets.length;
     var n = 0;
     //CARGO LA LISTA CON EL CONTENIDO DE LOS ARRAYS
+    console.log(pics[3]);
     var html = '<div>';
     while (n < x) {
       if (images[n]) {
         html += '<div class="content-block-agenda">' +
-          '  <div class="content-block-title tweet-feed"><b>' + authors[n].innerHTML + '</b></div>' +
+          '  <div class="content-block-title tweet-feed"><b>' +
+          '   <div class="row">' +
+          '       <div class="col-33">' + pics[n].outerHTML +
+          '     </div>' +
+          '     <div class="col-66">' + '<h3>' + users[n].innerHTML + '</h3><p>' + screenNames[n].innerHTML + '</p>' +
+          '     </div>' +
+          '   </div>' +
+          '   </b></div>' +
           '   <div class="content-block-inner tweet-feed">' +
           tweets[n].innerHTML + '<br>' + images[n].innerHTML +
           '   <div class="content-block-title-alt tweet-feed">' + times[n].innerHTML + '</div>' +
@@ -697,7 +707,14 @@ function initTweetFeed() {
         n++;
       } else {
         html += '<div class="content-block-agenda">' +
-          '  <div class="content-block-title tweet-feed"><b>' + authors[n].innerHTML + '</b></div>' +
+          '   <div class="content-block-title tweet-feed"><b>' +
+          '     <div class="row">' +
+          '       <div class="col-33"><div style="padding:10px;">' + pics[n].outerHTML + '</div>' +
+          '       </div>' +
+          '       <div class="col-66">' + '<h3>' + users[n].innerHTML + '</h3><p>' + screenNames[n].innerHTML + '</p>' +
+          '       </div>' +
+          '     </div>' +
+          '   </b></div>' +
           '   <div class="content-block-inner tweet-feed">' +
           tweets[n].innerHTML + '<br>' +
           '   <div class="content-block-title-alt tweet-feed">' + times[n].innerHTML + '</div>' +
