@@ -436,7 +436,8 @@ i.iconAgenda{
 }
 
 i.iconTwitter{
-  width: 15px;
+  margin-left: -8px;
+  width: 16px;
   height: 25px;
   background-image: url("../img/icons/Twitter.png");
 }
@@ -545,4 +546,8 @@ i.iconBio{
   height: 24px;
   background-image: url("../img/icons/timey.png");
   margin-right: 5px;
+}
+
+.preloaderContainer{
+  text-align: center !important;
 }
