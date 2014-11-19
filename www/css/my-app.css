@@ -120,6 +120,7 @@ text-align: center;
 .agendaInfo{
   margin-top: 20px;
   text-align: center;
+  font-size: 4vw;
 }
 
 
@@ -332,19 +333,26 @@ h1.logo {
 }
 
 div.content-block-title.tweet-feed{
- background-color: #5EA9DD;
- border-color:#5EA9DD;
+  padding-bottom: 0px;
+  background-color: #5EA9DD;
+  border-color:#5EA9DD;
 }
 
 div.content-block-inner.tweet-feed{
   background-color: #A8D5F0;
   border-color:#5EA9DD;
   word-wrap: break-word;
+  padding: 10px 15px 0px 15px;
 }
 
 div.content-block-title-alt.tweet-feed{
   background-color: #5EA9DD;
   border-color:#5EA9DD;
+  padding: 0px 15px;
+  margin-top: 15px;
+  margin-bottom: 0px;
+  color: #217595 !important;
+  font-size: 11px;
 }
 
 div.content-block-inner.tweet-feed img{
@@ -548,6 +556,18 @@ i.iconBio{
   margin-right: 5px;
 }
 
+.iconTimeb{
+  width: 12px;
+  height: 24px;
+  background-image: url("../img/icons/timeb.png");
+  margin-right: 5px;
+}
+
 .preloaderContainer{
   text-align: center !important;
+}
+
+.tweet-feed-header{
+  float:left;
+  padding: 10px;
 }

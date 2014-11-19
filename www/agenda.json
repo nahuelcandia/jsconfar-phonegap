@@ -149,14 +149,16 @@
   "Id": "22",
   "Title": "j2me.js - a multi-threaded Java VM in JavaScript",
   "Time": "6:30 pm",
-  "Speaker": "Andreas Gal KEYNOTE SPEAKER",
+  "Speaker": "Andreas Gal",
+  "Keynote": "KEYNOTE SPEAKER",
   "SpeakerProfilePic": "img/speakers/andreas-gal.jpg",
   "Resumen": "j2me.js is a Java VM written in pure JavaScript that is geared towards modern Web-enabled mobile devices such as Firefox OS. Its designed to run Java/MIDP games and apps in an HTML5 environment, enabling old feature phone content to live on in the modern smartphone world. My talk will in focus in particular on mapping the more complex language features of the Java VM onto JavaScript and HTML5, including multithreading and synchronous I/O."
 }, {
   "Id": "23",
   "Title": "The future of Javascript",
   "Time": "7:15 pm",
-  "Speaker": "Brendan Eich KEYNOTE SPEAKER",
+  "Speaker": "Brendan Eich",
+  "Keynote": "KEYNOTE SPEAKER",
   "SpeakerProfilePic": "img/speakers/brendan-eich.jpg",
   "Resumen": "The future of Javascript"
 }]
