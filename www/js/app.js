@@ -686,38 +686,29 @@ function initTweetFeed() {
     var x = tweets.length;
     var n = 0;
     //CARGO LA LISTA CON EL CONTENIDO DE LOS ARRAYS
-    console.log(pics[3]);
     var html = '<div>';
     while (n < x) {
       if (images[n]) {
         html += '<div class="content-block-agenda">' +
           '  <div class="content-block-title tweet-feed"><b>' +
-          '   <div class="row">' +
-          '       <div class="col-33">' + pics[n].outerHTML +
-          '     </div>' +
-          '     <div class="col-66">' + '<h3>' + users[n].innerHTML + '</h3><p>' + screenNames[n].innerHTML + '</p>' +
-          '     </div>' +
-          '   </div>' +
-          '   </b></div>' +
-          '   <div class="content-block-inner tweet-feed">' +
+          '      <div class="tweet-feed-header">' + pics[n].outerHTML + '</div>' +
+          '      <div class="tweet-feed-header">' + '<h3 style="margin-top:0px;">' + users[n].innerHTML + '</h3><p>' + screenNames[n].innerHTML + '</p>' + '</div>' +
+          '    </b></div>' +
+          '  <div class="content-block-inner tweet-feed">' +
           tweets[n].innerHTML + '<br>' + images[n].innerHTML +
-          '   <div class="content-block-title-alt tweet-feed">' + times[n].innerHTML + '</div>' +
+          '    <div class="content-block-title-alt tweet-feed"><i class="icon iconTimeb"></i>' + times[n].innerHTML + '</div>' +
           '  </div>' +
           '</div>';
         n++;
       } else {
         html += '<div class="content-block-agenda">' +
-          '   <div class="content-block-title tweet-feed"><b>' +
-          '     <div class="row">' +
-          '       <div class="col-33"><div style="padding:10px;">' + pics[n].outerHTML + '</div>' +
-          '       </div>' +
-          '       <div class="col-66">' + '<h3>' + users[n].innerHTML + '</h3><p>' + screenNames[n].innerHTML + '</p>' +
-          '       </div>' +
-          '     </div>' +
-          '   </b></div>' +
-          '   <div class="content-block-inner tweet-feed">' +
+          '  <div class="content-block-title tweet-feed"><b>' +
+          '      <div class="tweet-feed-header">' + pics[n].outerHTML + '</div>' +
+          '      <div class="tweet-feed-header">' + '<h3 style="margin-top:0px;">' + users[n].innerHTML + '</h3><p>' + screenNames[n].innerHTML + '</p>' + '</div>' +
+          '    </b></div>' +
+          '  <div class="content-block-inner tweet-feed">' +
           tweets[n].innerHTML + '<br>' +
-          '   <div class="content-block-title-alt tweet-feed">' + times[n].innerHTML + '</div>' +
+          '    <div class="content-block-title-alt tweet-feed"><i class="icon iconTimeb"></i>' + times[n].innerHTML + '</div>' +
           '  </div>' +
           '</div>';
         n++;
@@ -750,25 +741,45 @@ function initAgenda(view) {
   function armarListaAgenda() {
 
     for (var index in agenda) {
-      var div =
-        ' <div class="content-block-agenda">' +
-        '  <div class="content-block-title"><b>' + agenda[index].Title + '</b></div>' +
-        '   <div class="content-block-inner">' +
-        '    <div class="content-block-agenda-alt">' +
-        '     <div class="row no-gutter">' +
-        '      <div class="col-33">' +
-        '        <img class="speakerPic" src=' + agenda[index].SpeakerProfilePic + ' />' +
-        '      </div>' +
-        '      <div class="col-66 agendaInfo" >' +
-        '       <div><b>' + agenda[index].Speaker + '</b></div>' +
-        '      </div>' +
-        '     </div>' +
-        '    </div>' +
-        '   <div class="content-block-title-alt"><b>' + agenda[index].Time + '</b></div>' +
-        '  </div>' +
-        ' </div>' +
-        '</a>';
-      $$('.listaAgenda').append(div);
+      if (agenda[index].Keynote !== undefined) {
+        var div =
+          ' <div class="content-block-agenda">' +
+          '  <div class="content-block-title"><b>' + agenda[index].Title + '</b></div>' +
+          '   <div class="content-block-inner">' +
+          '    <div class="content-block-agenda-alt">' +
+          '     <div class="row no-gutter">' +
+          '      <div class="col-33">' +
+          '        <img class="speakerPic" src=' + agenda[index].SpeakerProfilePic + ' />' +
+          '      </div>' +
+          '      <div class="col-66 agendaInfo" >' +
+          '       <div><h3 style="margin-top: 0px;">' + agenda[index].Keynote + '</h3><b>' + agenda[index].Speaker + '</b></div>' +
+          '      </div>' +
+          '     </div>' +
+          '    </div>' +
+          '   <div class="content-block-title-alt"><b>' + agenda[index].Time + '</b></div>' +
+          '  </div>' +
+          ' </div>';
+        $$('.listaAgenda').append(div);
+      } else {
+        var div =
+          ' <div class="content-block-agenda">' +
+          '  <div class="content-block-title"><b>' + agenda[index].Title + '</b></div>' +
+          '   <div class="content-block-inner">' +
+          '    <div class="content-block-agenda-alt">' +
+          '     <div class="row no-gutter">' +
+          '      <div class="col-33">' +
+          '        <img class="speakerPic" src=' + agenda[index].SpeakerProfilePic + ' />' +
+          '      </div>' +
+          '      <div class="col-66 agendaInfo" >' +
+          '       <div><b>' + agenda[index].Speaker + '</b></div>' +
+          '      </div>' +
+          '     </div>' +
+          '    </div>' +
+          '   <div class="content-block-title-alt"><b>' + agenda[index].Time + '</b></div>' +
+          '  </div>' +
+          ' </div>';
+        $$('.listaAgenda').append(div);
+      }
     }
     //Agrego la funcion de crear la página con el detalle del speaker al clickear en el mismo
   }
