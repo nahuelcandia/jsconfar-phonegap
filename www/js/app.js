@@ -257,12 +257,13 @@ function initHospitals() {
 function initChat() {
   /*JS CHAT*/
 
+
   //instancio la base de datos de mensajes
   var currentRoomDB;
   var roomsDB = new Firebase("https://shovelChat.firebaseio.com/Rooms");
   var lastDate,
     roomsList, roomsLoaded = false,
-    currentRoom;
+    currentRoom, currentRoomID;
 
   // Format date
   function formatDay(d) {
@@ -426,7 +427,7 @@ function initChat() {
         currentRoomDB.off();
       }
       //establesco la sala actual
-      currentRoomDB = new Firebase("https://shovelChat.firebaseio.com/Rooms/" + currentRoom);
+      currentRoomDB = new Firebase("https://shovelChat.firebaseio.com/Rooms/" + currentRoomID + "/mensajes");
       //limito los mensajes que traigo a 10
       var queryLimited = currentRoomDB.limit(10);
       //por cada msj que traiga despues de la carga inicial 
@@ -448,19 +449,30 @@ function initChat() {
   });
 
 
+  //SALAS
+
+  //agregar nueva sala
+  $$('.prompt-newRoom').on('click', function() {
+    myApp.prompt('New chat title', 'New Chat', function(value) {
+      roomsDB.push({
+        title: value
+      });
+    });
+  });
+
   //Armado de listado de salas
 
   roomsDB.on("value", function(snapshot) {
     //solo lo realizo una vez (carga desde la base)
     if (!roomsLoaded) {
-      roomsList = Object.keys(snapshot.val());
+      roomsList = snapshot.val();
       for (var index in roomsList) {
         var li =
           '<li>' +
-          '   <a href="#view-chat" data-src=' + roomsList[index] + ' class="item-link tab-link chatRoomItem">' +
+          '   <a href="#view-chat" data-id=' + index + ' data-src="' + roomsList[index].title + '" class="item-link tab-link chatRoomItem">' +
           '       <div class="item-content">' +
           '           <div class="item-inner">' +
-          '                   <div class="item-title">' + roomsList[index] + '</div>' +
+          '                   <div class="item-title">' + roomsList[index].title + '</div>' +
           '           </div>' +
           '        </div>' +
           '    </a>' +
@@ -468,15 +480,46 @@ function initChat() {
         $$('.roomsList').append(li);
       }
       $$('.chatRoomItem').on('click', function() {
-        if (currentRoom !== this.getAttribute("data-src")) {
+        if (currentRoomID !== this.getAttribute("data-id")) {
+          currentRoomID = (this.getAttribute("data-id"));
           currentRoom = (this.getAttribute("data-src"));
+          console.log(currentRoom);
           $$('.messages').html("");
           $$('.roomTitle').html(currentRoom);
         }
       });
+
       roomsLoaded = true;
     }
 
+
+  });
+
+  roomsDB.on("child_added", function(snapshot) {
+    //solo lo realizo una vez (carga desde la base)
+    if (roomsLoaded) {
+      var roomAdded = snapshot.val();
+      var li =
+        '<li>' +
+        '   <a href="#view-chat" data-id=' + snapshot.name() + ' data-src="' + roomAdded.title + '" class="item-link tab-link chatRoomItem">' +
+        '       <div class="item-content">' +
+        '           <div class="item-inner">' +
+        '                   <div class="item-title">' + roomAdded.title + '</div>' +
+        '           </div>' +
+        '        </div>' +
+        '    </a>' +
+        '</li>';
+      $$('.roomsList').append(li);
+    }
+    $$('.chatRoomItem').on('click', function() {
+      if (currentRoomID !== this.getAttribute("data-id")) {
+        currentRoomID = (this.getAttribute("data-id"));
+        currentRoom = (this.getAttribute("data-src"));
+        console.log(currentRoom);
+        $$('.messages').html("");
+        $$('.roomTitle').html(currentRoom);
+      }
+    });
   });
 
 }
@@ -893,29 +936,29 @@ function onDeviceReady() {
 
   // $("#app-status-ul").append('<li>deviceready event received</li>');
   //preparo para recibir push notifications
-  // try {
-  //   pushNotification = window.plugins.pushNotification;
-  //   // $("#app-status-ul").append('<li>registering ' + device.platform + '</li>');
-  //   if (device.platform == 'android' || device.platform == 'Android' ||
-  //     device.platform == 'amazon-fireos') {
+  try {
+    pushNotification = window.plugins.pushNotification;
+    // $("#app-status-ul").append('<li>registering ' + device.platform + '</li>');
+    if (device.platform == 'android' || device.platform == 'Android' ||
+      device.platform == 'amazon-fireos') {
 
-  //     pushNotification.register(successHandler, errorHandler, {
-  //       "senderID": "153292884918", //id de mi proyecto en Google developer console
-  //       "ecb": "onNotification" //funcion a ejecutar si estoy en android
-  //     }); // required!
-  //   } else {
-  //     pushNotification.register(tokenHandler, errorHandler, {
-  //       "badge": "true",
-  //       "sound": "true",
-  //       "alert": "true",
-  //       "ecb": "onNotificationAPN"
-  //     }); // required!
-  //   }
-  // } catch (err) {
-  //   txt = "There was an error on this page.\n\n";
-  //   txt += "Error description: " + err.message + "\n\n";
-  //   alert(txt);
-  // }
+      pushNotification.register(successHandler, errorHandler, {
+        "senderID": "153292884918", //id de mi proyecto en Google developer console
+        "ecb": "onNotification" //funcion a ejecutar si estoy en android
+      }); // required!
+    } else {
+      pushNotification.register(tokenHandler, errorHandler, {
+        "badge": "true",
+        "sound": "true",
+        "alert": "true",
+        "ecb": "onNotificationAPN"
+      }); // required!
+    }
+  } catch (err) {
+    // txt = "There was an error on this page.\n\n";
+    // txt += "Error description: " + err.message + "\n\n";
+    // alert(txt);
+  }
 
 }
 
@@ -939,105 +982,105 @@ function weNeedToGoBack() {
 
 
 // handle APNS notifications for iOS
-// function onNotificationAPN(e) {
-//   if (e.alert) {
-//     // $("#app-status-ul").append('<li>push-notification: ' + e.alert + '</li>');
-//     // showing an alert also requires the org.apache.cordova.dialogs plugin
-//     navigator.notification.alert(e.alert);
-//   }
+function onNotificationAPN(e) {
+  if (e.alert) {
+    // $("#app-status-ul").append('<li>push-notification: ' + e.alert + '</li>');
+    // showing an alert also requires the org.apache.cordova.dialogs plugin
+    navigator.notification.alert(e.alert);
+  }
 
-//   if (e.sound) {
-//     // playing a sound also requires the org.apache.cordova.media plugin
-//     var snd = new Media(e.sound);
-//     snd.play();
-//   }
+  if (e.sound) {
+    // playing a sound also requires the org.apache.cordova.media plugin
+    var snd = new Media(e.sound);
+    snd.play();
+  }
 
-//   if (e.badge) {
-//     pushNotification.setApplicationIconBadgeNumber(successHandler, e.badge);
-//   }
-// }
+  if (e.badge) {
+    pushNotification.setApplicationIconBadgeNumber(successHandler, e.badge);
+  }
+}
 
-// // handle GCM notifications for Android
-// function onNotification(e) {
+// handle GCM notifications for Android
+function onNotification(e) {
 
-//   var registerDB = new Firebase("https://shovelChat.firebaseio.com/register");
-//   // $("#app-status-ul").append('<li>EVENT -> RECEIVED:' + e.event + '</li>');
+  var registerDB = new Firebase("https://shovelChat.firebaseio.com/registered");
+  // $("#app-status-ul").append('<li>EVENT -> RECEIVED:' + e.event + '</li>');
 
-//   switch (e.event) {
-//     case 'registered':
-//       if (e.regid.length > 0) {
+  switch (e.event) {
+    case 'registered':
+      if (e.regid.length > 0) {
 
 
-//         //checkeo si esta instancia de la app ya esta dada de alta para las push notif.
-//         registerDB.once('value', function(snapshot) {
-//           if (!snapshot.hasChild(device.uuid)) {
-//             registerDB.child(device.uuid).set({
-//               gcmId: e.regid
-//             });
-//           }
-//         });
+        //checkeo si esta instancia de la app ya esta dada de alta para las push notif.
+        registerDB.once('value', function(snapshot) {
+          if (!snapshot.hasChild(device.uuid)) {
+            registerDB.child(device.uuid).set({
+              gcmId: e.regid
+            });
+          }
+        });
 
-//         // $("#app-status-ul").append('<li>REGISTERED -> REGID:' + e.regid + "</li>");
-//         // Your GCM push server needs to know the regID before it can push to this device
-//         // here is where you might want to send it the regID for later use.
-//         // console.log("regID = " + e.regid);
-//       }
-//       break;
+        // $("#app-status-ul").append('<li>REGISTERED -> REGID:' + e.regid + "</li>");
+        // Your GCM push server needs to know the regID before it can push to this device
+        // here is where you might want to send it the regID for later use.
+        // console.log("regID = " + e.regid);
+      }
+      break;
 
-//     case 'message':
-//       // if this flag is set, this notification happened while we were in the foreground.
-//       // you might want to play a sound to get the user's attention, throw up a dialog, etc.
-//       // alert(e.data);
-//       // if (e.foreground) {
-//       // $("#app-status-ul").append('<li>--INLINE NOTIFICATION--' + '</li>');
+    case 'message':
+      // if this flag is set, this notification happened while we were in the foreground.
+      // you might want to play a sound to get the user's attention, throw up a dialog, etc.
+      // alert(e.data);
+      // if (e.foreground) {
+      // $("#app-status-ul").append('<li>--INLINE NOTIFICATION--' + '</li>');
 
-//       // on Android soundname is outside the payload. 
-//       // On Amazon FireOS all custom attributes are contained within payload
-//       var soundfile = e.payload.sound;
+      // on Android soundname is outside the payload. 
+      // On Amazon FireOS all custom attributes are contained within payload
+      var soundfile = e.payload.sound;
 
-//       var path = window.location.pathname;
-//       //-10 porque remueve index.html
-//       path = path.substr(path, path.length - 10);
-//       path = 'file://' + path;
-//       // if the notification contains a soundname, play it.
-//       // playing a sound also requires the org.apache.cordova.media plugin
-//       var my_media = new Media(path + 'sounds/' + soundfile);
-//       my_media.play();
+      var path = window.location.pathname;
+      //-10 porque remueve index.html
+      path = path.substr(path, path.length - 10);
+      path = 'file://' + path;
+      // if the notification contains a soundname, play it.
+      // playing a sound also requires the org.apache.cordova.media plugin
+      var my_media = new Media(path + 'sounds/' + soundfile);
+      my_media.play();
 
-//       // }
-//       // else { // otherwise we were launched because the user touched a notification in the notification tray.
-//       //   if (e.coldstart)
-//       //     $("#app-status-ul").append('<li>--COLDSTART NOTIFICATION--' + '</li>');
-//       //   else
-//       //     $("#app-status-ul").append('<li>--BACKGROUND NOTIFICATION--' + '</li>');
-//       // }
+      // }
+      // else { // otherwise we were launched because the user touched a notification in the notification tray.
+      //   if (e.coldstart)
+      //     $("#app-status-ul").append('<li>--COLDSTART NOTIFICATION--' + '</li>');
+      //   else
+      //     $("#app-status-ul").append('<li>--BACKGROUND NOTIFICATION--' + '</li>');
+      // }
 
-//       myApp.addNotification({
-//         title: e.payload.title,
-//         message: e.payload.message
-//       });
-//       break;
+      myApp.addNotification({
+        title: e.payload.title,
+        message: e.payload.message
+      });
+      break;
 
-//     case 'error':
-//       // $("#app-status-ul").append('<li>ERROR -> MSG:' + e.msg + '</li>');
-//       break;
+    case 'error':
+      // $("#app-status-ul").append('<li>ERROR -> MSG:' + e.msg + '</li>');
+      break;
 
-//     default:
-//       // $("#app-status-ul").append('<li>EVENT -> Unknown, an event was received and we do not know what it is</li>');
-//       break;
-//   }
-// }
+    default:
+      // $("#app-status-ul").append('<li>EVENT -> Unknown, an event was received and we do not know what it is</li>');
+      break;
+  }
+}
 
-// function tokenHandler(result) {
-//   // $("#app-status-ul").append('<li>token: ' + result + '</li>');
-//   // Your iOS push server needs to know the token before it can push to this device
-//   // here is where you might want to send it the token for later use.
-// }
+function tokenHandler(result) {
+  // $("#app-status-ul").append('<li>token: ' + result + '</li>');
+  // Your iOS push server needs to know the token before it can push to this device
+  // here is where you might want to send it the token for later use.
+}
 
-// function successHandler(result) {
-//   // $("#app-status-ul").append('<li>success:' + result + '</li>');
-// }
+function successHandler(result) {
+  // $("#app-status-ul").append('<li>success:' + result + '</li>');
+}
 
-// function errorHandler(error) {
-//   // $("#app-status-ul").append('<li>error:' + error + '</li>');
-// }
+function errorHandler(error) {
+  // $("#app-status-ul").append('<li>error:' + error + '</li>');
+}

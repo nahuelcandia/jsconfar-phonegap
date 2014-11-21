@@ -462,6 +462,12 @@ i.iconBio{
   background-image: url("../img/icons/Biografia.png");
 }
 
+.icon-newChat{
+  height: 23px !important;
+  width: 23px !important;
+  background-image: url("../img/icons/newchat.png") !important;
+}
+
 .textLogout{
   color: #245874;
 }
