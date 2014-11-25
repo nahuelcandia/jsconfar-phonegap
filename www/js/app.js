@@ -735,7 +735,7 @@ function initTweetFeed() {
         html += '<div class="content-block-agenda">' +
           '  <div class="content-block-title tweet-feed"><b>' +
           '      <div class="tweet-feed-header">' + pics[n].outerHTML + '</div>' +
-          '      <div class="tweet-feed-header">' + '<h3 style="margin-top:0px;">' + users[n].innerHTML + '</h3><p>' + screenNames[n].innerHTML + '</p>' + '</div>' +
+          '      <div class="tweet-feed-header">' + '<h3 style="margin:3px 0px; font-size:13px;">' + users[n].innerHTML + '</h3><p style="font-weight: normal;">' + screenNames[n].innerHTML + '</p>' + '</div>' +
           '    </b></div>' +
           '  <div class="content-block-inner tweet-feed">' +
           tweets[n].innerHTML + '<br>' + images[n].innerHTML +
@@ -747,7 +747,7 @@ function initTweetFeed() {
         html += '<div class="content-block-agenda">' +
           '  <div class="content-block-title tweet-feed"><b>' +
           '      <div class="tweet-feed-header">' + pics[n].outerHTML + '</div>' +
-          '      <div class="tweet-feed-header">' + '<h3 style="margin-top:0px;">' + users[n].innerHTML + '</h3><p>' + screenNames[n].innerHTML + '</p>' + '</div>' +
+          '      <div class="tweet-feed-header">' + '<h3 style="margin:3px 0px; font-size:13px;">' + users[n].innerHTML + '</h3><p style="font-weight: normal;">' + screenNames[n].innerHTML + '</p>' + '</div>' +
           '    </b></div>' +
           '  <div class="content-block-inner tweet-feed">' +
           tweets[n].innerHTML + '<br>' +
@@ -787,7 +787,7 @@ function initAgenda(view) {
       if (agenda[index].Keynote !== undefined) {
         var div =
           ' <div class="content-block-agenda">' +
-          '  <div class="content-block-title"><b>' + agenda[index].Title + '</b></div>' +
+          '  <div class="content-block-title"><p>' + agenda[index].Time + 'hrs - Salón Buenos Aires</p><b>' + agenda[index].Title + '</b></div>' +
           '   <div class="content-block-inner">' +
           '    <div class="content-block-agenda-alt">' +
           '     <div class="row no-gutter">' +
@@ -806,7 +806,7 @@ function initAgenda(view) {
       } else {
         var div =
           ' <div class="content-block-agenda">' +
-          '  <div class="content-block-title"><b>' + agenda[index].Title + '</b></div>' +
+          '  <div class="content-block-title"><p>' + agenda[index].Time + 'hrs - Salón Buenos Aires</p><b>' + agenda[index].Title + '</b></div>' +
           '   <div class="content-block-inner">' +
           '    <div class="content-block-agenda-alt">' +
           '     <div class="row no-gutter">' +
@@ -877,19 +877,26 @@ function initLogin() {
   // var app_login_url = 'http://shovelapps.com/redirect/redirect.html';
 
   hello.on('auth.login', function(response) {
-    // Get Profile
 
+    // Get Profile
     hello.api(response.network + ':/me', function(profile) {
       username = profile.name;
       if (response.network !== 'facebook') {
-        $$('.userName').html('<b>' + username + '</b><br><br>@' + profile.screen_name);
+        $$('.userName').html('<b>' + username + '</b><br><p>@' + profile.screen_name + '</p>');
       } else {
-        $$('.userName').html('<b>' + username + '</b><br><br>');
+        $$('.userName').html('<b>' + username + '</b><br>');
       }
       avatar = profile.thumbnail;
       $$('.userPic').attr('src', avatar);
       social = response.network;
       myApp.closeModal();
+
+      //muestro loading screen
+      $("body").append($('<div id="loadingScreen" style="margin:0px;padding:0px;position:absolute;width:100%;height:100%;z-index:5003;top:0;left:0;background:#FFC313 url(img/machine.png) no-repeat center center;background-size:150px"></div>'));
+      loadScreen = true;
+      setTimeout(function() {
+        $("#loadingScreen").remove();
+      }, 3000);
     });
   });
 

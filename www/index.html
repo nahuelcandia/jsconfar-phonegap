@@ -18,10 +18,9 @@
     <link rel="stylesheet" href="css/ionicons.min.css">
     <link rel="stylesheet" href="css/my-app.css">
     <script type="text/javascript" src="phonegap.js"></script>
-    <!-- <script type="text/javascript" src="cordova.js"></script> -->
-
     <!-- Path to google maps js -->
     <script src="js/google-maps.js"></script>
+    <script>  </script>
   </head>
   <body class="layout-jsconf theme-jsconf">
     <div id="fb-root"></div>
@@ -34,20 +33,22 @@
       <div class="view">
         <div class="page">
           <div class="page-content login-screen-content">
-            <h1 class="sprite logo"></h1>
-            <div class="login-buttons">
+            <img class="logo" src="img/logo.png"/>
+            <div class="login-buttons">   
               <div class="row">
                 <div class="col-100">
-                  <button class="botonTwitter botonLogin" id='login' onclick="hello.login('twitter');"><i class="icon iconTwitter"></i>    Entrar con Twitter</button>
-                </div>
-              </div>   
-              <div class="row">
-                <div class="col-100">
-                  <button class="botonFacebook botonLogin" id='login' onclick="hello.login('facebook');"><i class="icon iconFacebook"> </i>    Entrar con Facebook</button>
+                  <button class="botonFacebook botonLogin" id='login' onclick="hello.login('facebook');">
+                    <i class="icon iconFacebook"> </i> Entrar con Facebook</button>
                 </div>
               </div> 
+              <div class="row">
+                <div class="col-100">
+                  <button class="botonTwitter botonLogin" id='login' onclick="hello.login('twitter');">
+                    <i class="icon iconTwitter"></i> Entrar con Twitter</button>
+                </div>
+              </div>
             </div>
-            <img class="imgLogin" src="img/fondoAbout.png"/>
+            <img class="imgLogin" src="img/background.png"/>
           </div>
         </div>
       </div>
@@ -63,24 +64,14 @@
           <div class="userName"></div>
         </div>
       </div>
-      <div class="row profile">
+      <div class="row shareSection">
         <div class="col-100">
-          
+          <button class="botonTwitter botonShare" onclick="window.plugins.socialsharing.share(null, null, null, '@JSConfAR')">Share</button>
         </div>
       </div>
       <div class="list-block">
         <ul>
           <!-- each list item is a link to a tab or an external page -->
-          <li>
-            <a class="close-panel item-link needs-conn" onclick="window.plugins.socialsharing.share(null, null, null, 'http://www.jsconfar.com')">
-              <div class="item-content">
-                <div class="item-media"><i class="icon ion-ios7-redo-outline"></i></div>
-                <div class="item-inner">
-                  <div class="item-title"> Share this event</div>
-                </div>
-              </div>
-            </a>
-          </li>
           <li>
             <a href="#view-speakers" class="close-panel item-link tab-link">
               <div class="item-content">
@@ -106,12 +97,11 @@
               <div class="item-content">
                 <div class="item-media"><i class="icon iconMapa"></i></div>
                 <div class="item-inner">
-                  <div class="item-title">Map</div>
+                  <div class="item-title">Mapa</div>
                 </div>
               </div>
             </a>
           </li>
-          <li>
           <li>
             <a href="#view-help" class="close-panel item-link tab-link needs-conn">
               <div class="item-content">
@@ -127,17 +117,22 @@
               <div class="item-content">
                 <div class="item-media"><i class="icon iconAbout"></i></div>
                 <div class="item-inner">
-                  <div class="item-title">About Us</div>
+                  <div class="item-title">About</div>
                 </div>
               </div>
             </a>
           </li>
+        </ul>
+      </div>
+
+      <div class="list-block logout">
+        <ul>
           <li>
             <a href="#" id="logout" class="close-panel item-link">
               <div class="item-content">
                 <div class="item-media"><i class="icon iconLogout"></i></div>
                 <div class="item-inner">
-                  <div class="item-title textLogout">LogOut</div>
+                  <div class="item-title textLogout">Log Out</div>
                 </div>
               </div>
             </a>
@@ -157,7 +152,7 @@
             <div class="left">
               <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
             </div>
-            <div class="center">Home</div>
+              <div class="center">JSConf Ar</div>
           </div>
         </div>
         <div class="pages navbar-through">
@@ -185,7 +180,7 @@
             <div class="left">
               <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
             </div>
-              <div class="center">Mensajes</div>
+              <div class="center">JSConf Ar</div>
           </div>
         </div>
         <div class="pages navbar-through">
@@ -325,7 +320,7 @@
             <div class="left">
               <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
             </div>
-            <div class="center">Recent Tweets</div>
+            <div class="center">JSConf Ar</div>
           </div>
         </div>
         <div class="pages navbar-through">
@@ -479,9 +474,12 @@
         <div class="pages navbar-through">
           <div data-page="police" class="page">
             <div class="page-content">
-              <div class="list-block">
-                <ul class="listWhite listPolice">   
-                </ul>
+              <div class="list-block media-list contacts-list searchbar-found">
+                <div class="list-group">
+                  <!-- list with every item in the speakers json file -->
+                  <ul class="listWhite listPolice">
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
