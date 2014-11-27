@@ -1,567 +1,561 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
-                <meta name="apple-mobile-web-app-capable" content="yes">
-                    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-                        <meta http-equiv="x-ua-compatible" content="IE=edge">
-                            <title>My App</title>
-                            
-                            <!--Styles-->
-                            <!-- Path to Framework7 Library CSS-->
-                            <link rel="stylesheet" href="css/framework7.css">
-                                <link rel="stylesheet" href="css/framework7.themes.css">
-                                    <!-- Path to your custom app styles-->
-                                    <link rel="stylesheet" href="css/theme-jsconf.css">
-                                        <link rel="stylesheet" href="css/zocial.css">
-                                            <link rel="stylesheet" href="css/ionicons.min.css">
-                                                <link rel="stylesheet" href="css/my-app.css">
-                                                    <script type="text/javascript" src="phonegap.js"></script>
-                                                    <script type="text/javascript" src="cordova.js"></script>
-                                                    <!-- Path to google maps js -->
-                                                    <script src="js/google-maps.js"></script>
-                                                    <script>  </script>
-                                                    </head>
-    <body class="layout-jsconf theme-jsconf">
-        <div id="fb-root"></div>
-        <!-- Status bar and panel overlay for fullscreen mode-->
-        <div class="statusbar-overlay"></div>
-        <div class="panel-overlay"></div>
-        
-        <!-- logIn modal start-->
-        <div class="login-screen modal-in">
-            <div class="view">
-                <div class="page">
-                    <div class="page-content login-screen-content">
-                        <img class="logo" src="img/logo.png"/>
-                        <div class="login-buttons">
-                            <div class="row">
-                                <div class="col-100">
-                                    <button class="botonFacebook botonLogin" id='login' onclick="hello.login('facebook');">
-                                        <i class="icon iconFacebook"> </i> Entrar con Facebook</button>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-100">
-                                    <button class="botonTwitter botonLogin" id='login' onclick="hello.login('twitter');">
-                                        <i class="icon iconTwitter"></i> Entrar con Twitter</button>
-                                </div>
-                            </div>
-                        </div>
-                        <img class="imgLogin" src="img/background.png"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--PANEL IZQUIERDO-->
-        <div class="panel panel-left panel-reveal">
-            <!-- place panel title if you want -->
-            <div class="row profile">
-                <div class="col-33">
-                    <img class="userPic" src="">
-                        </div>
-                <div class="col-66">
-                    <div class="userName"></div>
-                </div>
-            </div>
-            <div class="row shareSection">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <title>JSConfAR</title>
+    
+    <!--Styles-->
+    <!-- Path to Framework7 Library CSS-->
+    <link rel="stylesheet" href="css/framework7.css">
+    <link rel="stylesheet" href="css/framework7.themes.css">
+    <!-- Path to your custom app styles-->
+    <link rel="stylesheet" href="css/theme-jsconf.css">
+    <link rel="stylesheet" href="css/zocial.css">
+    <link rel="stylesheet" href="css/ionicons.min.css">
+    <link rel="stylesheet" href="css/my-app.css">
+    <script type="text/javascript" src="phonegap.js"></script>
+<!--<script type="text/javascript" src="cordova.js"></script> -->
+    <!-- Path to google maps js -->
+    <script src="js/google-maps.js"></script>
+    <script>  </script>
+  </head>
+  <body class="layout-jsconf theme-jsconf">
+    <div id="fb-root"></div>
+    <!-- Status bar and panel overlay for fullscreen mode-->
+    <div class="statusbar-overlay"></div>
+    <div class="panel-overlay"></div>
+    
+    <!-- logIn modal start-->
+    <div class="login-screen modal-in">
+      <div class="view">
+        <div class="page">
+          <div class="page-content login-screen-content">
+            <img class="logo" src="img/logo.png"/>
+            <div class="login-buttons">
+              <div class="row">
                 <div class="col-100">
-                    <button class="botonTwitter botonShare" onclick="window.plugins.socialsharing.share(null, null, null, '@JSConfAR')">Share</button>
+                  <button class="botonFacebook botonLogin" id='login' onclick="hello.login('facebook');">
+                  <i class="icon iconFacebook"> </i> Entrar con Facebook</button>
                 </div>
+              </div>
+              <div class="row">
+                <div class="col-100">
+                  <button class="botonTwitter botonLogin" id='login' onclick="hello.login('twitter');">
+                  <i class="icon iconTwitter"></i> Entrar con Twitter</button>
+                </div>
+              </div>
             </div>
-            <div class="list-block">
-                <ul>
-                    <!-- each list item is a link to a tab or an external page -->
-                    <li>
-                        <a href="#view-speakers" class="close-panel item-link tab-link">
-                            <div class="item-content">
-                                <div class="item-media"><i class="icon iconSpeakers"></i></div>
-                                <div class="item-inner">
-                                    <div class="item-title">Speakers</div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#view-agenda" class="close-panel item-link tab-link">
-                            <div class="item-content">
-                                <div class="item-media"><i class="icon iconAgenda"></i></div>
-                                <div class="item-inner">
-                                    <div class="item-title">Agenda</div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#view-mapaInterno" class="close-panel item-link tab-link needs-conn">
-                            <div class="item-content">
-                                <div class="item-media"><i class="icon iconMapa"></i></div>
-                                <div class="item-inner">
-                                    <div class="item-title">Mapa</div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#view-help" class="close-panel item-link tab-link needs-conn">
-                            <div class="item-content">
-                                <div class="item-media"><i class="icon iconHelp"></i></div>
-                                <div class="item-inner">
-                                    <div class="item-title">Help</div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#view-about" class="close-panel item-link tab-link">
-                            <div class="item-content">
-                                <div class="item-media"><i class="icon iconAbout"></i></div>
-                                <div class="item-inner">
-                                    <div class="item-title">About</div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            
-            <div class="list-block logout">
-                <ul>
-                    <li>
-                        <a href="#" id="logout" class="close-panel item-link">
-                            <div class="item-content">
-                                <div class="item-media"><i class="icon iconLogout"></i></div>
-                                <div class="item-inner">
-                                    <div class="item-title textLogout">Log Out</div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            <img class="imgLogin" src="img/background.png"/>
+          </div>
         </div>
-        <!-- Views, and they are tabs-->
-        <!-- We need to set "toolbar-through" class on it to keep space for our tab bar-->
-        <div class="views tabs toolbar-through">
-            <!-- Your first view, it is also a .tab and should have "active" class to make it visible by default-->
-            <!-- VISTAS DESDE EL TABBAR -->
-            <div id="view-home" class="view view-main tab active">
-                <!-- Pages-->
-                <div class="navbar">
-                    <div class="navbar-inner">
-                        <div class="left">
-                            <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
-                        </div>
-                        <div class="center">JSConf Ar</div>
-                    </div>
-                </div>
-                <div class="pages navbar-through">
-                    <!-- Page, data-page contains page name-->
-                    <div data-page="home" class="page">
-                        <!-- Scrollable page content-->
-                        <div class="page-content">
-                            <div class="content-block inset">
-                                <!-- contenedor de bloque de texto de la pagina about -->
-                                <div class="content-block-title">Welcome to JSConfAR</div>
-                                <div class="content-block-inner">
-                                    <p>The event will be held on November 29 in Buenos Aires, Argentina.</p>
-                                    <div class="content-block-title">The Venue:</div>
-                                    <p>Auditorio Bs As </br>Buenos Aires Design </br>Av. Pueyrredon 2501</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="view-mensajes" class="view tab">
-                <!-- Pages-->
-                <div class="navbar">
-                    <div class="navbar-inner">
-                        <div class="left">
-                            <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
-                        </div>
-                        <div class="center">JSConf Ar</div>
-                    </div>
-                </div>
-                <div class="pages navbar-through">
-                    <!-- Page, data-page contains page name-->
-                    <div data-page="home" class="page">
-                        <!-- Scrollable page content-->
-                        <div class="page-content">
-                            <div class="content-block inset listaMensajes">
-                                <div class="preloaderContainer">
-                                    <span style="width:42px; height:42px" class="preloader"></span>
-                                </div>
-                                <!-- contenedor de bloque de texto de la pagina about -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="view-agenda" class="view tab">
-                <div class="navbar">
-                    <div class="navbar-inner">
-                        <div class="left">
-                            <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
-                        </div>
-                        <div class="center">Agenda</div>
-                    </div>
-                </div>
-                <div class="pages navbar-through">
-                    <div data-page="index-5" class="page">
-                        <div class="page-content">
-                            <!--list with every item in the agenda json file -->
-                            <div class="listaAgenda">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="view-mapa" class="view tab">
-                <div class="navbar">
-                    <div class="navbar-inner">
-                        <div class="left">
-                            <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
-                        </div>
-                        <div class="center">Map</div>
-                    </div>
-                </div>
-                <div class="pages navbar-through">
-                    <div data-page="index-2" class="page">
-                        <div class="page-content">
-                            <!-- container for the google maps instance -->
-                            <div id="map_canvas"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="view-speakers" class="view tab">
-                <div class="navbar">
-                    <div class="navbar-inner">
-                        <div class="left">
-                            <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
-                        </div>
-                        <div class="center">Speakers</div>
-                    </div>
-                </div>
-                <div class="pages navbar-through">
-                    <div data-page="index-3" class="page">
-                        <div class="page-content">
-                            <div class="list-block media-list contacts-list searchbar-found">
-                                <div class="list-group">
-                                    <!-- list with every item in the speakers json file -->
-                                    <ul class="listaSpeakers listWhite">
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="view-chatRooms" class="view tab">
-                <div class="navbar">
-                    <div class="navbar-inner">
-                        <div class="left">
-                            <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
-                        </div>
-                        <div class="center">Chat</div>
-                        <div class="right">
-                            <a href="#" class="prompt-newRoom link icon-only">
-                                <i class="icon icon-newChat"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="pages navbar-through">
-                    <!-- Page, data-page contains page name-->
-                    <div data-page="rooms" class="page">
-                        <div class="page-content">
-                            <div class="list-block">
-                                <!-- list with every chatroom in firebase -->
-                                <ul class="roomsList listWhite">
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="view-chat" class="view tab">
-                <div class="navbar">
-                    <div class="navbar-inner">
-                        <div class="left">
-                            <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
-                        </div>
-                        <div class="center roomTitle">CurrentRoom</div>
-                    </div>
-                </div>
-                <!-- Pages-->
-                <div class="pages">
-                    <!-- Page, data-page contains page name-->
-                    <div data-page="messages" class="page no-toolbar toolbar-fixed">
-                        <!-- message bar -->
-                        <div class="toolbar messagebar">
-                            <div class="toolbar-inner">
-                                <a href="#" id="sendPhoto" class="link icon-only needs-conn"><i class="icon icon-camera"></i></a>
-                                <textarea placeholder="Message"></textarea><a href="#" class="link needs-conn">Send</a>
-                            </div>
-                        </div>
-                        <!-- messages container -->
-                        <div class="page-content messages-content">
-                            <div class="messages"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- VISTAS DESDE EL LEFT PANEL -->
-            <div id="view-tweets" class="view tab">
-                <!-- Pages-->
-                <div class="navbar">
-                    <div class="navbar-inner">
-                        <div class="left">
-                            <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
-                        </div>
-                        <div class="center">JSConf Ar</div>
-                    </div>
-                </div>
-                <div class="pages navbar-through">
-                    <div data-page="tweets" class="page">
-                        <div class="page-content">
-                            <div id="contenedorTwitter">
-                                <!-- Contenedor del tweetfeed-->
-                                <!--  <div class="tweetContainer">
-                                 <a id="tweetContainer-inner" class="twitter-timeline" data-theme="light" data-link-color="#ffc313" data-dnt="true" ><span style="width:60px; height:60px; margin-top:50px;" class="preloader"></span></a>
-                                 
-                                 </div> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="view-help" class="view tab">
-                <!-- Pages-->
-                <div class="navbar">
-                    <div class="navbar-inner">
-                        <div class="left">
-                            <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
-                        </div>
-                        <div class="center">Help</div>
-                    </div>
-                </div>
-                <div class="pages navbar-through">
-                    <div data-page="help" class="page">
-                        <div class="page-content">
-                            <div class="list-block">
-                                <ul class="listWhite">
-                                    <li>
-                                        <a href="#view-mapa" class="item-link tab-link">
-                                            <div class="item-content">
-                                                <div class="item-media"><i class="icon iconLocation"></i></div>
-                                                <div class="item-inner">
-                                                    <div class="item-title">Buenos Aires City Map</div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#view-wifi" class="item-link tab-link">
-                                            <div class="item-content">
-                                                <div class="item-media"><i class="icon iconWifi"></i></div>
-                                                <div class="item-inner">
-                                                    <div class="item-title">Wifi Passwords</div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#view-hospitals" class="item-link tab-link">
-                                            <div class="item-content">
-                                                <div class="item-media"><i class="icon iconHospital"></i></div>
-                                                <div class="item-inner">
-                                                    <div class="item-title">Hospitals</div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#view-police" class="item-link tab-link">
-                                            <div class="item-content">
-                                                <div class="item-media"><i class="icon iconPolice"></i></div>
-                                                <div class="item-inner">
-                                                    <div class="item-title">Police Stations</div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="view-wifi" class="view tab">
-                <!-- Pages-->
-                <div class="navbar">
-                    <div class="navbar-inner">
-                        <div class="left">
-                            <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
-                        </div>
-                        <div class="center">WifiPasswords</div>
-                    </div>
-                </div>
-                <div class="pages navbar-through">
-                    <div data-page="wifi" class="page">
-                        <div class="page-content">
-                            <div class="list-block">
-                                <ul class="listWhite wifiList">
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="view-mapaPH" class="view tab">
-                <div class="navbar">
-                    <div class="navbar-inner">
-                        <div class="left">
-                            <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
-                        </div>
-                        <div class="center">Location</div>
-                    </div>
-                </div>
-                <div class="pages navbar-through">
-                    <div data-page="location" class="page">
-                        <div class="page-content">
-                            <!-- container for the google maps instance -->
-                            <div id="map_canvasPH"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="view-hospitals" class="view tab">
-                <!-- Pages-->
-                <div class="navbar">
-                    <div class="navbar-inner">
-                        <div class="left">
-                            <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
-                        </div>
-                        <div class="center">Hospitals</div>
-                    </div>
-                </div>
-                <div class="pages navbar-through">
-                    <div data-page="hospitals" class="page">
-                        <div class="page-content">
-                            <div class="list-block media-list contacts-list searchbar-found">
-                                <div class="list-group">
-                                    <!-- list with every item in the speakers json file -->
-                                    <ul class="listWhite listHospitals">
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="view-police" class="view tab">
-                <!-- Pages-->
-                <div class="navbar">
-                    <div class="navbar-inner">
-                        <div class="left">
-                            <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
-                        </div>
-                        <div class="center">Police Stations</div>
-                    </div>
-                </div>
-                <div class="pages navbar-through">
-                    <div data-page="police" class="page">
-                        <div class="page-content">
-                            <div class="list-block media-list contacts-list searchbar-found">
-                                <div class="list-group">
-                                    <!-- list with every item in the speakers json file -->
-                                    <ul class="listWhite listPolice">
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="view-mapaInterno" class="view tab">
-                <!-- Pages-->
-                <div class="navbar">
-                    <div class="navbar-inner">
-                        <div class="left">
-                            <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
-                        </div>
-                        <div class="center">Map</div>
-                    </div>
-                </div>
-                <div class="pages navbar-through">
-                    <!-- Page, data-page contains page name-->
-                    <div data-page="mapaInterno" class="page mapaI">
-                        <!-- Scrollable page content-->
-                        <div class="page-content mapaI">
-                            <div class="content-block">
-                                <!-- contenedor de bloque de texto de la pagina about -->
-                                <div class="content-block-inner">
-                                    <img class="imgMapaI" src="img/mapa.png"/>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="view-about" class="view tab">
-                <!-- Pages-->
-                <div class="navbar">
-                    <div class="navbar-inner">
-                        <div class="left">
-                            <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
-                        </div>
-                        <div class="center">About Us</div>
-                    </div>
-                </div>
-                <div class="pages navbar-through">
-                    <!-- Page, data-page contains page name-->
-                    <div data-page="about" class="page">
-                        <!-- Scrollable page content-->
-                        <div class="page-content">
-                            <div class="content-block about">
-                                <!-- contenedor de bloque de texto de la pagina about -->
-                                <div class="content-block-inner about">
-                                    <p>JSConf is an unique conference organization, beause we aren't really a conference organization at all. We are a very loose federation of developers who share the same general idea about how a technical conference should be held. We don't believe that one model or process fits all communities, in fact we are big advocates of locally run events driven by passionate individuals dedicated to the community. We make events that aren't from the standard conference playbook because we believe you (attendees, speakers and sponsors) deserve more than that.</p>
-                                    <img src="img/fondoAbout.png"/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Bottom Tabbar-->
-            <div class="toolbar tabbar tabbar-labels">
-                <div class="toolbar-inner">
-                    <!-- a link for every page i want to link from my tabbar toolbar -->
-                    <a href="#view-home" class="tab-link active"><i class="icon iconHome"></i><span class="tabbar-label">Home</span></a>
-                    <a href="#view-mensajes" class="tab-link needs-conn"><i class="icon iconMensajes"></i><span class="tabbar-label">Mensajes</span></a>
-                    <a href="#view-tweets" class="tab-link needs-conn"><i class="icon iconTweets"></i><span class="tabbar-label">Tweets</span></a>
-                    <a href="#view-chatRooms" class="tab-link needs-conn"><i class="icon iconChat"></i><span class="tabbar-label">Chat</span></a>
-                </div>
-            </div>
+      </div>
+    </div>
+    <!--PANEL IZQUIERDO-->
+    <div class="panel panel-left panel-reveal">
+      <!-- place panel title if you want -->
+      <div class="row profile">
+        <div class="col-33">
+          <img class="userPic" src="">
         </div>
-        <!-- Path to Framework7 Library JS-->
-        <script type="text/javascript" src="js/framework7.min.js"></script>
-        <!-- Path to jquery JS-->
-        <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
-        <!-- Path to firebase JS (used in chat plugin)-->
-        <script type="text/javascript" src="js/moment.min.js"></script>
-        <script type="text/javascript" src="js/twitterFetcher.js"></script>
-        <script type="text/javascript" src="js/firebase.js"></script>
-        <!-- Path to hello.js and witter auth -->
-        <script type="text/javascript" src="js/hello.js"></script>
-        <script type="text/javascript" src="js/twitter.js"></script>
-        <script type="text/javascript" src="js/PushNotification.js"></script>
-        <!-- Path to your app js-->
-        <script type="text/javascript" src="js/app.js"></script>
-    </body>
+        <div class="col-66">
+          <div class="userName"></div>
+        </div>
+      </div>
+      <div class="row shareSection">
+        <div class="col-100">
+          <button class="botonTwitter botonShare" onclick="window.plugins.socialsharing.share(null, null, null, 'www.jsconfar.com')">Share</button>
+        </div>
+      </div>
+      <div class="list-block">
+        <ul>
+          <!-- each list item is a link to a tab or an external page -->
+          <li>
+            <a href="#view-speakers" class="close-panel item-link tab-link">
+              <div class="item-content">
+                <div class="item-media"><i class="icon iconSpeakers"></i></div>
+                <div class="item-inner">
+                  <div class="item-title">Speakers</div>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#view-agenda" class="close-panel item-link tab-link">
+              <div class="item-content">
+                <div class="item-media"><i class="icon iconAgenda"></i></div>
+                <div class="item-inner">
+                  <div class="item-title">Agenda</div>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#view-mapaInterno" class="close-panel item-link tab-link">
+              <div class="item-content">
+                <div class="item-media"><i class="icon iconMapa"></i></div>
+                <div class="item-inner">
+                  <div class="item-title">Mapa</div>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#view-help" class="close-panel item-link tab-link needs-conn">
+              <div class="item-content">
+                <div class="item-media"><i class="icon iconHelp"></i></div>
+                <div class="item-inner">
+                  <div class="item-title">Help</div>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#view-about" class="close-panel item-link tab-link">
+              <div class="item-content">
+                <div class="item-media"><i class="icon iconAbout"></i></div>
+                <div class="item-inner">
+                  <div class="item-title">About</div>
+                </div>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="list-block logout">
+        <ul>
+          <li>
+            <a href="#" id="logout" class="close-panel item-link">
+              <div class="item-content">
+                <div class="item-media"><i class="icon iconLogout"></i></div>
+                <div class="item-inner">
+                  <div class="item-title textLogout">Log Out</div>
+                </div>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- Views, and they are tabs-->
+    <!-- We need to set "toolbar-through" class on it to keep space for our tab bar-->
+    <div class="views tabs toolbar-through">
+      <!-- Your first view, it is also a .tab and should have "active" class to make it visible by default-->
+      <!-- VISTAS DESDE EL TABBAR -->
+      <div id="view-home" class="view view-main tab active">
+        <!-- Pages-->
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left">
+              <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+            </div>
+            <div class="center">JSConf Ar</div>
+          </div>
+        </div>
+        <div class="pages navbar-through">
+          <!-- Page, data-page contains page name-->
+          <div data-page="home" class="page">
+            <!-- Scrollable page content-->
+            <div class="page-content">
+              <div class="content-block inset">
+                <!-- contenedor de bloque de texto de la pagina about -->
+                <div class="content-block-title">Welcome to JSConfAR</div>
+                <div class="content-block-inner">
+                  <p>The event will be held on November 29 in Buenos Aires, Argentina.</p>
+                  <div class="content-block-title">The Venue:</div>
+                  <p>Auditorio Bs As </br>Buenos Aires Design </br>Av. Pueyrredon 2501</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="view-mensajes" class="view tab">
+        <!-- Pages-->
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left">
+              <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+            </div>
+            <div class="center">JSConf Ar</div>
+          </div>
+        </div>
+        <div class="pages navbar-through">
+          <!-- Page, data-page contains page name-->
+          <div data-page="home" class="page">
+            <!-- Scrollable page content-->
+            <div class="page-content">
+              <div class="content-block inset listaMensajes">
+                <div class="preloaderContainer">
+                  <span style="width:42px; height:42px" class="preloader"></span>
+                </div>
+                <!-- contenedor de bloque de texto de la pagina about -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="view-agenda" class="view tab">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left">
+              <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+            </div>
+            <div class="center">Agenda</div>
+          </div>
+        </div>
+        <div class="pages navbar-through">
+          <div data-page="index-5" class="page">
+            <div class="page-content">
+              <!--list with every item in the agenda json file -->
+              <div class="listaAgenda">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="view-mapa" class="view tab">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left">
+              <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+            </div>
+            <div class="center">Map</div>
+          </div>
+        </div>
+        <div class="pages navbar-through">
+          <div data-page="index-2" class="page">
+            <div class="page-content">
+              <!-- container for the google maps instance -->
+              <div id="map_canvas"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="view-speakers" class="view tab">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left">
+              <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+            </div>
+            <div class="center">Speakers</div>
+          </div>
+        </div>
+        <div class="pages navbar-through">
+          <div data-page="index-3" class="page">
+            <div class="page-content">
+              <div class="list-block media-list contacts-list searchbar-found">
+                <div class="list-group">
+                  <!-- list with every item in the speakers json file -->
+                  <ul class="listaSpeakers listWhite">
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="view-chatRooms" class="view tab">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left">
+              <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+            </div>
+            <div class="center">Chat</div>
+            <div class="right">
+              <a href="#" class="prompt-newRoom link icon-only">
+                <i class="icon icon-newChat"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="pages navbar-through">
+          <!-- Page, data-page contains page name-->
+          <div data-page="rooms" class="page">
+            <div class="page-content">
+              <div class="list-block">
+                <!-- list with every chatroom in firebase -->
+                <ul class="roomsList listWhite">
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="view-chat" class="view tab">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left">
+              <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+            </div>
+            <div class="center roomTitle">CurrentRoom</div>
+          </div>
+        </div>
+        <!-- Pages-->
+        <div class="pages">
+          <!-- Page, data-page contains page name-->
+          <div data-page="messages" class="page no-toolbar toolbar-fixed">
+            <!-- message bar -->
+            <div class="toolbar messagebar">
+              <div class="toolbar-inner">
+                <a href="#" id="sendPhoto" class="link icon-only needs-conn"><i class="icon icon-camera"></i></a>
+                <textarea placeholder="Message"></textarea><a href="#" class="link needs-conn">Send</a>
+              </div>
+            </div>
+            <!-- messages container -->
+            <div class="page-content messages-content">
+              <div class="messages"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- VISTAS DESDE EL LEFT PANEL -->
+      <div id="view-tweets" class="view tab">
+        <!-- Pages-->
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left">
+              <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+            </div>
+            <div class="center">JSConf Ar</div>
+          </div>
+        </div>
+        <div class="pages navbar-through">
+          <div data-page="tweets" class="page">
+            <div class="page-content">
+              <div id="contenedorTwitter"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="view-help" class="view tab">
+        <!-- Pages-->
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left">
+              <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+            </div>
+            <div class="center">Help</div>
+          </div>
+        </div>
+        <div class="pages navbar-through">
+          <div data-page="help" class="page">
+            <div class="page-content">
+              <div class="list-block">
+                <ul class="listWhite">
+                  <li>
+                    <a href="#view-mapa" class="item-link tab-link">
+                      <div class="item-content">
+                        <div class="item-media"><i class="icon iconLocation"></i></div>
+                        <div class="item-inner">
+                          <div class="item-title">Buenos Aires City Map</div>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#view-wifi" class="item-link tab-link">
+                      <div class="item-content">
+                        <div class="item-media"><i class="icon iconWifi"></i></div>
+                        <div class="item-inner">
+                          <div class="item-title">Wifi Passwords</div>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#view-hospitals" class="item-link tab-link">
+                      <div class="item-content">
+                        <div class="item-media"><i class="icon iconHospital"></i></div>
+                        <div class="item-inner">
+                          <div class="item-title">Hospitals</div>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#view-police" class="item-link tab-link">
+                      <div class="item-content">
+                        <div class="item-media"><i class="icon iconPolice"></i></div>
+                        <div class="item-inner">
+                          <div class="item-title">Police Stations</div>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="view-wifi" class="view tab">
+        <!-- Pages-->
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left">
+              <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+            </div>
+            <div class="center">WifiPasswords</div>
+          </div>
+        </div>
+        <div class="pages navbar-through">
+          <div data-page="wifi" class="page">
+            <div class="page-content">
+              <div class="list-block">
+                <ul class="listWhite wifiList">
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="view-mapaPH" class="view tab">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left">
+              <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+            </div>
+            <div class="center">Location</div>
+          </div>
+        </div>
+        <div class="pages navbar-through">
+          <div data-page="location" class="page">
+            <div class="page-content">
+              <!-- container for the google maps instance -->
+              <div id="map_canvasPH"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="view-hospitals" class="view tab">
+        <!-- Pages-->
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left">
+              <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+            </div>
+            <div class="center">Hospitals</div>
+          </div>
+        </div>
+        <div class="pages navbar-through">
+          <div data-page="hospitals" class="page">
+            <div class="page-content">
+              <div class="list-block media-list contacts-list searchbar-found">
+                <div class="list-group">
+                  <!-- list with every item in the speakers json file -->
+                  <ul class="listWhite listHospitals">
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="view-police" class="view tab">
+        <!-- Pages-->
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left">
+              <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+            </div>
+            <div class="center">Police Stations</div>
+          </div>
+        </div>
+        <div class="pages navbar-through">
+          <div data-page="police" class="page">
+            <div class="page-content">
+              <div class="list-block media-list contacts-list searchbar-found">
+                <div class="list-group">
+                  <!-- list with every item in the speakers json file -->
+                  <ul class="listWhite listPolice">
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="view-mapaInterno" class="view tab">
+        <!-- Pages-->
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left">
+              <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+            </div>
+            <div class="center">Map</div>
+          </div>
+        </div>
+        <div class="pages navbar-through">
+          <!-- Page, data-page contains page name-->
+          <div data-page="mapaInterno" class="page mapaI">
+            <!-- Scrollable page content-->
+            <div class="page-content mapaI">
+              <div class="content-block">
+                <!-- contenedor de bloque de texto de la pagina about -->
+                <div class="content-block-inner">
+                  <img class="imgMapaI" src="img/mapa.png"/>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="view-about" class="view tab">
+        <!-- Pages-->
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left">
+              <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+            </div>
+            <div class="center">About Us</div>
+          </div>
+        </div>
+        <div class="pages navbar-through">
+          <!-- Page, data-page contains page name-->
+          <div data-page="about" class="page">
+            <!-- Scrollable page content-->
+            <div class="page-content">
+              <div class="content-block about">
+                <!-- contenedor de bloque de texto de la pagina about -->
+                <div class="content-block-inner about">
+                  <p>JSConf is an unique conference organization, beause we aren't really a conference organization at all. We are a very loose federation of developers who share the same general idea about how a technical conference should be held. We don't believe that one model or process fits all communities, in fact we are big advocates of locally run events driven by passionate individuals dedicated to the community. We make events that aren't from the standard conference playbook because we believe you (attendees, speakers and sponsors) deserve more than that.</p>
+                  <img src="img/fondoAbout.png"/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Bottom Tabbar-->
+      <div class="toolbar tabbar tabbar-labels">
+        <div class="toolbar-inner">
+          <!-- a link for every page i want to link from my tabbar toolbar -->
+          <a href="#view-home" class="tab-link active"><i class="icon iconHome"></i><span class="tabbar-label">Home</span></a>
+          <a href="#view-mensajes" class="tab-link needs-conn"><i class="icon iconMensajes"></i><span class="tabbar-label">Mensajes</span></a>
+          <a href="#view-tweets" class="tab-link needs-conn"><i class="icon iconTweets"></i><span class="tabbar-label">Tweets</span></a>
+          <a href="#view-chatRooms" class="tab-link needs-conn botonChat"><i class="icon iconChat"></i><span class="tabbar-label">Chat</span></a>
+        </div>
+      </div>
+    </div>
+    <!-- Path to Framework7 Library JS-->
+    <script type="text/javascript" src="js/framework7.min.js"></script>
+    <!-- Path to jquery JS-->
+    <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+    <!-- Path to firebase JS (used in chat plugin)-->
+    <script type="text/javascript" src="js/moment.min.js"></script>
+    <script type="text/javascript" src="js/twitterFetcher.js"></script>
+    <script type="text/javascript" src="js/firebase.js"></script>
+    <!-- Path to hello.js and witter auth -->
+    <script type="text/javascript" src="js/hello.js"></script>
+    <script type="text/javascript" src="js/twitter.js"></script>
+    <script type="text/javascript" src="js/PushNotification.js"></script>
+    <!-- Path to your app js-->
+    <script type="text/javascript" src="js/app.js"></script>
+  </body>
 </html>
