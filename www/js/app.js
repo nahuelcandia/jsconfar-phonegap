@@ -7,7 +7,9 @@ var myApp = new Framework7({
   //modal para el chat plugin
   modalTitle: 'Welcome',
   animateNavBackIcon: true, //swipePanel: 'left'
-  fastClicks: true
+  fastClicks: true,
+  swipePanel: 'left'
+
 });
 
 //Esta variable es usada tanto por el plugin de login como por el plugin de chat
@@ -70,7 +72,7 @@ function initViews() {
 
   var view15 = myApp.addView('#view-mensajes');
   var view16 = myApp.addView('#view-privateChatRooms');
-  var view17 = myApp.addView('#view-privateChat');
+
 
 
 
@@ -93,7 +95,6 @@ function initMensajes() {
   //carga inicial
   mensajesDB.on("child_added", function(snapshot) {
 
-    console.log("agregado");
     var mensaje = snapshot.val();
     var time = new Date(mensaje.date);
     if (mensaje.tipo == 1) {
@@ -267,7 +268,6 @@ function initChat() {
     for (var index in listaOrg) {
       organizers.push(listaOrg[index].name);
     }
-    console.log(organizers);
   });
 
   //instancio la base de datos de mensajes
@@ -439,7 +439,7 @@ function initChat() {
       //establesco la sala actual
       currentRoomDB = new Firebase("https://shovelChat.firebaseio.com/Rooms/" + currentRoomID + "/mensajes");
       //limito los mensajes que traigo a 10
-      var queryLimited = currentRoomDB.limit(10);
+      var queryLimited = currentRoomDB.limit(30);
       //por cada msj que traiga despues de la carga inicial 
       queryLimited.on("child_added", function(snapshot) {
         if (!messagesLoaded) return;
@@ -521,7 +521,6 @@ function initChat() {
         if (currentRoomID !== this.getAttribute("data-id")) {
           currentRoomID = (this.getAttribute("data-id"));
           currentRoom = (this.getAttribute("data-src"));
-          console.log(currentRoom);
           $$('.messages').html("");
           $$('.roomTitle').html(currentRoom);
         }
@@ -559,7 +558,7 @@ function initChat() {
       if (currentRoomID !== this.getAttribute("data-id")) {
         currentRoomID = (this.getAttribute("data-id"));
         currentRoom = (this.getAttribute("data-src"));
-        console.log(currentRoom);
+
         $$('.messages').html("");
         $$('.roomTitle').html(currentRoom);
       }
@@ -671,28 +670,32 @@ function initSpeakers(view) {
       '        <div class="list-group">' +
       '          <ul class="listaSpeakers listWhite">' +
       '            <li class="contact-item">' +
+      '             <a href="' + speakers[index].GithubUrl + '" target="blank" class="item-link external">' +
       '              <div class="item-content">' +
       '                <div class="item-media">' +
       '                  <img src="img/icons/Github.png" width="15">' +
       '                </div>' +
       '                <div class="item-inner">' +
       '                  <div class="item-title-row">' +
-      '                    <div class="item-title">' + speakers[index].Github + '</div></a>' +
+      '                    <div class="item-title">' + speakers[index].Github + '</div>' +
       '                  </div>' +
       '                </div>' +
       '              </div>' +
+      '             </a>' +
       '            </li>' +
       '            <li class="contact-item">' +
+      '             <a href="' + speakers[index].TwitterUrl + '" target="blank" class="item-link external">' +
       '              <div class="item-content">' +
       '                <div class="item-media">' +
       '                  <img src="img/icons/Twittermini.png" width="15">' +
       '                </div>' +
       '                <div class="item-inner">' +
       '                  <div class="item-title-row">' +
-      '                    <div class="item-title">' + speakers[index].Twitter + '</div></a>' +
+      '                    <div class="item-title">' + speakers[index].Twitter + '</div>' +
       '                  </div>' +
       '                </div>' +
       '              </div>' +
+      '             </a>' +
       '            </li>' +
       '          </ul>' +
       '        </div>' +
@@ -920,7 +923,7 @@ function initLogin() {
   var twitter_app_id = '3QMDGlsd7JHiCOnMt1PlmcDTV';
   var facebook_app_id = '281748475355273';
   var google_app_id = '153292884918-o0ejmc2dq5aa8hppl49u633ulgih9flu.apps.googleusercontent.com';
-  var app_login_url = 'http://shovelapps.com/redirect/redirect.html';
+  var app_login_url = 'http://localhost:8080/test/www/index.html';
   // var app_login_url = 'http://shovelapps.com/redirect/redirect.html';
 
   hello.on('auth.login', function(response) {

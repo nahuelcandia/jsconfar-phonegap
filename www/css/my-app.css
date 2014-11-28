@@ -119,6 +119,7 @@ color: #1b3f57 !important;
 }
 
 .userName{
+  margin-left: 5px;
   margin-top: 10px;
 }
 
@@ -639,12 +640,23 @@ i.iconBio{
 }
 
 .list-block.logout{
-/*  bottom: 0px;
-  position: absolute;*/
+  bottom: 0px;
+  position: absolute;
   width: 100%;
   margin: 0px;
   margin-top: 125px;
 }
+
+/* Smartphones (landscape) ----------- */
+@media only screen and (min-width : 370px) {
+  .list-block.logout{
+    position: relative;
+    width: 100%;
+    margin: 0px;
+    margin-top: 125px;
+  }
+}
+
 
 .panel .list-block .item-link .item-inner{
   background-image: url("data:image/svg+xml;charset=utf-8,<svg viewBox='0 0 60 120' xmlns='http://www.w3.org/2000/svg'><path d='m60 61.5-38.25 38.25-9.75-9.75 29.25-28.5-29.25-28.5 9.75-9.75z' fill='%23346079'/></svg>");
@@ -737,4 +749,29 @@ i.iconBio{
 
 i.icon.ion-ios7-refresh-empty{
   color: #ffc313;
+}
+
+.badge{
+  background-color: #ffc313;
+}
+
+.toolbar-inner{
+  padding: 0px;
+}
+
+.message-received.message-with-avatar .message-text {
+margin-left: 40px;
+}
+
+.message-sent.message-with-avatar .message-text {
+margin-right: 40px;
+}
+
+.barra-mensajes{
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.listaSpeakers{
+  margin-bottom: 25px !important;
 }
