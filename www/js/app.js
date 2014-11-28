@@ -305,7 +305,7 @@ function initChat() {
     if (username === undefined) {} else {
       var messagesLoaded = false; //controlo con esta variable por que funcion paso el msj (carga inicial vs carga individual)
 
-      var db = $('.sendPhoto').data('db');
+      var db = $('#sendPhoto').data('db');
       if (db && db.off) {
         //limpio los listeners para que no se me acumulen cada vez que muestro la pantalla
         db.off();
@@ -348,9 +348,9 @@ function initChat() {
   //agregar nueva sala
   $$('.prompt-newRoom').on('click', function() {
     myApp.prompt('New chat title', 'New Chat', function(value) {
-      if (value != "") {
+      if (value.trim() != "") {
         roomsDB.push({
-          title: value
+          title: value.trim()
         });
       }
     });
@@ -358,9 +358,9 @@ function initChat() {
 
   $$('.prompt-newPrivateRoom').on('click', function() {
     myApp.prompt('New chat with the organizers', 'New Chat', function(value) {
-      if (value != "") {
+      if (value.trim() != "") {
         roomsDB.push({
-          title: value,
+          title: value.trim(),
           isPrivate: true,
           owner: username
         });
@@ -895,7 +895,7 @@ function initLogin() {
       loadScreen = true;
       setTimeout(function() {
         $("#loadingScreen").remove();
-      }, 1000);
+      }, 2500);
     });
   });
 
