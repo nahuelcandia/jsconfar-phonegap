@@ -19,8 +19,9 @@ var username, twitterName, avatar = false,
 var passwords = [];
 var lat, lng, mapPH, markerPH;
 
-initLogin();
+var jsConfChat, currentChatRoom, currentView;
 
+initLogin();
 
 $(document).ready(function() {
   setInterval(function() {
@@ -30,6 +31,9 @@ $(document).ready(function() {
   }, 1000);
 });
 
+function initSuscriptions(){
+  jsConfChat = new Suscriber();
+}
 function initViews() {
 
 
@@ -72,6 +76,9 @@ function initViews() {
   var view16 = myApp.addView('#view-privateChatRooms');
   var view17 = myApp.addView('#view-privateChat');
 
+  $$('.view').on('show', function(){
+    currentView = this.getAttribute('id');
+  });
 
 
   initChat();
@@ -84,6 +91,8 @@ function initViews() {
   initPolice();
   initHospitals();
   initMensajes();
+  initSuscriptions();
+
 }
 
 
@@ -504,6 +513,7 @@ function initChat() {
           '       <div class="item-content">' +
           '           <div class="item-inner">' +
           '                   <div class="item-title">' + roomsList[index].title + '</div>' +
+          '                   <div class="item-after"></div>' +
           '           </div>' +
           '        </div>' +
           '    </a>' +
@@ -521,9 +531,20 @@ function initChat() {
         if (currentRoomID !== this.getAttribute("data-id")) {
           currentRoomID = (this.getAttribute("data-id"));
           currentRoom = (this.getAttribute("data-src"));
-          console.log(currentRoom);
+          $('#suscriber').data('room',currentRoomID);
           $$('.messages').html("");
           $$('.roomTitle').html(currentRoom);
+        }
+      });
+
+      $('#suscriber').on('click', function(){
+        var r = $(this).data('room');
+        if(jsConfChat.suscribed(r)) {
+          //unsuscribe
+          console.log('suscripto');
+        }else{
+          // suscribe
+          console.log('nop');
         }
       });
 
@@ -543,6 +564,7 @@ function initChat() {
         '       <div class="item-content">' +
         '           <div class="item-inner">' +
         '                   <div class="item-title">' + roomAdded.title + '</div>' +
+        '                   <div class="item-after"></div>' +
         '           </div>' +
         '        </div>' +
         '    </a>' +
@@ -567,7 +589,78 @@ function initChat() {
   });
 
 }
+function Suscriber(){
+  this.rooms = {};
+}
+Suscriber.prototype = {
+  suscribed: function(room) {
+    return this.rooms[room] !== undefined;
+  },
+  suscribe: function(room) {
+    var _this = this;
+    if(_this.rooms[room]) return;
 
+    var s = store.get('suscriptions');
+    s[room] = {
+      unread: 0
+    };
+    store.set('suscriptions', s);
+
+    _this.addBadge(room);
+
+    _this.rooms[room] = {
+      dbRef: new Firebase("https://shovelChat.firebaseio.com/Rooms/"+room+"/mensajes"),
+      msgs: 0
+    };
+
+    this.rooms[room].dbRef.once('value', function(sn){
+      if(sn.val()){
+        console.log(sn.val().length);
+        _this.rooms[room].msgs -= Object.keys(sn.val()).length;
+        var s = store.get('suscriptions');
+        s[room].unread -= Object.keys(sn.val()).length;
+        store.set('suscriptions', s);
+      }
+    });
+
+    this.rooms[room].dbRef.on('child_added', function(sn){
+      console.log('added');
+      _this.rooms[room].msgs++;
+
+      var s = store.get('suscriptions');
+      s[room].unread++;
+      store.set('suscriptions', s);
+
+    });
+  },
+  unsuscribe: function(room) {
+    var _this = this;
+    if(!_this.rooms[room]) return;
+
+    var s = store.get('suscriptions');
+    delete s[room];
+    store.set('suscriptions', s);
+
+    _this.rooms[room].dbRef.off();
+    delete _this.rooms[room];
+
+    _this.clearBadge(room);
+  },
+  addBadge: function(room) {
+    this.removeBadge(room);
+    $('.item-after','a[data-id='+room+']').append('<span id="'+room+'" class="badge" />');
+  },
+  removeBadge: function(room) {
+    $('span#'+room).remove();
+  },
+  resetBadge: function(room) {
+    $('span#'+room).text(0);
+  },
+  updateDom: function(room) {
+    if(currentView == "view-chat" && currentRoom == room) return;
+    $('span#'+room).text(this[room].msgs);
+  }
+}
 function initSpeakers(view) {
   /*JS SPEAKERS*/
 
@@ -949,7 +1042,7 @@ function initLogin() {
       loadScreen = true;
       setTimeout(function() {
         $("#loadingScreen").remove();
-      }, 10000);
+      }, 1000);
     });
   });
 
