@@ -734,3 +734,7 @@ i.iconBio{
 .agendaInfo p{
   margin: 0px;
 }
+
+i.icon.ion-ios7-refresh-empty{
+  color: #ffc313;
+}

@@ -92,6 +92,8 @@ function initMensajes() {
 
   //carga inicial
   mensajesDB.on("child_added", function(snapshot) {
+
+    console.log("agregado");
     var mensaje = snapshot.val();
     var time = new Date(mensaje.date);
     if (mensaje.tipo == 1) {
@@ -112,13 +114,13 @@ function initMensajes() {
         '           </div>' +
         '       </div>';
     }
+
     $$('.listaMensajes').prepend(div);
 
     //al cargar uno remuevo el preloader (spiner)
-    if (mensajesCargados == false) {
-      $$('.preloaderContainer').html("");
-      mensajesCargados = true;
-    }
+
+    $('#contenedorMensajes').find('.preloaderContainer').first().remove();
+
 
   });
 
@@ -744,6 +746,7 @@ function initMapa() {
 }
 
 function initTweetFeed() {
+
   var config3 = {
     "id": '514153581134360576',
     "domId": '',
@@ -756,6 +759,7 @@ function initTweetFeed() {
   //USO UNA CALLBACK A MEDIDA PARA DAR LA ESTRUCTURA NECESARIA PARA F7
   function handleTweets2(data) {
     var element = document.getElementById('contenedorTwitter');
+
     var div = document.createElement('div');
     div.innerHTML = data;
     var tweets = div.getElementsByClassName('tweet');
@@ -806,6 +810,7 @@ function initTweetFeed() {
 
 
   twitterFetcher.fetch(config3);
+
 
 }
 
@@ -940,7 +945,7 @@ function initLogin() {
       myApp.closeModal();
 
       //muestro loading screen
-      $("body").append($('<div id="loadingScreen" style="margin:0px;padding:0px;position:absolute;width:100%;height:100%;z-index:5003;top:0;left:0;background:#FFC313 url(img/machine.png) no-repeat center center;background-size:150px"></div>'));
+      $("body").append($('<div id="loadingScreen" style="margin:0px;padding:0px;position:absolute;width:100%;height:100%;z-index:5003;top:0;left:0;background:#FFC313 url(img/space.gif) no-repeat center center;background-size:150px"></div>'));
       loadScreen = true;
       setTimeout(function() {
         $("#loadingScreen").remove();
@@ -1027,6 +1032,10 @@ function onOnline() {
 //
 function onOffline() {
   $$('.needs-conn').addClass('disabled');
+  myApp.addNotification({
+    title: "WARNING",
+    message: "connection lost"
+  });
 }
 
 function weNeedToGoBack() {
@@ -1170,4 +1179,14 @@ $('.tab-link').on('click', function() {
   if ($(this).hasClass('botonChat') == false) {
     $('.botonChat').removeClass('active');
   }
+});
+
+$('#refreshTweets').on('click', function() {
+  document.getElementById('contenedorTwitter').innerHTML = '<div class="preloaderContainer"><span style="width:42px; height:42px" class="preloader"></span></div>'
+  initTweetFeed();
+});
+
+$('#refreshMensajes').on('click', function() {
+  document.getElementById('contenedorMensajes').innerHTML = '<div class="preloaderContainer"><span style="width:42px; height:42px" class="preloader"></span></div>'
+  initMensajes();
 });
