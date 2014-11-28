@@ -1265,6 +1265,7 @@ function receiveMessage(snapshot) {
           lastDate = date;
         });
       });
+
 $('.tab-link').on('click', function() {
   if ($(this).hasClass('botonChat') == false) {
     $('.botonChat').removeClass('active');
@@ -1297,6 +1298,24 @@ $('ul.roomsList').on('click', 'a.chatRoomItem', function(){
     $('i', '#suscriber').removeClass('icon ion-ios7-eye').addClass("icon ion-ios7-eye-outline");
   }
 });
+
+$('ul.privateRoomsList').on('click', 'a.chatRoomItem', function(){
+  // console.log(currentChatRoom);
+  // console.log(this);
+  if (currentChatRoom !== this.getAttribute("data-id")) {
+    currentChatRoom = (this.getAttribute("data-id"));
+    $$('.messages').html("");
+    $$('.roomTitle').html(this.getAttribute("data-src"));
+  }
+  $('#suscriber').data('room',currentChatRoom);
+  if(jsConfChat.suscribed(currentChatRoom)) {
+    $('i', '#suscriber').removeClass('icon ion-ios7-eye-outline').addClass("icon ion-ios7-eye");
+    jsConfChat.resetSuscription(currentChatRoom);
+  }else{
+    $('i', '#suscriber').removeClass('icon ion-ios7-eye').addClass("icon ion-ios7-eye-outline");
+  }
+});
+
 $('#suscriber').on('click', function(){
   var r = $(this).data('room');
   if(jsConfChat.suscribed(r)) {
