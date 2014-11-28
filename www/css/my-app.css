@@ -776,3 +776,6 @@ i.icon.ion-ios7-refresh-empty{
 i.icon.ion-ios7-eye, i.icon.ion-ios7-eye-outline{
   color: #ffc313;
 }
+.badge {
+  background-color: red;
+}
