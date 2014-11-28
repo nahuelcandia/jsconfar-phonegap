@@ -986,6 +986,7 @@ function onOffline() {
 
 function weNeedToGoBack() {
   myApp.showTab('#view-home');
+  $('.botonChat').removeClass('active');
 }
 
 //FUNCIONES DE PUSH NOTIFICATION
