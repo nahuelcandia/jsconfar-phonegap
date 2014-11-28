@@ -611,7 +611,7 @@ function initSpeakers(view) {
       '        <div class="list-group">' +
       '          <ul class="listaSpeakers listWhite">' +
       '            <li class="contact-item">' +
-      '             <a href="' + speakers[index].GithubUrl + '" target="blank" class="item-link external">' +
+      '             <a href="#" class="item-link external">' +
       '              <div class="item-content">' +
       '                <div class="item-media">' +
       '                  <img src="img/icons/Github.png" width="15">' +
