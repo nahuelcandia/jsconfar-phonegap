@@ -1,4 +1,5 @@
 // inicializacion
+'use strict';
 
 document.addEventListener("deviceready", onDeviceReady, false);
 
@@ -21,8 +22,11 @@ var username, twitterName, avatar = false,
 var passwords = [];
 var lat, lng, mapPH, markerPH;
 
-initLogin();
+var loadScreen, lastDate;
 
+var jsConfChat, currentChatRoom, currentView;
+
+initLogin();
 
 $(document).ready(function() {
   setInterval(function() {
@@ -32,6 +36,15 @@ $(document).ready(function() {
   }, 1000);
 });
 
+function initSuscriptions(){
+  if(!store.get('suscriptions')) store.set('suscriptions',{});
+  jsConfChat = new Suscriber();
+  var s = store.get('suscriptions');
+  $.each(s, function(i,e){
+    jsConfChat.suscribe(i,e.unread);
+    // console.log(e);
+  });
+}
 function initViews() {
 
 
@@ -74,6 +87,13 @@ function initViews() {
   var view16 = myApp.addView('#view-privateChatRooms');
 
 
+  $$('.view').on('show', function(){
+    currentView = this.getAttribute('id');
+  });
+
+  $$('#view-chatRooms').once('show', function(){
+    initSuscriptions();
+  });
 
 
   initChat();
@@ -86,6 +106,7 @@ function initViews() {
   initPolice();
   initHospitals();
   initMensajes();
+
 }
 
 
@@ -268,178 +289,37 @@ function initChat() {
     for (var index in listaOrg) {
       organizers.push(listaOrg[index].name);
     }
+
   });
 
   //instancio la base de datos de mensajes
   var currentRoomDB;
   var roomsDB = new Firebase("https://shovelChat.firebaseio.com/Rooms");
-  var lastDate,
-    roomsList, roomsLoaded = false,
+  var roomsList, roomsLoaded = false,
     currentRoom, currentRoomID;
-
-  // Format date
-  function formatDay(d) {
-    var date = new Date(d);
-    var weekDay = 'Sunday Monday Tuesday Wednesday Thursday Friday Saturday'.split(' ')[date.getDay()];
-    var day = date.getDate();
-    var month = 'Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split(' ')[date.getMonth()];
-    return weekDay + ', ' + month + ' ' + day;
-  }
-
-  function formatTime(d) {
-    var date = new Date(d);
-    var hours = date.getHours();
-    if (hours < 10) hours = '0' + hours;
-    var mins = date.getMinutes();
-    if (mins < 10) mins = '0' + mins;
-    return hours + ':' + mins;
-  }
-
-  function formatDate(d) {
-    return formatDay(d) + ', <span>' + formatTime(d) + '</span>';
-  }
-
-
-  function stripMessage(messageText) {
-    if (!(messageText.indexOf('<img') === 0 && messageText.split('<').length === 2)) {
-      messageText = messageText.replace(/>/g, '&gt;').replace(/</g, '&lt;');
-    }
-    messageText.replace(/script/g, 'scr\bipt');
-    return messageText;
-  }
-
-  // Receive message
-  function receiveMessage(snapshot) {
-
-    var message = snapshot.val();
-    if (message.name === username) return;
-    var date = new Date();
-    var offset = date.getTimezoneOffset() * 60 * 1000;
-    date = date.getTime() + offset;
-
-    var day, time;
-
-    if (!lastDate || (lastDate && date - lastDate > 1000 * 60 * 5)) {
-      day = formatDay(date);
-      time = formatTime(date);
-      lastDate = date;
-    }
-
-    myApp.addMessage({
-      text: stripMessage(message.message),
-      type: 'received',
-      name: message.name,
-      avatar: message.avatar,
-      day: day,
-      time: time
-    });
-
-  }
-
-  //Load message
-  function loadMessages(snapshot) {
-    var messages = snapshot.val();
-    var html = '',
-      messageId, message;
-    for (messageId in messages) {
-      message = messages[messageId];
-      if (message.date && lastDate) {
-        if (message.date - lastDate > 1000 * 60 * 5) {
-          html += '<div class="messages-date">' + formatDate(message.date) + '</div>';
-        }
-      }
-      var messageText = stripMessage(message.message);
-      if (message.name === username) {
-        html += '<div class="message message-sent"><div class="message-name">' + message.name + '</div><div class="message-text">' + messageText + '</div>' + (message.avatar ? '<div class="message-avatar" style="background-image:url(' + (message.avatar) + ')"></div>' : '') + '</div>';
-      } else {
-        html += '<div class="message message-received"><div class="message-name">' + message.name + '</div><div class="message-text">' + messageText + '</div>' + (message.avatar ? '<div class="message-avatar" style="background-image:url(' + (message.avatar) + ')"></div>' : '') + '</div>';
-      }
-      if (message.date) lastDate = message.date;
-    }
-    $('.messages-content .messages').html(html);
-    myApp.initMessages('.page[data-page="messages"]');
-  }
-
-
-  // Send message
-  $$('.messagebar a.link').on('click', function() {
-    var textarea = $$('.messagebar textarea');
-    var messageText = textarea.val();
-    if (messageText.length === 0) return;
-    textarea.val('').trigger('change');
-    var date = new Date();
-    var offset = date.getTimezoneOffset() * 60 * 1000;
-    date = date.getTime() + offset;
-    var day, time;
-    if (!lastDate || (lastDate && date - lastDate > 1000 * 60 * 5)) {
-      day = formatDay(date);
-      time = formatTime(date);
-      lastDate = date;
-    }
-    currentRoomDB.push({
-      name: username,
-      message: messageText,
-      avatar: avatar,
-      date: date
-    });
-
-    // Add Message
-    myApp.addMessage({
-      text: stripMessage(messageText),
-      type: 'sent',
-      name: username,
-      avatar: avatar,
-      day: day,
-      time: time
-    });
-
-  });
-
-  //Send photo
-  $$('#sendPhoto').on('click', function() {
-    myApp.prompt('Enter your image URL', function(data) {
-      var messageText = '<img src="' + data + '">';
-      var date = new Date();
-      var offset = date.getTimezoneOffset() * 60 * 1000;
-      date = date.getTime() + offset;
-      var day, time;
-      if (!lastDate || (lastDate && date - lastDate > 1000 * 60 * 5)) {
-        day = formatDay(date);
-        time = formatTime(date);
-        lastDate = date;
-      }
-      currentRoomDB.push({
-        name: username,
-        message: messageText,
-        avatar: avatar,
-        date: date
-      });
-      myApp.addMessage({
-        text: messageText,
-        type: 'sent',
-        name: username,
-        avatar: avatar,
-        day: day,
-        time: time
-      });
-      lastDate = date;
-    });
-  });
 
 
   /*En el evento show de la pantalla de chat muestro un alert con los datos del usuario*/
   $$('#view-chat').on('show', function() {
-
+    // currentChatRoom = currentRoomID;
     if (username === undefined) {} else {
       var messagesLoaded = false; //controlo con esta variable por que funcion paso el msj (carga inicial vs carga individual)
-      if (currentRoomDB) {
+
+      var db = $('.sendPhoto').data('db');
+      if (db && db.off) {
         //limpio los listeners para que no se me acumulen cada vez que muestro la pantalla
-        currentRoomDB.off();
+        db.off();
       }
+
       //establesco la sala actual
-      currentRoomDB = new Firebase("https://shovelChat.firebaseio.com/Rooms/" + currentRoomID + "/mensajes");
+      db = new Firebase("https://shovelChat.firebaseio.com/Rooms/" + currentChatRoom + "/mensajes");
       //limito los mensajes que traigo a 10
-      var queryLimited = currentRoomDB.limit(30);
+
+      var queryLimited = db.limit(30);
+
+      $('.sendPhoto').data('db', db);
+      $('.messagebar a.link').data('db', db);
+
       //por cada msj que traiga despues de la carga inicial 
       queryLimited.on("child_added", function(snapshot) {
         if (!messagesLoaded) return;
@@ -456,8 +336,6 @@ function initChat() {
       setTimeout(function() {
         $('.botonChat').addClass('active');
       }, 10);
-
-
 
       return;
     }
@@ -504,6 +382,7 @@ function initChat() {
           '       <div class="item-content">' +
           '           <div class="item-inner">' +
           '                   <div class="item-title">' + roomsList[index].title + '</div>' +
+          '                   <div class="item-after"></div>' +
           '           </div>' +
           '        </div>' +
           '    </a>' +
@@ -517,14 +396,7 @@ function initChat() {
         }
 
       }
-      $$('.chatRoomItem').on('click', function() {
-        if (currentRoomID !== this.getAttribute("data-id")) {
-          currentRoomID = (this.getAttribute("data-id"));
-          currentRoom = (this.getAttribute("data-src"));
-          $$('.messages').html("");
-          $$('.roomTitle').html(currentRoom);
-        }
-      });
+
 
       roomsLoaded = true;
     }
@@ -542,6 +414,7 @@ function initChat() {
         '       <div class="item-content">' +
         '           <div class="item-inner">' +
         '                   <div class="item-title">' + roomAdded.title + '</div>' +
+        '                   <div class="item-after"></div>' +
         '           </div>' +
         '        </div>' +
         '    </a>' +
@@ -554,19 +427,87 @@ function initChat() {
         $$('.roomsList').append(li);
       }
     }
-    $$('.chatRoomItem').on('click', function() {
-      if (currentRoomID !== this.getAttribute("data-id")) {
-        currentRoomID = (this.getAttribute("data-id"));
-        currentRoom = (this.getAttribute("data-src"));
 
-        $$('.messages').html("");
-        $$('.roomTitle').html(currentRoom);
-      }
-    });
   });
 
 }
+function Suscriber(){
+  this.rooms = {};
+}
+Suscriber.prototype = {
+  suscribed: function(room) {
+    return this.rooms[room] !== undefined;
+  },
+  suscribe: function(room, force) {
+    var _this = this;
+    if(_this.rooms[room]) return;
 
+    var s = store.get('suscriptions');
+    s[room] = {
+      unread: force || 0
+    };
+    store.set('suscriptions', s);
+
+    _this.addBadge(room);
+
+    _this.rooms[room] = {
+      dbRef: new Firebase("https://shovelChat.firebaseio.com/Rooms/"+room+"/mensajes")
+    };
+
+    this.rooms[room].dbRef.once('value', function(sn){
+      if(currentView == "view-chat" && currentChatRoom == room) return;
+      if(sn.val()){
+        var s = store.get('suscriptions');
+        s[room].unread -= Object.keys(sn.val()).length;
+        store.set('suscriptions', s);
+      }
+    });
+
+    this.rooms[room].dbRef.on('child_added', function(sn){
+      if(currentView == "view-chat" && currentChatRoom == room) return;
+
+      var s = store.get('suscriptions');
+      s[room].unread++;
+      store.set('suscriptions', s);
+
+      _this.updateDom(room);
+    });
+  },
+  unsuscribe: function(room) {
+    var _this = this;
+    if(!_this.rooms[room]) return;
+
+    var s = store.get('suscriptions');
+    delete s[room];
+    store.set('suscriptions', s);
+
+    _this.rooms[room].dbRef.off();
+    delete _this.rooms[room];
+
+    _this.removeBadge(room);
+  },
+  addBadge: function(room) {
+    this.removeBadge(room);
+    $('.item-after','a[data-id='+room+']').append('<span id="'+room+'" class="badge">0</span>');
+  },
+  removeBadge: function(room) {
+    $('span#'+room).remove();
+  },
+  resetSuscription: function(room) {
+    var s = store.get('suscriptions');
+    s[room].unread = 0;
+    store.set('suscriptions',s);
+    this.resetBadge(room);
+  },
+  resetBadge: function(room) {
+    $('span#'+room).text("0");
+  },
+  updateDom: function(room) {
+    // console.log('updating dom badge for '+room+' with '+store.get('suscriptions')[room].unread);
+    if(currentView == "view-chat" && currentChatRoom == room) return;
+    $('span#'+room).text(store.get('suscriptions')[room].unread);
+  }
+}
 function initSpeakers(view) {
   /*JS SPEAKERS*/
 
@@ -923,11 +864,13 @@ function initLogin() {
   var twitter_app_id = '3QMDGlsd7JHiCOnMt1PlmcDTV';
   var facebook_app_id = '281748475355273';
   var google_app_id = '153292884918-o0ejmc2dq5aa8hppl49u633ulgih9flu.apps.googleusercontent.com';
-  var app_login_url = 'http://localhost:8080/test/www/index.html';
-  // var app_login_url = 'http://shovelapps.com/redirect/redirect.html';
+
+  var app_login_url = 'http://shovelapps.com/redirect/redirect.html';
+  // var app_login_url = 'http://localhost:8080/jsconf-phonegap/www/index.html';
+
 
   hello.on('auth.login', function(response) {
-
+    // console.log(response);
     // Get Profile
     hello.api(response.network + ':/me', function(profile) {
       username = profile.name;
@@ -938,7 +881,7 @@ function initLogin() {
       } else {
         $$('.userName').html('<b>' + username + '</b><br>');
       }
-      avatar = profile.thumbnail;
+      avatar = profile.thumbnail.replace("_normal","_bigger");
       $$('.userPic').attr('src', avatar);
       social = response.network;
 
@@ -952,7 +895,7 @@ function initLogin() {
       loadScreen = true;
       setTimeout(function() {
         $("#loadingScreen").remove();
-      }, 3000);
+      }, 1000);
     });
   });
 
@@ -1177,7 +1120,151 @@ function successHandler(result) {
 function errorHandler(error) {
   // $("#app-status-ul").append('<li>error:' + error + '</li>');
 }
+function formatDay(d) {
+  var date = new Date(d);
+  var weekDay = 'Sunday Monday Tuesday Wednesday Thursday Friday Saturday'.split(' ')[date.getDay()];
+  var day = date.getDate();
+  var month = 'Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split(' ')[date.getMonth()];
+  return weekDay + ', ' + month + ' ' + day;
+}
 
+function formatTime(d) {
+  var date = new Date(d);
+  var hours = date.getHours();
+  if (hours < 10) hours = '0' + hours;
+  var mins = date.getMinutes();
+  if (mins < 10) mins = '0' + mins;
+  return hours + ':' + mins;
+}
+//Load message
+function loadMessages(snapshot) {
+  var messages = snapshot.val();
+  var html = '',
+    messageId, message;
+  for (messageId in messages) {
+    message = messages[messageId];
+    if (message.date && lastDate) {
+      if (message.date - lastDate > 1000 * 60 * 5) {
+        html += '<div class="messages-date">' + formatDate(message.date) + '</div>';
+      }
+    }
+    var messageText = stripMessage(message.message);
+    if (message.name === username) {
+      html += '<div class="message message-sent"><div class="message-name">' + message.name + '</div><div class="message-text">' + messageText + '</div>' + (message.avatar ? '<div class="message-avatar" style="background-image:url(' + (message.avatar) + ')"></div>' : '') + '</div>';
+    } else {
+      html += '<div class="message message-received"><div class="message-name">' + message.name + '</div><div class="message-text">' + messageText + '</div>' + (message.avatar ? '<div class="message-avatar" style="background-image:url(' + (message.avatar) + ')"></div>' : '') + '</div>';
+    }
+    if (message.date) lastDate = message.date;
+  }
+  $('.messages-content .messages').html(html);
+  myApp.initMessages('.page[data-page="messages"]');
+}
+
+function formatDate(d) {
+  return formatDay(d) + ', <span>' + formatTime(d) + '</span>';
+}
+
+function stripMessage(messageText) {
+  if (!(messageText.indexOf('<img') === 0 && messageText.split('<').length === 2)) {
+    messageText = messageText.replace(/>/g, '&gt;').replace(/</g, '&lt;');
+  }
+  messageText.replace(/script/g, 'scr\bipt');
+  return messageText;
+}
+
+// Receive message
+function receiveMessage(snapshot) {
+
+  var message = snapshot.val();
+  if (message.name === username) return;
+  var date = new Date();
+  var offset = date.getTimezoneOffset() * 60 * 1000;
+  date = date.getTime() + offset;
+
+  var day, time;
+
+  if (!lastDate || (lastDate && date - lastDate > 1000 * 60 * 5)) {
+    day = formatDay(date);
+    time = formatTime(date);
+    lastDate = date;
+  }
+
+  myApp.addMessage({
+    text: stripMessage(message.message),
+    type: 'received',
+    name: message.name,
+    avatar: message.avatar,
+    day: day,
+    time: time
+  });
+
+}
+      // Send message
+      $('.messagebar a.link').on('click', function() {
+        var db = $(this).data('db');
+        var textarea = $$('.messagebar textarea');
+        var messageText = textarea.val();
+        if (messageText.length === 0) return;
+        textarea.val('').trigger('change');
+        var date = new Date();
+        var offset = date.getTimezoneOffset() * 60 * 1000;
+        date = date.getTime() + offset;
+        var day, time;
+        if (!lastDate || (lastDate && date - lastDate > 1000 * 60 * 5)) {
+          day = formatDay(date);
+          time = formatTime(date);
+          lastDate = date;
+        }
+        db.push({
+          name: username,
+          message: messageText,
+          avatar: avatar,
+          date: date
+        });
+
+        // Add Message
+        myApp.addMessage({
+          text: stripMessage(messageText),
+          type: 'sent',
+          name: username,
+          avatar: avatar,
+          day: day,
+          time: time
+        });
+
+      });
+
+      //Send photo
+      $('#sendPhoto').on('click', function() {
+        var db = $(this).data('db');
+        myApp.prompt('Enter your image URL', function(data) {
+          var messageText = '<img src="' + data + '">';
+          var date = new Date();
+          var offset = date.getTimezoneOffset() * 60 * 1000;
+          date = date.getTime() + offset;
+          var day, time;
+          if (!lastDate || (lastDate && date - lastDate > 1000 * 60 * 5)) {
+            day = formatDay(date);
+            time = formatTime(date);
+            lastDate = date;
+          }
+          db.push({
+            name: username,
+            message: messageText,
+            avatar: avatar,
+            date: date
+          });
+          myApp.addMessage({
+            text: messageText,
+            type: 'sent',
+            name: username,
+            avatar: avatar,
+            day: day,
+            time: time
+          });
+          lastDate = date;
+        });
+      });
 $('.tab-link').on('click', function() {
   if ($(this).hasClass('botonChat') == false) {
     $('.botonChat').removeClass('active');
@@ -1193,3 +1280,36 @@ $('#refreshMensajes').on('click', function() {
   document.getElementById('contenedorMensajes').innerHTML = '<div class="preloaderContainer"><span style="width:42px; height:42px" class="preloader"></span></div>'
   initMensajes();
 });
+
+$('ul.roomsList').on('click', 'a.chatRoomItem', function(){
+  // console.log(currentChatRoom);
+  // console.log(this);
+  if (currentChatRoom !== this.getAttribute("data-id")) {
+    currentChatRoom = (this.getAttribute("data-id"));
+    $$('.messages').html("");
+    $$('.roomTitle').html(this.getAttribute("data-src"));
+  }
+  $('#suscriber').data('room',currentChatRoom);
+  if(jsConfChat.suscribed(currentChatRoom)) {
+    $('i', '#suscriber').removeClass('icon ion-ios7-eye-outline').addClass("icon ion-ios7-eye");
+    jsConfChat.resetSuscription(currentChatRoom);
+  }else{
+    $('i', '#suscriber').removeClass('icon ion-ios7-eye').addClass("icon ion-ios7-eye-outline");
+  }
+});
+$('#suscriber').on('click', function(){
+  var r = $(this).data('room');
+  if(jsConfChat.suscribed(r)) {
+    //unsuscribe
+    // console.log('unsuscribing to '+r);
+    jsConfChat.unsuscribe(r);
+    $('i', this).removeClass('icon ion-ios7-eye').addClass("icon ion-ios7-eye-outline");
+  }else{
+    // suscribe
+    // console.log('suscribing to '+r);
+    jsConfChat.suscribe(r);
+    $('i', this).removeClass('icon ion-ios7-eye-outline').addClass("icon ion-ios7-eye");
+  }
+});
+
+

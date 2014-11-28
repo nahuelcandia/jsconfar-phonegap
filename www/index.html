@@ -17,8 +17,9 @@
     <link rel="stylesheet" href="css/zocial.css">
     <link rel="stylesheet" href="css/ionicons.min.css">
     <link rel="stylesheet" href="css/my-app.css">
-<!--     // <script type="text/javascript" src="phonegap.js"></script> -->
-    <!--<script type="text/javascript" src="cordova.js"></script> -->
+
+    <script type="text/javascript" src="phonegap.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
     <!-- Path to google maps js -->
     <script src="js/google-maps.js"></script>
     <script>  </script>
@@ -33,7 +34,7 @@
     <div class="login-screen modal-in">
       <div class="view">
         <div class="page">
-          <div class="page-content login-screen-content">
+          <div id="loginPage" class="page-content login-screen-content">
             <img class="logo" src="img/logo.png"/>
             <div class="login-buttons">   
               <div class="row">
@@ -49,7 +50,7 @@
                 </div>
               </div>
             </div>
-            <img class="imgLogin" src="img/background.png"/>
+            <!-- <img class="imgLogin" src="img/background.png"/> -->
           </div>
         </div>
       </div>
@@ -296,6 +297,9 @@
               <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
             </div>
             <div class="center roomTitle">CurrentRoom</div>
+            <div class="right">
+              <a href="#" id="suscriber" data-room="" class="link icon-only"><i class="icon ion-ios7-eye-outline"></i></a>
+            </div>
           </div>
         </div>
         <!-- Pages-->
@@ -568,16 +572,15 @@
         </div>
         <div class="pages navbar-through">
           <!-- Page, data-page contains page name-->
-          <div data-page="about" class="page">
+          <div data-page="about" id="about" class="page">
             <!-- Scrollable page content-->
             <div class="page-content">
-              <div class="content-block about">
+              <!-- <div class="content-block"> -->
                 <!-- contenedor de bloque de texto de la pagina about -->
-                <div class="content-block-inner about">
-                  <p>JSConf is an unique conference organization, beause we aren't really a conference organization at all. We are a very loose federation of developers who share the same general idea about how a technical conference should be held. We don't believe that one model or process fits all communities, in fact we are big advocates of locally run events driven by passionate individuals dedicated to the community. We make events that aren't from the standard conference playbook because we believe you (attendees, speakers and sponsors) deserve more than that.</p>
-                  <img src="img/fondoAbout.png"/>
+                <div class="aboutText">
+                  JSConf is an unique conference organization, beause we aren't really a conference organization at all. We are a very loose federation of developers who share the same general idea about how a technical conference should be held. We don't believe that one model or process fits all communities, in fact we are big advocates of locally run events driven by passionate individuals dedicated to the community. We make events that aren't from the standard conference playbook because we believe you (attendees, speakers and sponsors) deserve more than that.
                 </div>
-              </div>
+              <!-- </div> -->
             </div>
           </div>
         </div>
@@ -604,8 +607,10 @@
     <!-- Path to hello.js and witter auth -->
     <script type="text/javascript" src="js/hello.js"></script>
     <script type="text/javascript" src="js/twitter.js"></script>
+    <script type="text/javascript" src="js/store.min.js"></script>
     <script type="text/javascript" src="js/PushNotification.js"></script>
     <!-- Path to your app js-->
     <script type="text/javascript" src="js/app.js"></script>
+
   </body>
 </html>

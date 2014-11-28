@@ -77,13 +77,35 @@ white-space: normal;
   padding-bottom: 0px;
 }
 
-.content-block.about{
-  margin:0px;
+#about{
+  background-image:url(../img/fondoAbout.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: #1b3f57;
+  background-position: center bottom;
+}
+
+.aboutText {
+  padding: 15px 20px;
+  color: white;
+  overflow: scroll;
+  height: 40%;
 }
 
 
-.about img{
-  width: 100%;
+/* Smartphones (landscape) ----------- */
+@media only screen and (min-width : 321px) {
+/* Styles */
+
+  #about {
+    background-image:none;
+  }
+  .aboutText {
+    padding: 15px 20px;
+    color: white;
+    overflow: scroll;
+    height: auto;
+  }
 }
 
 .imgLogin {
@@ -280,6 +302,19 @@ height: 65px;
 
 
 /*CSS LOGIN*/
+#loginPage {
+  background-image: url(../img/background.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+}
+/* Smartphones (landscape) ----------- */
+@media only screen and (min-width : 321px) {
+/* Styles */
+  #loginPage {
+    background-image: none;
+  }
+}
 
 h1.logo {
   display: block;
@@ -305,7 +340,7 @@ h1.logo {
   max-width: 255px;
   min-width: 50%;
   margin:0 auto;
-  padding-top: 30px;
+
 }
 
 
@@ -649,7 +684,7 @@ i.iconBio{
 
 /* Smartphones (landscape) ----------- */
 @media only screen and (min-width : 370px) {
-  .list-block.logout{
+  .list-block.logout {
     position: relative;
     width: 100%;
     margin: 0px;
@@ -751,10 +786,6 @@ i.icon.ion-ios7-refresh-empty{
   color: #ffc313;
 }
 
-.badge{
-  background-color: #ffc313;
-}
-
 .toolbar-inner{
   padding: 0px;
 }
@@ -774,4 +805,11 @@ margin-right: 40px;
 
 .listaSpeakers{
   margin-bottom: 25px !important;
+
+i.icon.ion-ios7-eye, i.icon.ion-ios7-eye-outline{
+  color: #ffc313;
+}
+.badge {
+  background-color: red;
+
 }
