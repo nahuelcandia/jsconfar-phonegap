@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta http-equiv="x-ua-compatible" content="IE=edge">
-    <title>JSConfAR</title>
+    <title>My App</title>
     
     <!--Styles-->
     <!-- Path to Framework7 Library CSS-->
@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="css/ionicons.min.css">
     <link rel="stylesheet" href="css/my-app.css">
     <script type="text/javascript" src="phonegap.js"></script>
-<!--<script type="text/javascript" src="cordova.js"></script> -->
+  <!--<script type="text/javascript" src="cordova.js"></script> -->
     <!-- Path to google maps js -->
     <script src="js/google-maps.js"></script>
     <script>  </script>
@@ -35,17 +35,17 @@
         <div class="page">
           <div class="page-content login-screen-content">
             <img class="logo" src="img/logo.png"/>
-            <div class="login-buttons">
+            <div class="login-buttons">   
               <div class="row">
                 <div class="col-100">
                   <button class="botonFacebook botonLogin" id='login' onclick="hello.login('facebook');">
-                  <i class="icon iconFacebook"> </i> Entrar con Facebook</button>
+                    <i class="icon iconFacebook"> </i> Entrar con Facebook</button>
                 </div>
-              </div>
+              </div> 
               <div class="row">
                 <div class="col-100">
                   <button class="botonTwitter botonLogin" id='login' onclick="hello.login('twitter');">
-                  <i class="icon iconTwitter"></i> Entrar con Twitter</button>
+                    <i class="icon iconTwitter"></i> Entrar con Twitter</button>
                 </div>
               </div>
             </div>
@@ -67,7 +67,7 @@
       </div>
       <div class="row shareSection">
         <div class="col-100">
-          <button class="botonTwitter botonShare" onclick="window.plugins.socialsharing.share(null, null, null, 'www.jsconfar.com')">Share</button>
+          <button class="botonTwitter botonShare" onclick="window.plugins.socialsharing.share(null, null, null, '@JSConfAR')">Share</button>
         </div>
       </div>
       <div class="list-block">
@@ -94,7 +94,7 @@
             </a>
           </li>
           <li>
-            <a href="#view-mapaInterno" class="close-panel item-link tab-link">
+            <a href="#view-mapaInterno" class="close-panel item-link tab-link needs-conn">
               <div class="item-content">
                 <div class="item-media"><i class="icon iconMapa"></i></div>
                 <div class="item-inner">
@@ -125,7 +125,7 @@
           </li>
         </ul>
       </div>
-      
+
       <div class="list-block logout">
         <ul>
           <li>
@@ -153,7 +153,7 @@
             <div class="left">
               <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
             </div>
-            <div class="center">JSConf Ar</div>
+              <div class="center">JSConf Ar</div>
           </div>
         </div>
         <div class="pages navbar-through">
@@ -181,7 +181,7 @@
             <div class="left">
               <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
             </div>
-            <div class="center">JSConf Ar</div>
+              <div class="center">JSConf Ar</div>
           </div>
         </div>
         <div class="pages navbar-through">
@@ -268,7 +268,7 @@
             <div class="center">Chat</div>
             <div class="right">
               <a href="#" class="prompt-newRoom link icon-only">
-                <i class="icon icon-newChat"></i>
+                  <i class="icon icon-newChat"></i>
               </a>
             </div>
           </div>
@@ -347,7 +347,7 @@
             <div class="page-content">
               <div class="list-block">
                 <ul class="listWhite">
-                  <li>
+                   <li>
                     <a href="#view-mapa" class="item-link tab-link">
                       <div class="item-content">
                         <div class="item-media"><i class="icon iconLocation"></i></div>
@@ -387,8 +387,72 @@
                       </div>
                     </a>
                   </li>
+                  <li>
+                    <a href="#view-privateChatRooms" class="item-link tab-link needs-conn">
+                      <div class="item-content">
+                        <div class="item-media"><i class="icon iconChat" style="height:30px;"></i></div>
+                        <div class="item-inner">
+                          <div class="item-title">Private Chat</div>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
                 </ul>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="view-privateChatRooms" class="view tab">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left">
+              <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+            </div>
+            <div class="center">Private Chat</div>
+            <div class="right">
+              <a href="#" class="prompt-newPrivateRoom link icon-only">
+                  <i class="icon icon-newChat"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="pages navbar-through">
+          <!-- Page, data-page contains page name-->
+          <div data-page="privateRooms" class="page">
+            <div class="page-content">
+              <div class="list-block">
+                <!-- list with every chatroom in firebase -->
+                <ul class="privateRoomsList listWhite">
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="view-privateChat" class="view tab">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="left">
+              <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+            </div>
+            <div class="center roomTitle">CurrentRoom</div>
+          </div>
+        </div>
+        <!-- Pages-->
+        <div class="pages">
+          <!-- Page, data-page contains page name-->
+          <div data-page="privateMessages" class="page no-toolbar toolbar-fixed">
+            <!-- message bar -->
+            <div class="toolbar messagebar">
+              <div class="toolbar-inner">
+                <a href="#" id="sendPhoto" class="link icon-only needs-conn"><i class="icon icon-camera"></i></a>
+                <textarea placeholder="Message"></textarea><a href="#" class="link needs-conn">Send</a>
+              </div>
+            </div>
+            <!-- messages container -->
+            <div class="page-content messages-content">
+              <div class="messages"></div>
             </div>
           </div>
         </div>
@@ -407,7 +471,7 @@
           <div data-page="wifi" class="page">
             <div class="page-content">
               <div class="list-block">
-                <ul class="listWhite wifiList">
+                <ul class="listWhite wifiList">   
                 </ul>
               </div>
             </div>
@@ -499,7 +563,7 @@
                 <!-- contenedor de bloque de texto de la pagina about -->
                 <div class="content-block-inner">
                   <img class="imgMapaI" src="img/mapa.png"/>
-                  
+
                 </div>
               </div>
             </div>

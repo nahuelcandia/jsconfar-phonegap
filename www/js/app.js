@@ -11,7 +11,8 @@ var myApp = new Framework7({
 });
 
 //Esta variable es usada tanto por el plugin de login como por el plugin de chat
-var username, avatar = false,
+var organizers = [];
+var username, twitterName, avatar = false,
   social = "",
   pushNotification, mensajesCargados = false;
 
@@ -19,8 +20,7 @@ var passwords = [];
 var lat, lng, mapPH, markerPH;
 
 initLogin();
-initViews();
-initLogout();
+
 
 $(document).ready(function() {
   setInterval(function() {
@@ -69,6 +69,8 @@ function initViews() {
   var view14 = myApp.addView('#view-mapaInterno');
 
   var view15 = myApp.addView('#view-mensajes');
+  var view16 = myApp.addView('#view-privateChatRooms');
+  var view17 = myApp.addView('#view-privateChat');
 
 
 
@@ -247,12 +249,6 @@ function initHospitals() {
       $$('.listHospitals').append(li);
     }
 
-
-
-
-
-
-
     $$('.itemPH').on('click', function() {
       lat = this.getAttribute("data-lat");
       lng = this.getAttribute("data-lng");
@@ -262,7 +258,15 @@ function initHospitals() {
 
 function initChat() {
   /*JS CHAT*/
-
+  var listaOrg;
+  var organizersDB = new Firebase("https://shovelChat.firebaseio.com/Organizers");
+  organizersDB.once("value", function(snapshot) {
+    listaOrg = snapshot.val();
+    for (var index in listaOrg) {
+      organizers.push(listaOrg[index].name);
+    }
+    console.log(organizers);
+  });
 
   //instancio la base de datos de mensajes
   var currentRoomDB;
@@ -434,7 +438,7 @@ function initChat() {
       currentRoomDB = new Firebase("https://shovelChat.firebaseio.com/Rooms/" + currentRoomID + "/mensajes");
       //limito los mensajes que traigo a 10
       var queryLimited = currentRoomDB.limit(10);
-      //por cada msj que traiga despues de la carga inicial
+      //por cada msj que traiga despues de la carga inicial 
       queryLimited.on("child_added", function(snapshot) {
         if (!messagesLoaded) return;
         receiveMessage(snapshot);
@@ -447,6 +451,12 @@ function initChat() {
       });
       //scrolleo hasta el ultimo msj
       myApp.scrollMessagesContainer();
+      setTimeout(function() {
+        $('.botonChat').addClass('active');
+      }, 10);
+
+
+
       return;
     }
     myApp.loginScreen();
@@ -466,6 +476,19 @@ function initChat() {
     });
   });
 
+  $$('.prompt-newPrivateRoom').on('click', function() {
+    myApp.prompt('New chat with the organizers', 'New Chat', function(value) {
+      if (value != "") {
+        roomsDB.push({
+          title: value,
+          isPrivate: true,
+          owner: username
+        });
+      }
+    });
+  });
+
+
   //Armado de listado de salas
 
   roomsDB.on("value", function(snapshot) {
@@ -483,7 +506,14 @@ function initChat() {
           '        </div>' +
           '    </a>' +
           '</li>';
-        $$('.roomsList').append(li);
+        if (roomsList[index].isPrivate == true) {
+          if (roomsList[index].owner == username || organizers.indexOf(twitterName) > -1) {
+            $$('.privateRoomsList').append(li);
+          }
+        } else {
+          $$('.roomsList').append(li);
+        }
+
       }
       $$('.chatRoomItem').on('click', function() {
         if (currentRoomID !== this.getAttribute("data-id")) {
@@ -515,7 +545,13 @@ function initChat() {
         '        </div>' +
         '    </a>' +
         '</li>';
-      $$('.roomsList').append(li);
+      if (roomAdded.isPrivate == true) {
+        if (roomAdded.owner == username || organizers.indexOf(twitterName) > -1) {
+          $$('.privateRoomsList').append(li);
+        }
+      } else {
+        $$('.roomsList').append(li);
+      }
     }
     $$('.chatRoomItem').on('click', function() {
       if (currentRoomID !== this.getAttribute("data-id")) {
@@ -888,6 +924,8 @@ function initLogin() {
     hello.api(response.network + ':/me', function(profile) {
       username = profile.name;
       if (response.network !== 'facebook') {
+        twitterName = "@" + profile.screen_name;
+
         $$('.userName').html('<b>' + username + '</b><br><p>@' + profile.screen_name + '</p>');
       } else {
         $$('.userName').html('<b>' + username + '</b><br>');
@@ -895,6 +933,10 @@ function initLogin() {
       avatar = profile.thumbnail;
       $$('.userPic').attr('src', avatar);
       social = response.network;
+
+      initViews();
+      initLogout();
+
       myApp.closeModal();
 
       //muestro loading screen
