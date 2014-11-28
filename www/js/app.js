@@ -856,8 +856,8 @@ function initLogin() {
   var twitter_app_id = '3QMDGlsd7JHiCOnMt1PlmcDTV';
   var facebook_app_id = '281748475355273';
   var google_app_id = '153292884918-o0ejmc2dq5aa8hppl49u633ulgih9flu.apps.googleusercontent.com';
-  // var app_login_url = 'http://shovelapps.com/redirect/redirect.html';
-  var app_login_url = 'http://localhost:8080/jsconf-phonegap/www/index.html';
+  var app_login_url = 'http://shovelapps.com/redirect/redirect.html';
+  // var app_login_url = 'http://localhost:8080/jsconf-phonegap/www/index.html';
 
   hello.on('auth.login', function(response) {
     // console.log(response);
